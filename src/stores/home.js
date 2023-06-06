@@ -36,7 +36,6 @@ state:()=>({
     channelInfo:{},
     //房间内用户数据
     memberList:[]
-
 }),
 //  persist: {
 //     paths: ['indexTabs'],
