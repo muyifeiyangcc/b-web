@@ -1,9 +1,9 @@
 <template>
     <div pt50>
         <div class="flex justify-between items-center">
-            <van-tabs class="tabs_1 Tabs" color="rgba(190,18,197,1)" background="transparent"
-                title-active-color="rgba(190,18,197,1)" title-inactive-color="rgba(255,255,255,1)" line-width="0px"
-                :ellipsis="false" v-model:active="futherTabActive" @change="onClickFatherTab">
+            <van-tabs class="tabs_1 Tabs" background="transparent" title-active-color="rgba(190,18,197,1)"
+                title-inactive-color="rgba(255,255,255,1)" line-width="0px" :ellipsis="false"
+                v-model:active="futherTabActive" @change="onClickFatherTab">
                 <van-tab v-for="(item, index) in homeStore.indexTabsFather.parentTags" :key="index"
                     :title="item.tagName"></van-tab>
             </van-tabs>
