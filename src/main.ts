@@ -9,7 +9,9 @@ import '@unocss/reset/tailwind.css'
 import './styles/main.css'
 import 'uno.css'
 
+// eslint-disable-next-line import/order
 import NIMSDK from 'nim-web-sdk-ng/dist/NIM_BROWSER_SDK'
+
 // 本机用
 // account: '1ef27c9ebb064b66989b523c0d108c37',//云信账号
 // token: '4fc8f80b57f0a9afd83b86490b11fb9b',//云信密码
@@ -23,10 +25,10 @@ export const nim = NIMSDK.getInstance({
   debugLevel: 'debug',
 })
 
-if (nim.status === 'unconnected') {
-  // then，receive event 'logined'
-  await nim.connect()
-}
+// if (nim.status === 'unconnected') {
+//   // then，receive event 'logined'
+//   await nim.connect()
+// }
 
 const routes = setupLayouts(generatedRoutes)
 
