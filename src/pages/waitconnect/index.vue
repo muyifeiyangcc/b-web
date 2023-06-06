@@ -8,7 +8,7 @@
 
 
 <script  setup>
-import { nim } from '~/main'
+import { nim } from '~/composables/main'
 const homeStore = useHomeStore()
 const router = useRouter()
 // 接受邀请

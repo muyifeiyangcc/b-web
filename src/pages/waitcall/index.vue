@@ -7,7 +7,7 @@
 
 
 <script  setup>
-import { nim } from '~/main'
+import { nim } from '~/composables/main'
 const homeStore = useHomeStore()
 const router = useRouter()
 // let channelId = computed(() => homeStore.inviteData.channelInfo.channelId)

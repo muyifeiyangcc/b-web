@@ -43,17 +43,19 @@
 <script lang="ts" setup>
 const futherTabActive = ref(0);
 const childrenTabActive = ref(0);
-const homeStore = useHomeStore()
+const homeStore = useHomeStore()//引入pinia组件
+
 //首页一级tab栏点击事件
 const onClickFatherTab = (name: any, title: any) => {
     homeStore.getIndexTabChildrenList(title)//更新二级分类
     homeStore.getIndexListData()//获取首页用户列表
-    childrenTabActive.value = 0
+    childrenTabActive.value = 0//切换副标题时应将子标题清零
 }
 //首页二级tab栏点击事件
 const onClickChildrenTab = (name: any, title: any) => {
     homeStore.updateIndexListData(title)//更新首页用户信息
 }
+
 onMounted(() => {
     // homeStore.getIndexTabList()
 })

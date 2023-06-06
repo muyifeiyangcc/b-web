@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
-import { nim } from '~/main'
+import { imConnect, nim } from '~/composables/main'
 const router = useRouter()
 const homeStore = useHomeStore()
 const saveOption =
@@ -28,19 +28,23 @@ const onRefresh = () => {
 };
 const myRef = ref();
 const scrollHeight = ref(0)
-// const scrollHeight = computed(() => window.innerHeight - myRef.value.offsetHeight)
+
 nim.signaling.on('signalingInvite', (event: any) => {
   homeStore.acceptData = event
   console.log('收到邀请', event)
   router.push('/waitconnect')
 })
+
 onMounted(() => {
+  //初始化im
+  imConnect()
   //保存设备信息
   setSave(saveOption)
   //获取首页tab列表
   homeStore.getIndexFatherTabList()
   //获取首页用户列表
   homeStore.getIndexListData()
+  //动态计算滚动区高度
   scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
 })
 

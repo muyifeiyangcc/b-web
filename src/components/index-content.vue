@@ -42,7 +42,7 @@
 
 <script  setup>
 import { useHomeStore } from '~/stores';
-import { nim } from '~/main'
+import { nim } from '~/composables/main'
 const homeStore = useHomeStore()
 const router = useRouter()
 // import { setSave } from '~/api/home'
