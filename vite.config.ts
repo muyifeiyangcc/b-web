@@ -13,7 +13,8 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Unocss from 'unocss/vite'
 import Shiki from 'markdown-it-shiki'
-import { VantResolver } from 'unplugin-vue-components/resolvers';
+import { VantResolver } from 'unplugin-vue-components/resolvers'
+
 // @ts-expect-error failed to resolve types
 import VueMacros from 'unplugin-vue-macros/vite'
 import WebfontDownload from 'vite-plugin-webfont-dl'
@@ -163,7 +164,7 @@ export default defineConfig({
 
   ssr: {
     // TODO: workaround until they support native ESM
-    noExternal: ['workbox-window', /vue-i18n/],
+    noExternal: ['workbox-window', /vue-i18n/, 'vant'],
   },
   // server: {
   //   host:'192.168.2.79'
