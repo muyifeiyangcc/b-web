@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
-import { imConnect, nim } from '~/composables/main'
-const router = useRouter()
+// import { imConnect, nim } from '~/composables/main'
+// const router = useRouter()
 const homeStore = useHomeStore()
 const saveOption =
 {
@@ -29,15 +29,15 @@ const onRefresh = () => {
 const myRef = ref();
 const scrollHeight = ref(0)
 
-nim.signaling.on('signalingInvite', (event: any) => {
-  homeStore.acceptData = event
-  console.log('收到邀请', event)
-  router.push('/waitconnect')
-})
+// nim.signaling.on('signalingInvite', (event: any) => {
+//   homeStore.acceptData = event
+//   console.log('收到邀请', event)
+//   router.push('/waitconnect')
+// })
 
 onMounted(() => {
   //初始化im
-  imConnect()
+  homeStore.imConnect()
   //保存设备信息
   setSave(saveOption)
   //获取首页tab列表
@@ -46,14 +46,19 @@ onMounted(() => {
   homeStore.getIndexListData()
   //动态计算滚动区高度
   scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
+  //组件挂载完成设置背景色
+  document.querySelector('body').setAttribute('style', 'background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%)')
 })
+onBeforeUnmount(() => {
+  //组件卸载前去掉背景色
+  document.querySelector('body').removeAttribute('style')
 
-
+})
 
 </script>
 
 <template>
-  <div style="background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);">
+  <div>
     <div ref="myRef">
       <index-tag />
     </div>

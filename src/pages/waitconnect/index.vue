@@ -8,7 +8,6 @@
 
 
 <script  setup>
-import { nim } from '~/composables/main'
 const homeStore = useHomeStore()
 const router = useRouter()
 // 接受邀请
@@ -68,10 +67,7 @@ const rejectInvite = async () => {
     }
 }
 
-nim.signaling.on('signalingCancelInvite', function (event) {
-    console.log('对方已取消', event)
-    router.go(-1)
-})
+
 </script>
 
 <style scoped></style>

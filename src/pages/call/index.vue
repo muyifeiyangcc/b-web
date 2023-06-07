@@ -56,7 +56,8 @@ const call = async function () {
         })
         const cameras = await NERTC.getCameras();    //获取可用的视频输入设备
         const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
-        localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '6551c3af8458d50493f7f878c893099bfdb99c2cf4fba703e0e51dc455340663', client });
+        console.log(cameras);
+        localStream = NERTC.createStream({ uid, audio: true, video: true, client });
         // localStream.setVideoProfile({
         //     resolution: NERTC.VIDEO_QUALITY.VIDEO_QUALITY_1080p,//分辨率
         //     frameRate: NERTC.VIDEO_FRAME_RATE.CHAT_VIDEO_FRAME_RATE_30,//帧率

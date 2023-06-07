@@ -11,8 +11,13 @@ export const nim = NIMSDK.getInstance({
   token: '4fc8f80b57f0a9afd83b86490b11fb9b', // 云信密码
   debugLevel: 'debug',
 })
-
+//   nim.on('msg', (res) => {
+//     console.log('收到新消息', res);
+//     getHistoryTalkList()
+// });
 export const imConnect = async ()=>{
+  console.log(123,nim);
+  
 if (nim.status === 'unconnected') {
   // then，receive event 'logined'
   await nim.connect()

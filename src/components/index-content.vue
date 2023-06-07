@@ -42,14 +42,14 @@
 
 <script  setup>
 import { useHomeStore } from '~/stores';
-import { nim } from '~/composables/main'
+// import { nim } from '~/composables/main'
 const homeStore = useHomeStore()
 const router = useRouter()
 // import { setSave } from '~/api/home'
 //邀请通话
 const invite = async () => {
     try {
-        const data = await nim.signaling.callEx(homeStore.params)
+        const data = await homeStore.nim.signaling.callEx(homeStore.params)
         const channelInfo = data.channelInfo
         homeStore.inviteData = data
         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
