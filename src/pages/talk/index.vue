@@ -1,7 +1,17 @@
 <template>
     <div>
         <div ref="myRef">
-            <van-nav-bar title="标题" left-arrow @click-left="router.go(-1)" />
+            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false">
+                <template #right>
+                    <van-icon name="ellipsis" :size="22" color="#fff" />
+                </template>
+                <template #title>
+                    <div class="text-#fff text-21 font-semibold">Johnny</div>
+                </template>
+                <template #left>
+                    <van-icon name="arrow-left" :size="22" color="#fff" />
+                </template>
+            </van-nav-bar>
         </div>
         <!-- 聊天区 -->
         <div class="flex flex-col flex-col-reverse mx15 pb20 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
@@ -69,12 +79,7 @@ const talkList = computed(() => homeStore.talkList)
 // const nim = computed(() => )
 
 
-//清空未读消息
-const resetUnread = async () => {
-    await nim.session.resetSessionUnreadCount({
-        id: "p2p-c398a3961d954af7841f95b43ed6d85b",
-    })
-}
+
 
 //发送文本消息配置项
 const sendTextMsgOption = ref({
@@ -94,8 +99,10 @@ const sendTextMessage = async () => {
 }
 
 onMounted(() => {
-    resetUnread()
+    //标记进入聊天页面
     homeStore.setInTalkPage(true)
+    //清理未读消息
+    homeStore.resetUnread()
     //获取聊天历史记录
     homeStore.getHistoryTalkList()
     //动态计算滚动区高度
@@ -117,5 +124,9 @@ onBeforeUnmount(() => {
 <style scoped>
 .van-cell-group--inset {
     margin: 0
+}
+
+.van-nav-bar {
+    background-color: #130021;
 }
 </style>

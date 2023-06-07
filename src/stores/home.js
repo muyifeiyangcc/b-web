@@ -72,11 +72,11 @@ actions:{
     //监听收到新消息
     nim.on('msg', async (res) => {
     console.log('收到新消息', res);
+    //收到新消息，判断是否在聊天页面
     if(this.inTalkPage){
         console.warn('当前在talk页面');
-        await nim.msg.sendMsgReceipt({
-        msg: res
-        })
+        //在聊天页面直接清理未读信息
+        this.resetUnread()
         this.talkList.unshift(res)
     }else{
         this.getSessionList()
@@ -161,7 +161,15 @@ console.log(this.sessionList);
     async getHistoryTalkList() {
     this.talkList = await this.nim.msgLog.getHistoryMsgs(this.getTalkListOption)
     console.log(this.talkList);
+},
+//清空未读消息
+async resetUnread () {
+    await this.nim.session.resetSessionUnreadCount({
+        id: "p2p-c398a3961d954af7841f95b43ed6d85b",
+    })
 }
+
+
 },
 })
 export default useHomeStore
