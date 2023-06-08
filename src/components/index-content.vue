@@ -52,6 +52,7 @@ const invite = async () => {
         const data = await homeStore.nim.signaling.callEx(homeStore.params)
         const channelInfo = data.channelInfo
         homeStore.inviteData = data
+        homeStore.channelInfo = channelInfo
         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
         router.push('/waitcall')
     } catch (error) {

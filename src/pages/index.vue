@@ -47,7 +47,8 @@ onMounted(() => {
   //动态计算滚动区高度
   scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
-  document.querySelector('body').setAttribute('style', 'background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%)')
+  // document.querySelector('body').setAttribute('style', 'background: #2F0250')
+  document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色

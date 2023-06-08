@@ -20,8 +20,11 @@ state:()=>({
 },
 //被邀请人信息
     params:  {
-        type: 1,
-        toAccid:'c398a3961d954af7841f95b43ed6d85b',
+        type: 2,
+        //手机
+        // toAccid:'c398a3961d954af7841f95b43ed6d85b',
+        //电脑
+        toAccid:'0d468462d7624684abd8f9735d777879',
         requestId: '10086',
     },
     otherParams:{
@@ -64,8 +67,11 @@ actions:{
     // 初始化nim
     const nim = NIMSDK.getInstance({
         appkey: '124f689baed25c488e1330bc42e528af',
+
         account: '1ef27c9ebb064b66989b523c0d108c37', // 云信账号
         token: '4fc8f80b57f0a9afd83b86490b11fb9b' // 云信密码
+        // account: 'ece7d561b4594eedb8def4802f053b85', // 云信账号
+        // token: 'c93db63790961481fe3d98a5849641fe' // 云信密码
         // debugLevel: 'debug',
 })
     this.nim=nim

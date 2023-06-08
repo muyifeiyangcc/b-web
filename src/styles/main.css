@@ -30,3 +30,13 @@ html.dark {
   width: 100%;
   height: 2px;
 }
+.van-tabbar{
+  background-color:#130021 !important;
+}
+.van-tabbar-item--active {
+  background-color:#130021 !important;
+}
+
+/* :root:root {
+  --van-tabbar-height:100px
+} */

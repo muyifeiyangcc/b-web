@@ -9,7 +9,7 @@
         </div>
 
         <div class="relative b-1 max-w-400 h600" id="remoteVideoContent">
-            <div id="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1"></div>
+            <div id="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2"></div>
         </div>
     </div>
 </template>
@@ -38,8 +38,8 @@ client.on('stream-subscribed', event => {
     console.warn('订阅别人的流成功的通知: ', remoteStream.streamID, 'mediaType: ', event.mediaType)
     // 设置远端视频画布
     remoteStream.setRemoteRenderMode({
-        width: 640,
-        height: 480,
+        width: 300,
+        height: 380,
         cut: true
     });
     // 播放远端流
@@ -57,11 +57,11 @@ const call = async function () {
         const cameras = await NERTC.getCameras();    //获取可用的视频输入设备
         const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
         console.log(cameras);
-        localStream = NERTC.createStream({ uid, audio: true, video: true, client });
-        // localStream.setVideoProfile({
-        //     resolution: NERTC.VIDEO_QUALITY.VIDEO_QUALITY_1080p,//分辨率
-        //     frameRate: NERTC.VIDEO_FRAME_RATE.CHAT_VIDEO_FRAME_RATE_30,//帧率
-        // })
+        localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '6551c3af8458d50493f7f878c893099bfdb99c2cf4fba703e0e51dc455340663' });
+        localStream.setVideoProfile({
+            resolution: 2,//分辨率
+            frameRate: NERTC.VIDEO_FRAME_RATE.CHAT_VIDEO_FRAME_RATE_30,//帧率
+        })
         console.log(cameras);
         await localStream.init();
         // 设置本地视频画布
