@@ -3,7 +3,8 @@
     <van-row gutter="20" justify="center" class="mb40">
         <van-col span="11" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
             <div class="">
-                <div class=" h181 bg-blue rounded-12 relative">
+                <div class="h181  rounded-12 relative overflow-hidden">
+                    <van-image :src="item.icon" fit="cover" />
                     <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/[.06]  absolute top-11 left-10">
                         <van-space :size="2">
                             <div class="w6 h6 rounded-50% bg-#2BC100" v-if="item.status === 1" />
@@ -16,10 +17,12 @@
                     </div>
                     <div
                         class="text-12 text-#fff font-semibold pl9 pr8 bg-gradient-to-r from-#FF9F00 to-#DE5D5D  rounded-l-10 absolute top-11 right-0">
-                        TOP1</div>
+                        TOP1
+                    </div>
                     <div
                         class="text-12 text-#fff font-semibold py6 px8 rounded-13 absolute bottom-5 left-10 bg-gradient-to-r from-#FF8960 to-#FF62A5">
-                        {{ item.anchorLevelName }}</div>
+                        {{ item.anchorLevelName }}
+                    </div>
                 </div>
                 <div class="mt10 flex justify-between items-center">
                     <van-space :size="0">

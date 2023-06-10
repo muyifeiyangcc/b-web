@@ -1,12 +1,12 @@
 <template>
     <div>
         <div ref="myRef">
-            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false">
+            <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="showBottom = !showBottom" :border="false">
                 <template #right>
                     <van-icon name="ellipsis" :size="22" color="#fff" />
                 </template>
                 <template #title>
-                    <div class="text-#fff text-21 font-semibold">Johnny</div>
+                    <div class="text-#fff text-21 font-semibold">{{ route.query.nick || 'unKnown' }}</div>
                 </template>
                 <template #left>
                     <van-icon name="arrow-left" :size="22" color="#fff" />
@@ -22,16 +22,18 @@
                 <div class="" v-if="item.flow === 'in'">
                     <van-space :size="11">
                         <van-image round width="12rem" height="12rem"
-                            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
-                        <div class="bg-#1B0D2C py13 px22 rounded-r-12 rounded-lt-12">{{ item.body }}</div>
+                            :src="route.query.avatar || 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'" />
+                        <div class="bg-#1B0D2C py13 px22 rounded-r-12 rounded-lt-12 max-w250 break-words">{{ item.body }}
+                        </div>
                     </van-space>
                 </div>
                 <!-- 右侧气泡 -->
                 <div class="flex flex-row-reverse " v-if="item.flow === 'out'">
                     <van-space>
                         <div
-                            class="bg-#1B0D2C py13 px22 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-l-12 rounded-rt-12">
+                            class="bg-#1B0D2C py13 px22 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-l-12 rounded-rt-12 max-w250 break-words">
                             {{ item.body }}
+
                         </div>
                         <van-image round width="12rem" height="12rem"
                             src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
@@ -44,8 +46,8 @@
             <van-space :size="10">
                 <div class="w295">
                     <van-cell-group inset>
-                        <van-field v-model="sendTextMsgOption.body" rows="1" autosize label="" center type="textarea"
-                            placeholder="Type a message..." @keydown.enter="sendTextMessage">
+                        <van-field v-model="sendTextMsgOption.body" placeholder="Type a message..."
+                            @keydown.enter="sendTextMessage">
                             <template #button>
                                 <img src="../../assets/emojbtn.png" class="w24 h24">
                             </template>
@@ -56,7 +58,7 @@
                     <button class="w36 h36" @click="sendTextMessage"><img src="../../assets/send.png" alt=""></button>
                 </div>
             </van-space>
-            <div class="pt18 pb31">
+            <div class="pt18 ">
                 <van-space :size="32">
                     <button class="w32 h32"><img src="../../assets/voice.png" alt=""></button>
                     <button class="w32 h32"><img src="../../assets/album.png" alt=""></button>
@@ -64,6 +66,23 @@
                 </van-space>
             </div>
         </div>
+
+        <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '37%' }" class="bg-#130021">
+            <template #default>
+                <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
+                <div
+                    class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#D016C8  via-#7F04BA to-#4D09C1 mt49">
+                    Report
+                </div>
+                <div
+                    class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt10">
+                    Block
+                </div>
+                <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21">
+                    Cancel
+                </div>
+            </template>
+        </van-popup>
     </div>
 </template>
 
@@ -71,10 +90,11 @@
 <script  setup>
 const myRef = ref();
 const reference = ref()
+const showBottom = ref(false)
 const scrollHeight = ref(0)
 const homeStore = useHomeStore()
 const router = useRouter()
-// const message = ref('hi')
+const route = useRoute()
 const talkList = computed(() => homeStore.talkList)
 // const nim = computed(() => )
 
@@ -84,27 +104,24 @@ const talkList = computed(() => homeStore.talkList)
 //发送文本消息配置项
 const sendTextMsgOption = ref({
     scene: "p2p",
-    to: "c398a3961d954af7841f95b43ed6d85b",
+    to: route.query.to,
     body: '',
     onSendBefore: function (msg) {
-        console.log('Get msg before send', msg)
+        console.log('发送了一条消息', msg);
     }
 })
 //发送文本消息
 const sendTextMessage = async () => {
     const msg = await homeStore.nim.msg.sendTextMsg(sendTextMsgOption.value)
     sendTextMsgOption.value.body = ''
-    console.log('发送了一条消息', msg);
     homeStore.talkList.unshift(msg)
 }
 
 onMounted(() => {
     //标记进入聊天页面
     homeStore.setInTalkPage(true)
-    //清理未读消息
-    homeStore.resetUnread()
     //获取聊天历史记录
-    homeStore.getHistoryTalkList()
+    homeStore.getHistoryTalkList(route.query.to)
     //动态计算滚动区高度
     scrollHeight.value = window.innerHeight - myRef.value.offsetHeight - reference.value.offsetHeight
     // 组件挂载完成设置背景色

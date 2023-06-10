@@ -45,8 +45,8 @@ state:()=>({
     sessionList:[],
     // 聊天历史记录
     talkList:[],
-    // //消息列表
-    // talkList:[],
+    // 会话页面用户信息列表
+    talkUserDataList:[],
     //当前是否在聊天页面，用于判断收到消息是否立刻标记已读
     inTalkPage:false,
     //获取聊天记录的配置项
@@ -82,9 +82,10 @@ actions:{
     if(this.inTalkPage){
         console.warn('当前在talk页面');
         //在聊天页面直接清理未读信息
-        this.resetUnread()
+        this.resetUnread(res.sessionId)
         this.talkList.unshift(res)
     }else{
+        //不在聊天页面则刷新会话列表
         this.getSessionList()
     }
     });
@@ -116,10 +117,10 @@ nim.signaling.on('signalingReject', (event) => {
     await nim.connect()
 }
 },
+    //标记进入talk页面
     setInTalkPage(data){
         this.inTalkPage=data
-    }   
-,
+    },
     //首页钻石不足弹窗
     showGetDiamonds(){
         this.getDiamondsVisible=!this.getDiamondsVisible
@@ -144,7 +145,7 @@ nim.signaling.on('signalingReject', (event) => {
     // this.getIndexListOption.tagId=this.indexTabsChildren[0].id
     this.indexList= await getIndexList(this.getIndexListOption)
 },
-// 更新首页列表
+    // 更新首页列表
     async updateIndexListData  (title) {
     this.indexTabsChildren.map((item)=>{
             if(item.tagName===title)
@@ -154,28 +155,36 @@ nim.signaling.on('signalingReject', (event) => {
         })
     this.getIndexListData()
 },
-//获取会话记录
-async getSessionList()  {
-    this.sessionList = await this.nim.session.getSessions({
+    //获取会话记录
+async getSessionList(){
+   const result = await this.nim.session.getSessions({
     "limit": 10,
     "desc": false
-}
-)
-console.log(this.sessionList);
+})
+    const idList=result.map((item)=>item.to)
+    this.talkUserDataList = await this.nim.user.getUsersNameCardFromServer({accounts:idList})
+    this.sessionList=result
 },
-// 获取聊天历史记录
-    async getHistoryTalkList() {
-    this.talkList = await this.nim.msgLog.getHistoryMsgs(this.getTalkListOption)
+    // 获取聊天历史记录
+    async getHistoryTalkList(to='c398a3961d954af7841f95b43ed6d85b',limit=20) {
+    this.talkList=[]
+    this.talkList = await this.nim.msgLog.getHistoryMsgs({
+        scene: 'p2p',//通信方式
+        to: to,//通信对象的cid
+        limit:limit,//返回条数
+    })
+    //清空未读消息
+    await this.nim.session.resetSessionUnreadCount({
+        id: this.talkList[0].sessionId,
+    })
     console.log(this.talkList);
 },
 //清空未读消息
-async resetUnread () {
+async resetUnread (sessionId) {
     await this.nim.session.resetSessionUnreadCount({
-        id: "p2p-c398a3961d954af7841f95b43ed6d85b",
+        id: sessionId,
     })
 }
-
-
 },
 })
 export default useHomeStore

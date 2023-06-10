@@ -11,7 +11,7 @@
             <div mr9>
                 <van-space>
                     <button><img src="../assets/Specialrecharge.png" class="w30 h30"></button>
-                    <button><img src="../assets/ranking.png" class="w30 h30"></button>
+                    <button><img src="../assets/ranking.png" class="w30 h30" @click="router.push('/rank')"></button>
                 </van-space>
             </div>
         </div>
@@ -44,7 +44,7 @@
 const futherTabActive = ref(0);
 const childrenTabActive = ref(0);
 const homeStore = useHomeStore()//引入pinia组件
-
+const router = useRouter()
 //首页一级tab栏点击事件
 const onClickFatherTab = (name: any, title: any) => {
     homeStore.getIndexTabChildrenList(title)//更新二级分类

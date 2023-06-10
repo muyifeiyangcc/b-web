@@ -2,12 +2,13 @@
   <div mx15>
     <div ref="myRef">
       <!-- 聊天页tab栏 -->
-      <div>
+      <div class="flex justify-between items-center mb20">
         <van-tabs v-model:active="active" background="transparent" title-active-color="#fff"
-          title-inactive-color="rgba(255,255,255,0.6)" line-width="0px" class="mb20">
+          title-inactive-color="rgba(255,255,255,0.6)" line-width="0px" :ellipsis="false">
           <van-tab title="Message" title-style="font-size:21px"></van-tab>
           <van-tab title="Call record" title-style="font-size:21px"></van-tab>
         </van-tabs>
+        <button @click="showBottom = !showBottom"><img src="../../assets/broom.png" class="w23 h23"></button>
       </div>
       <!-- 聊天页弹窗 -->
       <div v-if="isShow" class="py12 rounded-8   relative"
@@ -31,27 +32,28 @@
     <!-- 聊天列表 -->
     <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
       <div class="pb50 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
-        <div class="c-#fff pt20 " v-for="item, index in sessionList" :key="index" @click="router.push('/talk')">
+        <div class="c-#fff pt20 " v-for="item, index in  sessionList " :key="index"
+          @click="router.push({ path: '/talk', query: { to: item.to, nick: talkUserDataList[index].nick, avatar: talkUserDataList[index].avatar } })">
           <van-row>
             <van-col span="4">
               <!-- 头像 -->
               <div class="">
                 <van-image round width="12rem" height="12rem"
-                  src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+                  :src="talkUserDataList[index].avatar || 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'" />
               </div>
             </van-col>
             <van-col span="20">
               <!-- 内容 -->
               <div class="flex justify-between b-b-1 pb20 b-#1F0D2C">
                 <div>
-                  <div class="text-16 font-semibold">{{ item.lastMsg.fromNick || 'UnKnown' }}</div>
-                  <div class="text-12 font-light mt7 w150 van-ellipsis" style="color:rgba(255,255,255,0.6)">
+                  <div class="text-16 font-semibold">{{ talkUserDataList[index].nick || 'UnKnown' }}</div>
+                  <div class="text-12 font-light mt7 w150 van-ellipsis c-#fff/60">
                     {{ item.lastMsg.body }}
                   </div>
                 </div>
                 <div>
                   <van-space :size="15" direction="vertical" :align="'start'">
-                    <div class="" style="color:rgba(255,255,255,0.6)">14:32</div>
+                    <div class="c-#fff/60">14:32</div>
                     <div>
                       <!-- <van-badge :content="9" max="99" /> -->
                       <div class="bg-#ED4A47 rounded-50% w18 h18 text-center" v-if="item.unreadMsgs.length > 0">
@@ -66,6 +68,23 @@
         </div>
       </div>
     </van-pull-refresh>
+    <!-- 标记已读弹窗 -->
+    <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '37%' }" class="bg-#130021">
+      <template #default>
+        <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
+        <div
+          class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#D016C8  via-#7F04BA to-#4D09C1 mt49">
+          Mark all read
+        </div>
+        <div
+          class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt10">
+          Empty all
+        </div>
+        <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21">
+          Cancel
+        </div>
+      </template>
+    </van-popup>
   </div>
 </template>
 
@@ -73,7 +92,9 @@
 <script  setup>
 const router = useRouter()// 实例化router
 const sessionList = computed(() => homeStore.sessionList)// 获取会话列表
+const talkUserDataList = computed(() => homeStore.talkUserDataList)
 const isShow = ref(true)// 弹窗是否显示
+const showBottom = ref(false)//标记已读弹窗
 const active = ref(0)// tab栏选中标识
 const myRef = ref();//tab栏dom实例，用于获取高度
 const scrollHeight = ref(0)//滚动部分高度
@@ -89,6 +110,7 @@ const onRefresh = () => {
 onMounted(() => {
   //获取会话列表
   homeStore.getSessionList()
+  console.log(talkUserDataList.value, sessionList.value);
   //动态计算滚动区高度
   scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
