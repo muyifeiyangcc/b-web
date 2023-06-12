@@ -32,7 +32,7 @@
     <!-- 聊天列表 -->
     <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
       <div class="pb50 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
-        <div class="c-#fff pt20 " v-for="item, index in  sessionList " :key="index"
+        <div class="c-#fff pt20 " v-for="item, index in sessionList " :key="index"
           @click="router.push({ path: '/talk', query: { to: item.to, nick: talkUserDataList[index].nick, avatar: talkUserDataList[index].avatar } })">
           <van-row>
             <van-col span="4">
@@ -45,15 +45,17 @@
             <van-col span="20">
               <!-- 内容 -->
               <div class="flex justify-between b-b-1 pb20 b-#1F0D2C">
+                <!-- 昵称和上条消息 -->
                 <div>
                   <div class="text-16 font-semibold">{{ talkUserDataList[index].nick || 'UnKnown' }}</div>
                   <div class="text-12 font-light mt7 w150 van-ellipsis c-#fff/60">
                     {{ item.lastMsg.body }}
                   </div>
                 </div>
+                <!-- 时间和角标 -->
                 <div>
                   <van-space :size="15" direction="vertical" :align="'start'">
-                    <div class="c-#fff/60">14:32</div>
+                    <div class="c-#fff/60">{{ formatTime(item.updateTime) }}</div>
                     <div>
                       <!-- <van-badge :content="9" max="99" /> -->
                       <div class="bg-#ED4A47 rounded-50% w18 h18 text-center" v-if="item.unreadMsgs.length > 0">
@@ -77,7 +79,8 @@
           Mark all read
         </div>
         <div
-          class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt10">
+          class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt10"
+          @click="sureEmpty">
           Empty all
         </div>
         <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21">
@@ -85,21 +88,45 @@
         </div>
       </template>
     </van-popup>
+    <!-- 确认清空消息记录 -->
+    <van-dialog v-model:show="showEmpty" class="important:bg-#130021 ">
+      <template #default>
+        <div class="text-center pt54 pb32 px20">
+          <div class="c-#fff text-20 font-medium">
+            Are you sure to clear all sessions?
+          </div>
+          <div class="mt33 ">
+            <van-space :size="33">
+              <button class="w124 h40 bg-#fff c-#5409C0 rounded-23 text-16 font-semibold"
+                @click="showEmpty = false;">Close</button>
+              <button
+                class="w124 h40 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 c-#fff rounded-23 text-16 font-semibold"
+                @click="showEmpty = false; showBottom = false">Confirm</button>
+            </van-space>
+          </div>
+        </div>
+      </template>
+      <template #footer>
+      </template>
+    </van-dialog>
   </div>
 </template>
 
-
 <script  setup>
+import { showDialog } from 'vant';
+import { formatTime } from '~/utils'
 const router = useRouter()// 实例化router
 const sessionList = computed(() => homeStore.sessionList)// 获取会话列表
 const talkUserDataList = computed(() => homeStore.talkUserDataList)
 const isShow = ref(true)// 弹窗是否显示
 const showBottom = ref(false)//标记已读弹窗
+const showEmpty = ref(false);//确认清空消息列表弹窗
 const active = ref(0)// tab栏选中标识
 const myRef = ref();//tab栏dom实例，用于获取高度
 const scrollHeight = ref(0)//滚动部分高度
 const loading = ref(false);//下拉刷新加载状态
 const homeStore = useHomeStore()//pinia组件
+
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {
@@ -107,6 +134,11 @@ const onRefresh = () => {
     loading.value = false;
   }, 1000);
 };
+
+const sureEmpty = () => {
+  showEmpty.value = !showEmpty.value
+}
+
 onMounted(() => {
   //获取会话列表
   homeStore.getSessionList()

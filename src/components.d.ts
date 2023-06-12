@@ -9,9 +9,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Comments: typeof import('./components/comments.vue')['default']
     GetDiamondsChat: typeof import('./components/get-diamonds-chat.vue')['default']
     IndexContent: typeof import('./components/index-content.vue')['default']
     IndexTag: typeof import('./components/index-tag.vue')['default']
+    PostMoments: typeof import('./components/post-moments.vue')['default']
+    PostOmments: typeof import('./components/post-omments.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -19,6 +22,7 @@ declare module '@vue/runtime-core' {
     VanButton: typeof import('vant/es')['Button']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanCol: typeof import('vant/es')['Col']
+    VanDialog: typeof import('vant/es')['Dialog']
     VanField: typeof import('vant/es')['Field']
     VanIcon: typeof import('vant/es')['Icon']
     VanImage: typeof import('vant/es')['Image']

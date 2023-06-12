@@ -9,7 +9,8 @@
     <!-- 朋友圈内容 -->
     <div class="overflow-scroll pb60 " :style="{ height: scrollHeight + 'px' }">
       <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功" z-2>
-        <div class=" bg-#AFA8FF/10 rounded-8 px20 pt24 mb15 " v-for="item, index in friendsCircleList" :key="index">
+        <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in momentsStore.friendsCircleList"
+          :key="index">
           <!-- 第一行 -->
           <div class="flex justify-between">
             <div>
@@ -27,7 +28,7 @@
                         <div class="i-my-icons-famale text-14" />
                       </van-space>
                     </div>
-                    <div class="text-#ccc text-12">5min ago</div>
+                    <div class="text-#ccc text-12">{{ getMomentsTime(item.createTime) }}</div>
                   </van-space>
                 </div>
               </van-space>
@@ -58,19 +59,21 @@
             </div>
           </div>
           <!-- 第五行 -->
-          <div class="flex justify-between mt16 pb16">
+          <div class="flex justify-between pt16">
             <div class="">
               <van-space :size="52">
                 <div>
                   <van-space>
-                    <van-icon name="like-o" color="#fff" :size="20" />
+                    <van-icon v-if="item.likeFlag === 0" name="like-o" color="#fff" :size="20"
+                      @click="likeCircle(item.id, 1, index)" />
+                    <van-icon v-else name="like" color="#FB3A54" :size="20" @click="likeCircle(item.id, 0, index)" />
                     <div class="c-#fff">{{ item.likeNum }}</div>
                   </van-space>
                 </div>
                 <div>
                   <van-space>
                     <!-- <img src="../../assets/list_btn_comment.png" class="w20 h20"> -->
-                    <van-icon name="comment-o" color="#fff" :size="20" />
+                    <van-icon name="comment-o" color="#fff" :size="20" @click="clickComment(item.id)" />
                     <div class="c-#fff">{{ item.commentNum }}</div>
                   </van-space>
                 </div>
@@ -78,6 +81,8 @@
             </div>
             <van-icon name="ellipsis" color="#ccc" :size="20" @click="showBottom = !showBottom" />
           </div>
+          <!-- 评论区 -->
+          <comments :id="item.id" :count=index />
         </div>
       </van-pull-refresh>
     </div>
@@ -96,50 +101,108 @@
       </template>
     </van-popup>
     <!-- 图片预览 -->
-    <van-image-preview>
-    </van-image-preview>
+    <van-image-preview />
+    <!-- 发布评论 -->
+    <van-popup v-model:show="showComment" position="bottom" :style="{ height: '10%' }" overlay-class="bg-transparent">
+      <template #default>
+        <div class="py20 bg-#130021">
+          <van-space :size="10">
+            <div class="w295">
+              <van-cell-group inset>
+                <van-field v-model="content" placeholder="Type a message..." ref="field">
+                  <template #button>
+                    <img src="../../assets/emojbtn.png" class="w24 h24">
+                  </template>
+                </van-field>
+              </van-cell-group>
+            </div>
+            <div class="text-center">
+              <button class="w36 h36" @click="postComment"><img src="../../assets/send.png" alt=""></button>
+            </div>
+          </van-space>
+        </div>
+      </template>
+    </van-popup>
+
   </div>
 </template>
 
 
 <script  setup>
 import { showImagePreview } from 'vant';
-import { getFriendsCircle } from "~/api/moments";
+import { getFriendsCircle, like } from "~/api/moments";
+import { useMomentsStore } from '~/stores/moments'
+import dayjs from 'dayjs'
 const myRef = ref();
+const field = ref()
 const good = ref(0)
 const scrollHeight = ref(0)
 const showBottom = ref(false)
 const loading = ref(false);//下拉刷新加载状态
-const friendsCircleList = ref([])
+const showComment = ref(false)
+const cirlceFlag = ref(0)
+const momentsStore = useMomentsStore()
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {
-    getFriendsCircleList()
+    momentsStore.getFriendsCircleList()
     loading.value = false;
   }, 1000);
 };
-//获取朋友圈内容
-const getFriendsCircleList = async () => {
-  const result = await getFriendsCircle({
-    "currentPage": 1,
-    "endTime": "",
-    "keyword": "",
-    "onlyImgFlag": 0,
-    "pageSize": 10,
-    "startTime": ""
-  })
-  friendsCircleList.value = result
-  console.log(friendsCircleList.value);
-}
 // 图片预览
 const showImg = (imgList) => {
   showImagePreview([imgList]);
 }
 
+//计算朋友圈时间
+const getMomentsTime = (createTime) => {
+  const time = Math.floor((Date.now() - dayjs(createTime).valueOf()) / 60000)//time为分钟
+  if (time === 0)
+    return 'now'
+  if (time > 0 && time < 60)
+    return `${time} Minutes Ago`
+  if (time >= 60 && time < 60 * 24)
+    return `${Math.floor(time / 60)} Hours Ago`
+  if (time >= 60 * 24)
+    return `${dayjs(createTime).format('MM-DD')}`
+}
+//点赞/取消点赞
+const likeCircle = async (id, type, index) => {
+  await like({
+    "id": id, // id:朋友圈id 
+    "optionType": type//type: 1点赞 0取消点赞
+  })
+  momentsStore.friendsCircleList[index].likeFlag = type
+  if (type === 1)
+    momentsStore.friendsCircleList[index].likeNum++
+  else
+    momentsStore.friendsCircleList[index].likeNum--
+}
+
+//点击评论按钮
+const clickComment = (id) => {
+  cirlceFlag.value = id
+  showComment.value = true
+  nextTick(() => field.value.focus())
+}
+
+import { comment } from '~/api/moments'
+const content = ref('')
+//发布评论
+const postComment = async () => {
+  await comment({
+    "commentContent": content.value,
+    "friendsCircleId": cirlceFlag.value,
+    "parentCommentId": ""
+  })
+  content.value = ''
+  showComment.value = false
+
+}
 
 onMounted(() => {
   //获取朋友圈列表
-  getFriendsCircleList()
+  momentsStore.getFriendsCircleList()
   //动态计算滚动区高度
   scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色

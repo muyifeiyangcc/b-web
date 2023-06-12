@@ -21,6 +21,7 @@
     "@unocss/reset": "^0.52.2",
     "@vueuse/core": "^10.1.2",
     "@vueuse/head": "^1.1.26",
+    "dayjs": "^1.11.8",
     "nertc-web-sdk": "^4.6.50",
     "nim-web-sdk-ng": "^0.14.0",
     "nprogress": "^0.2.0",
