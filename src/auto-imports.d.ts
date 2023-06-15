@@ -46,6 +46,7 @@ declare global {
   const isRef: typeof import('vue')['isRef']
   const makeDestructurable: typeof import('@vueuse/core')['makeDestructurable']
   const markRaw: typeof import('vue')['markRaw']
+  const moments: typeof import('./stores/moments.js')['default']
   const nextTick: typeof import('vue')['nextTick']
   const nim: typeof import('./composables/main')['nim']
   const onActivated: typeof import('vue')['onActivated']
@@ -195,6 +196,7 @@ declare global {
   const useMediaQuery: typeof import('@vueuse/core')['useMediaQuery']
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
   const useMemory: typeof import('@vueuse/core')['useMemory']
+  const useMomentsStore: typeof import('./stores/moments.js')['useMomentsStore']
   const useMounted: typeof import('@vueuse/core')['useMounted']
   const useMouse: typeof import('@vueuse/core')['useMouse']
   const useMouseInElement: typeof import('@vueuse/core')['useMouseInElement']
@@ -343,6 +345,7 @@ declare module 'vue' {
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly moments: UnwrapRef<typeof import('./stores/moments.js')['default']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly nim: UnwrapRef<typeof import('./composables/main')['nim']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
@@ -492,6 +495,7 @@ declare module 'vue' {
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
+    readonly useMomentsStore: UnwrapRef<typeof import('./stores/moments.js')['useMomentsStore']>
     readonly useMounted: UnwrapRef<typeof import('@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('@vueuse/core')['useMouse']>
     readonly useMouseInElement: UnwrapRef<typeof import('@vueuse/core')['useMouseInElement']>
@@ -633,6 +637,7 @@ declare module '@vue/runtime-core' {
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly moments: UnwrapRef<typeof import('./stores/moments.js')['default']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly nim: UnwrapRef<typeof import('./composables/main')['nim']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
@@ -782,6 +787,7 @@ declare module '@vue/runtime-core' {
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
+    readonly useMomentsStore: UnwrapRef<typeof import('./stores/moments.js')['useMomentsStore']>
     readonly useMounted: UnwrapRef<typeof import('@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('@vueuse/core')['useMouse']>
     readonly useMouseInElement: UnwrapRef<typeof import('@vueuse/core')['useMouseInElement']>

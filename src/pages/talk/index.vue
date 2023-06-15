@@ -96,7 +96,7 @@ const homeStore = useHomeStore()
 const router = useRouter()
 const route = useRoute()
 const talkList = computed(() => homeStore.talkList)
-// const nim = computed(() => )
+
 
 
 

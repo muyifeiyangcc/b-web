@@ -82,7 +82,15 @@
             <van-icon name="ellipsis" color="#ccc" :size="20" @click="showBottom = !showBottom" />
           </div>
           <!-- 评论区 -->
-          <comments :id="item.id" :count=index />
+          <div class="mt25">
+            <div v-for=" data, count in item.comment" :key="count" class="mb5">
+              <van-space :size="2">
+                <div class="c-#3956E2 text-14 font-semibold">{{ data.nickname }}:</div>
+                <div class="c-#fff text-14">{{ data.commentContent }}</div>
+              </van-space>
+            </div>
+          </div>
+
         </div>
       </van-pull-refresh>
     </div>
@@ -133,18 +141,18 @@ import { showImagePreview } from 'vant';
 import { getFriendsCircle, like } from "~/api/moments";
 import { useMomentsStore } from '~/stores/moments'
 import dayjs from 'dayjs'
-const myRef = ref();
-const field = ref()
-const good = ref(0)
+const myRef = ref();//tab栏实例
+const field = ref()//输入框实例
 const scrollHeight = ref(0)
-const showBottom = ref(false)
+const showBottom = ref(false)//举报弹窗显示
 const loading = ref(false);//下拉刷新加载状态
-const showComment = ref(false)
-const cirlceFlag = ref(0)
+const showComment = ref(false)//评论输入框显示
+const cirlceFlag = ref(0)//标记点击了哪条朋友圈
 const momentsStore = useMomentsStore()
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {
+    //获取朋友圈列表
     momentsStore.getFriendsCircleList()
     loading.value = false;
   }, 1000);
@@ -172,18 +180,18 @@ const likeCircle = async (id, type, index) => {
     "id": id, // id:朋友圈id 
     "optionType": type//type: 1点赞 0取消点赞
   })
-  momentsStore.friendsCircleList[index].likeFlag = type
+  momentsStore.friendsCircleList[index].likeFlag = type//先修改本地数据
   if (type === 1)
-    momentsStore.friendsCircleList[index].likeNum++
+    momentsStore.friendsCircleList[index].likeNum++//
   else
     momentsStore.friendsCircleList[index].likeNum--
 }
 
 //点击评论按钮
 const clickComment = (id) => {
-  cirlceFlag.value = id
-  showComment.value = true
-  nextTick(() => field.value.focus())
+  cirlceFlag.value = id //标记点击了哪条朋友圈
+  showComment.value = true //展示输入框
+  nextTick(() => field.value.focus())//输入框出现时获取焦点
 }
 
 import { comment } from '~/api/moments'
@@ -195,14 +203,15 @@ const postComment = async () => {
     "friendsCircleId": cirlceFlag.value,
     "parentCommentId": ""
   })
+  momentsStore.getFriendsCircleList()
   content.value = ''
   showComment.value = false
-
 }
 
 onMounted(() => {
   //获取朋友圈列表
   momentsStore.getFriendsCircleList()
+  console.log(momentsStore.momentsList);
   //动态计算滚动区高度
   scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色

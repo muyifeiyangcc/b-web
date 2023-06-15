@@ -5,3 +5,5 @@ export const getIndexTab= ()=>request.post('/api/index/indexTag')
 export const getIndexList=(data)=>request.post('/api/anchor/v2/anchorList',data)
 //保存设备信息
 export const setSave=(data)=>request.post('/api/device/save',data)
+//排行榜数据
+export const getRankingList=(data)=>request.post('/api/ranking/getRankingList',data)

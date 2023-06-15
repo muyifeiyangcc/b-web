@@ -2,8 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
-// import { imConnect, nim } from '~/composables/main'
-// const router = useRouter()
+const router = useRouter()
 const homeStore = useHomeStore()
 const saveOption =
 {
@@ -29,11 +28,6 @@ const onRefresh = () => {
 const myRef = ref();
 const scrollHeight = ref(0)
 
-// nim.signaling.on('signalingInvite', (event: any) => {
-//   homeStore.acceptData = event
-//   console.log('收到邀请', event)
-//   router.push('/waitconnect')
-// })
 
 onMounted(() => {
   //初始化im
@@ -70,8 +64,8 @@ onBeforeUnmount(() => {
     </div>
     <div>
       <van-button class="mx52 rounded-23 w270 h50 b-0  fixed bottom-100 text-center "
-        style="background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);"
-        @click="homeStore.showGetDiamonds">
+        style="background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);" @click="router.push('match')">
+        <!-- @click="homeStore.showGetDiamonds" -->
         <van-space direction="vertical" size="0">
           <div>
             <van-space>

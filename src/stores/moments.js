@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import {getFriendsCircle}from '~/api/moments'
+import {getFriendsCircle,getMoments}from '~/api/moments'
 export const useMomentsStore = defineStore('useMomentsStore',{
 state:()=>({
 friendsCircleList:[],//朋友圈数据
@@ -16,7 +16,18 @@ actions:{
     "pageSize": 10,
     "startTime": ""
 })
+// 获取评论数据，添加在朋友圈数据中
+    result.forEach(async(item) => {
+        const comment= await getMoments({
+        "currentPage": 1,
+        "keyword": item.id,
+        "pageSize": 10,
+        "startTime": ""
+    })
+        item.comment=comment
+    });
     this.friendsCircleList = result
+
     console.log(this.friendsCircleList);
 }
 
