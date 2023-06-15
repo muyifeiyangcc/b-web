@@ -2,7 +2,7 @@
     <!-- gutter="20" -->
     <van-row gutter="20" justify="center" class="mb40">
         <van-col span="11" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
-            <div class="">
+            <div class="" @click="router.push({ path: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
                 <div class="h181  rounded-12 relative overflow-hidden">
                     <van-image :src="item.icon" fit="cover" />
                     <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/[.06]  absolute top-11 left-10">

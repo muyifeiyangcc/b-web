@@ -4,6 +4,7 @@ import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
 const router = useRouter()
 const homeStore = useHomeStore()
+const userStore = useUserStore()
 const saveOption =
 {
   "appId": "77985415",
@@ -38,10 +39,11 @@ onMounted(() => {
   homeStore.getIndexFatherTabList()
   //获取首页用户列表
   homeStore.getIndexListData()
+  //获取国家列表
+  userStore.getCountryListData()
   //动态计算滚动区高度
   scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
-  // document.querySelector('body').setAttribute('style', 'background: #2F0250')
   document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
 onBeforeUnmount(() => {

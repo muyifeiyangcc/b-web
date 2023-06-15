@@ -5,12 +5,12 @@
       <div class="flex justify-between items-center" @click="router.push('/profile')">
         <div>
           <van-space :size="16">
-            <van-image round width="14.75rem" height="14.75rem"
-              src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+            <van-image round width="14.75rem" height="14.75rem" :src="mineInfo.icon" />
+            <!-- https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg -->
             <div class="c-#fff">
               <van-space direction="vertical">
-                <div class="text-22 font-bold">Stella Malone</div>
-                <div class="text-14">ID:123456</div>
+                <div class="text-22 font-bold">{{ mineInfo.nickname }}</div>
+                <div class="text-14">ID:{{ mineInfo.userId }}</div>
               </van-space>
             </div>
           </van-space>
@@ -21,19 +21,19 @@
       <div class="flex justify-between mt16" @click="router.push('/friends')">
         <div class="">
           <van-space direction="vertical" align="center">
-            <div class="text-18 font-bold c-#fff">312</div>
+            <div class="text-18 font-bold c-#fff">{{ mineInfo.friendNum }}</div>
             <div class="text-12 c-#fff/60 font-light">Friends</div>
           </van-space>
         </div>
         <div class="">
           <van-space direction="vertical" align="center">
-            <div class="text-18 font-bold c-#fff">312</div>
+            <div class="text-18 font-bold c-#fff">{{ mineInfo.upsNum }}</div>
             <div class="text-12 c-#fff/60 font-light">Follow</div>
           </van-space>
         </div>
         <div class="">
           <van-space direction="vertical" align="center">
-            <div class="text-18 font-bold c-#fff">312</div>
+            <div class="text-18 font-bold c-#fff">{{ mineInfo.fansNum }}</div>
             <div class="text-12 c-#fff/60 font-light">Fans</div>
           </van-space>
         </div>
@@ -128,10 +128,13 @@
 </template>
 
 
-<script lang="ts" setup>
+<script setup>
 const checked = ref(true);
 const router = useRouter()
+const userStore = useUserStore()
+const mineInfo = computed(() => userStore.mineInfo)
 onMounted(() => {
+  userStore.getMineInfoData()
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background:radial-gradient(#450555 0%,#060108 100%)')
 })

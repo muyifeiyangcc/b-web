@@ -1,5 +1,6 @@
 import request from '~/composables/request'
-
+//获取国家信息
+export const getCountryList=()=>request.post('/api/index/getCountryList')
 //获取黑名单列表
 export const getBlackList=(data)=>request.post('/api/user/blackList',data)
 //拉黑用户
