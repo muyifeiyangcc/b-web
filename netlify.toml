@@ -7,7 +7,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "'http://8.134.216.253:8000/api/:splat"
+  to = "http://8.134.216.253:8000/api/:splat"
   status = 200
 
 [[headers]]
