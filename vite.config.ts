@@ -170,8 +170,8 @@ export default defineConfig({
     //  host: 'https://test.xxchat.chat/',
     proxy: {
       '/api': {
-        target: 'https://test.xxchat.chat/',
-        // target: 'http://8.134.216.253:8000/',
+        target: 'https://test.xxchat.chat/api',
+        // target: 'http://8.134.216.253:8000/api',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
       },
