@@ -6,8 +6,8 @@
   command = "pnpm run build"
 
 [[redirects]]
-  from = "/api"
-  to = "https://test.xxchat.chat"
+  from = "/api/"
+  to = "https://test.xxchat.chat/api"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
