@@ -3,14 +3,21 @@ import axios from 'axios';
 // 配置新建一个 axios 实例
 const service = axios.create({
   // 请求前缀
-  baseURL: "/api",
+  // baseURL: "/api",
   timeout: 50000,
+  headers: {
+    'Accept': 'application/json, text/plain',
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Accept-Language': 'en',
+    // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+  },
 });
 
 // 添加请求拦截器
 service.interceptors.request.use((config) => {
   // 添加token参数
   config.headers.loginToken = '587B8BA94BB74B499EADE5019B792745';
+  config.headers.appid = '77985415';
   config.headers.appid = '77985415';
   return config;
 });
