@@ -7,7 +7,7 @@
 
 [[redirects]]
   from = "/api/"
-  to = "http://8.134.216.253:8000/api"
+  to = "https://test.xxchat.chat/api"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
