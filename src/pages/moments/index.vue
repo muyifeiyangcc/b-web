@@ -67,14 +67,14 @@
                     <van-icon v-if="item.likeFlag === 0" name="like-o" color="#fff" :size="20"
                       @click="likeCircle(item.id, 1, index)" />
                     <van-icon v-else name="like" color="#FB3A54" :size="20" @click="likeCircle(item.id, 0, index)" />
-                    <div class="c-#fff">{{ item.likeNum }}</div>
+                    <div class="c-#fff text-12">{{ item.likeNum }}</div>
                   </van-space>
                 </div>
                 <div>
                   <van-space>
                     <!-- <img src="../../assets/list_btn_comment.png" class="w20 h20"> -->
                     <van-icon name="comment-o" color="#fff" :size="20" @click="clickComment(item.id)" />
-                    <div class="c-#fff">{{ item.commentNum }}</div>
+                    <div class="c-#fff text-12">{{ item.commentNum }}</div>
                   </van-space>
                 </div>
               </van-space>
@@ -142,6 +142,7 @@
 import { showImagePreview } from 'vant';
 import { getFriendsCircle, like } from "~/api/moments";
 import { useMomentsStore } from '~/stores/moments'
+import { getMomentsTime } from '~/utils'
 import dayjs from 'dayjs'
 const myRef = ref();//tab栏实例
 const field = ref()//输入框实例
@@ -164,18 +165,6 @@ const showImg = (imgList) => {
   showImagePreview([imgList]);
 }
 
-//计算朋友圈时间
-const getMomentsTime = (createTime) => {
-  const time = Math.floor((Date.now() - dayjs(createTime).valueOf()) / 60000)//time为分钟
-  if (time === 0)
-    return 'now'
-  if (time > 0 && time < 60)
-    return `${time} Minutes Ago`
-  if (time >= 60 && time < 60 * 24)
-    return `${Math.floor(time / 60)} Hours Ago`
-  if (time >= 60 * 24)
-    return `${dayjs(createTime).format('MM-DD')}`
-}
 //点赞/取消点赞
 const likeCircle = async (id, type, index) => {
   await like({

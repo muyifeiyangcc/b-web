@@ -1,3 +1,3 @@
 import request from "~/composables/request"
-//获取首页tab标签
+//获取礼物列表
 export const getGiftList= ()=>request.post('/api/gift/getGiftList')

@@ -7,7 +7,6 @@ friendsCircleList:[],//朋友圈数据
 actions:{ 
     //获取朋友圈内容
     async getFriendsCircleList (id=""){
-    
     const result = await getFriendsCircle({
     "currentPage": 1,
     "endTime": "",
@@ -25,7 +24,8 @@ actions:{
     })
     });
     this.friendsCircleList = result
-    console.log(id,"jojsaopdpo");
+    console.log(id,this.friendsCircleList);
+
 }
 }
 })

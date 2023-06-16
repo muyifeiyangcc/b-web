@@ -157,7 +157,7 @@ nim.signaling.on('signalingReject', (event) => {
 },
     //获取会话记录
 async getSessionList(){
-   const result = await this.nim.session.getSessions({
+    const result = await this.nim.session.getSessions({
     "limit": 10,
     "desc": false
 })

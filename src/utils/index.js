@@ -19,3 +19,16 @@ export function formatTime(timeStamp){
         return `${dayjs(timeStamp).format('HH:mm')}`
     }
     }
+
+    //计算朋友圈时间
+export function getMomentsTime (createTime) {
+  const time = Math.floor((Date.now() - dayjs(createTime).valueOf()) / 60000)//time为分钟
+  if (time === 0)
+    return 'now'
+  if (time > 0 && time < 60)
+    return `${time} Minutes Ago`
+  if (time >= 60 && time < 60 * 24)
+    return `${Math.floor(time / 60)} Hours Ago`
+  if (time >= 60 * 24)
+    return `${dayjs(createTime).format('MM-DD')}`
+}

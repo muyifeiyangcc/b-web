@@ -52,7 +52,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')
-
 })
 
 </script>
@@ -68,8 +67,9 @@ onBeforeUnmount(() => {
       </van-pull-refresh>
     </div>
     <div>
-      <van-button class="mx52 rounded-23 w270 h50 b-0  fixed bottom-100 text-center "
-        style="background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);" @click="router.push('match')">
+      <van-button
+        class="mx52 rounded-23 w270 h50 b-0  fixed bottom-100 text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"
+        @click="router.push('match')">
         <!-- @click="homeStore.showGetDiamonds" -->
         <van-space direction="vertical" size="0">
           <div>
