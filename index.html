@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="apple-touch-icon" href="/pwa-192x192.png">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#00aba9">
-  <meta name="msapplication-TileColor" content="#00aba9">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Chat">
+  <meta name=”apple-touch-fullscreen” content=”yes”>
+  <meta name=”format-detection” content=”telephone=no”>
+  <meta name=”format-detection” content=”email=no” />
+  <!-- <meta name=”apple-mobile-web-app-status-bar-style” content=”default” /> -->
+  <!-- <meta name=””apple-mobile-web-app-status-bar-style” content=”black-translucent” /> -->
+  <meta name="apple-itunes-app" content="app-id=APP_ID,affiliate-data=AFFILIATE_ID,app-argument=SOME_TEXT">
+
+  <!-- Add to Home Screen添加到主屏 -->
+  <!-- 是否启用 WebApp 全屏模式 -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- 设置状态栏的背景颜色,只有在 “apple-mobile-web-app-capable” content=”yes” 时生效 -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <!-- 添加到主屏后的标题 -->
+  <meta name="apple-mobile-web-app-title" content="xxChat" />
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#000000">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
   <script>
     (function () {
       const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -15,9 +34,11 @@
     })()
   </script>
 </head>
+
 <body class="font-sans">
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
   <noscript>This website requires JavaScript to function properly. Please enable JavaScript to continue.</noscript>
 </body>
+
 </html>
