@@ -6,7 +6,7 @@
   command = "pnpm run build"
 
 [[redirects]]
-  from = "/api/"
+  from = "/api"
   to = "https://test.xxchat.chat"
   status = 200
   force = true
