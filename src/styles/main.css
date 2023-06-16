@@ -30,3 +30,25 @@ html.dark {
   width: 100%;
   height: 2px;
 }
+.van-tabbar{
+  background-color:#130021 !important;
+}
+.van-tabbar-item--active {
+  background-color:#130021 !important;
+}
+
+:root:root {
+  --van-switch-on-background:linear-gradient(232deg, #4D09C1 0%, #7F04BA 47%,#D016C8  100%)
+}
+:root:root {
+--van-picker-background:#130021
+}
+:root:root {
+--van-picker-mask-color:transparent
+}
+:root:root {
+  --van-picker-confirm-action-color:#fff
+}
+:root:root {
+ --van-picker-option-text-color:#fff
+}

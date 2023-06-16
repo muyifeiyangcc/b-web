@@ -1,5 +1,5 @@
 <template>
-    <div pt50>
+    <div>
         <div class="flex justify-between items-center">
             <van-tabs class="tabs_1 Tabs" background="transparent" title-active-color="rgba(190,18,197,1)"
                 title-inactive-color="rgba(255,255,255,1)" line-width="0px" :ellipsis="false"
@@ -11,7 +11,7 @@
             <div mr9>
                 <van-space>
                     <button><img src="../assets/Specialrecharge.png" class="w30 h30"></button>
-                    <button><img src="../assets/ranking.png" class="w30 h30"></button>
+                    <button><img src="../assets/ranking.png" class="w30 h30" @click="router.push('/rank')"></button>
                 </van-space>
             </div>
         </div>
@@ -43,17 +43,19 @@
 <script lang="ts" setup>
 const futherTabActive = ref(0);
 const childrenTabActive = ref(0);
-const homeStore = useHomeStore()
+const homeStore = useHomeStore()//引入pinia组件
+const router = useRouter()
 //首页一级tab栏点击事件
 const onClickFatherTab = (name: any, title: any) => {
     homeStore.getIndexTabChildrenList(title)//更新二级分类
     homeStore.getIndexListData()//获取首页用户列表
-    childrenTabActive.value = 0
+    childrenTabActive.value = 0//切换副标题时应将子标题清零
 }
 //首页二级tab栏点击事件
 const onClickChildrenTab = (name: any, title: any) => {
     homeStore.updateIndexListData(title)//更新首页用户信息
 }
+
 onMounted(() => {
     // homeStore.getIndexTabList()
 })

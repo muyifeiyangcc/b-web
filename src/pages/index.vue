@@ -2,9 +2,9 @@
 import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
-import { nim } from '~/main'
 const router = useRouter()
 const homeStore = useHomeStore()
+const userStore = useUserStore()
 const saveOption =
 {
   "appId": "77985415",
@@ -28,28 +28,37 @@ const onRefresh = () => {
 };
 const myRef = ref();
 const scrollHeight = ref(0)
-// const scrollHeight = computed(() => window.innerHeight - myRef.value.offsetHeight)
-nim.signaling.on('signalingInvite', (event: any) => {
-  homeStore.acceptData = event
-  console.log('收到邀请', event)
-  router.push('/waitconnect')
-})
+
+
+
 onMounted(() => {
+  //初始化im
+  homeStore.imConnect()
   //保存设备信息
   setSave(saveOption)
   //获取首页tab列表
   homeStore.getIndexFatherTabList()
   //获取首页用户列表
   homeStore.getIndexListData()
+  //获取国家列表
+  userStore.getCountryListData()
+  //获取礼物列表
+  userStore.getGiftListData()
+  //动态计算滚动区高度
   scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
+  //组件挂载完成设置背景色
+  document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
+onBeforeUnmount(() => {
+  //组件卸载前去掉背景色
+  document.querySelector('body').removeAttribute('style')
 
-
+})
 
 </script>
 
 <template>
-  <div style="background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);">
+  <div>
     <div ref="myRef">
       <index-tag />
     </div>
@@ -60,8 +69,8 @@ onMounted(() => {
     </div>
     <div>
       <van-button class="mx52 rounded-23 w270 h50 b-0  fixed bottom-100 text-center "
-        style="background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);"
-        @click="homeStore.showGetDiamonds">
+        style="background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);" @click="router.push('match')">
+        <!-- @click="homeStore.showGetDiamonds" -->
         <van-space direction="vertical" size="0">
           <div>
             <van-space>

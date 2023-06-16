@@ -166,7 +166,15 @@ export default defineConfig({
     // TODO: workaround until they support native ESM
     noExternal: ['workbox-window', /vue-i18n/, 'vant'],
   },
-  // server: {
-  //   host:'192.168.2.79'
-  // }
+  server: {
+    //  host: 'https://test.xxchat.chat/',
+    proxy: {
+      '/api': {
+        // target: 'https://test.xxchat.chat/',
+        target: 'http://8.134.216.253:8000/',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })
