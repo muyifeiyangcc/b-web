@@ -89,7 +89,7 @@
             <div class="c-#fff text-16 font-semibold ">About me</div>
             <!-- 文本输入 -->
             <div class="mt10 mark">
-                <van-field v-model="setUserInfoOpt.description" type="textarea" maxlength="500"
+                <van-field v-model="setUserInfoOpt.signature" type="textarea" maxlength="500"
                     placeholder="Enter what you want to say..." />
             </div>
         </div>
@@ -194,7 +194,6 @@ const maxDate = new Date(2023, 5, 1)//日期选择最大日期
 const setUserInfoOpt = ref({
     birthday: "",//生日
     countryId: "",//国家
-    description: "",//自我介绍
     gender: 0,//性别
     icon: "",//头像
     nickname: "",//昵称
@@ -211,7 +210,7 @@ const getData = () => {
     currentDate.value = mineInfo.value.birthday.split('-')
     setUserInfoOpt.value.countryId = mineInfo.value.countryId
     country.value = mineInfo.value.countryId
-    setUserInfoOpt.value.description = mineInfo.value.description
+    setUserInfoOpt.value.signature = mineInfo.value.signature
     setUserInfoOpt.value.gender = mineInfo.value.gender
     gender.value = mineInfo.value.gender
     setUserInfoOpt.value.icon = mineInfo.value.icon

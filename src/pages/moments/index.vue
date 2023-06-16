@@ -83,12 +83,14 @@
           </div>
           <!-- 评论区 -->
           <div class="mt25">
-            <div v-for=" data, count in item.comment" :key="count" class="mb5">
-              <van-space :size="2">
-                <div class="c-#3956E2 text-14 font-semibold">{{ data.nickname }}:</div>
-                <div class="c-#fff text-14">{{ data.commentContent }}</div>
-              </van-space>
-            </div>
+            <template v-if="item.comment != []">
+              <div v-for="data, count in item.comment" :key="data.id" class="mb5">
+                <van-space :size="2">
+                  <div class="c-#3956E2 text-14 font-semibold">{{ data.nickname }}:</div>
+                  <div class="c-#fff text-14">{{ data.commentContent }}</div>
+                </van-space>
+              </div>
+            </template>
           </div>
 
         </div>
@@ -211,7 +213,6 @@ const postComment = async () => {
 onMounted(() => {
   //获取朋友圈列表
   momentsStore.getFriendsCircleList()
-  console.log(momentsStore.momentsList);
   //动态计算滚动区高度
   scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色

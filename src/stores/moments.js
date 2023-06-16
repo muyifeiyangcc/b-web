@@ -3,34 +3,30 @@ import {getFriendsCircle,getMoments}from '~/api/moments'
 export const useMomentsStore = defineStore('useMomentsStore',{
 state:()=>({
 friendsCircleList:[],//朋友圈数据
-momentsList:[]//评论数据
 }),
-actions:{
+actions:{ 
     //获取朋友圈内容
-    async getFriendsCircleList (){
+    async getFriendsCircleList (id=""){
+    
     const result = await getFriendsCircle({
     "currentPage": 1,
     "endTime": "",
-    "keyword": "",
+    "keyword": id,
     "onlyImgFlag": 0,
     "pageSize": 10,
     "startTime": ""
 })
 // 获取评论数据，添加在朋友圈数据中
     result.forEach(async(item) => {
-        const comment= await getMoments({
+        item.comment= await getMoments({
         "currentPage": 1,
         "keyword": item.id,
-        "pageSize": 10,
-        "startTime": ""
+        "pageSize": 100
     })
-        item.comment=comment
     });
     this.friendsCircleList = result
-
-    console.log(this.friendsCircleList);
+    console.log(id,"jojsaopdpo");
 }
-
 }
 })
 export default useMomentsStore

@@ -30,6 +30,7 @@ const myRef = ref();
 const scrollHeight = ref(0)
 
 
+
 onMounted(() => {
   //初始化im
   homeStore.imConnect()
@@ -41,6 +42,8 @@ onMounted(() => {
   homeStore.getIndexListData()
   //获取国家列表
   userStore.getCountryListData()
+  //获取礼物列表
+  userStore.getGiftListData()
   //动态计算滚动区高度
   scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
