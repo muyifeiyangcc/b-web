@@ -138,7 +138,7 @@ export default defineConfig({
     WebfontDownload(),
 
     // https://github.com/webfansplz/vite-plugin-vue-devtools
-    VueDevTools(),
+    // VueDevTools(),
   ],
 
   // https://github.com/vitest-dev/vitest
@@ -170,8 +170,8 @@ export default defineConfig({
      host: '192.168.2.76',
     proxy: {
       '/api': {
-        target: 'https://test.xxchat.chat/api',
-        // target: 'http://8.134.216.253:8000/api',
+        // target: 'https://test.xxchat.chat/api',
+        target: 'http://8.134.216.253:8000/api',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
       },

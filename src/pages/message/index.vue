@@ -11,7 +11,7 @@
         <button @click="showBottom = !showBottom"><img src="../../assets/broom.png" class="w23 h23"></button>
       </div>
       <!-- 聊天页弹窗 -->
-      <div v-if="isShow" class="py12 rounded-8   relative"
+      <div v-if="isShow" class="py12 rounded-8  relative"
         style="background: linear-gradient(232deg, #4D09C1 0%, #7F04BA 47%, #D016C8 100%);" text-center>
         <van-space :size="0" direction="vertical">
           <div class=" c-#fff font-semibold text-16">
@@ -55,7 +55,7 @@
                 <!-- 时间和角标 -->
                 <div>
                   <van-space :size="15" direction="vertical" :align="'start'">
-                    <div class="c-#fff/60">{{ formatTime(item.updateTime) }}</div>
+                    <div class="c-#fff/60 text-12">{{ formatTime(item.updateTime) }}</div>
                     <div>
                       <!-- <van-badge :content="9" max="99" /> -->
                       <div class="bg-#ED4A47 rounded-50% w18 h18 text-center" v-if="item.unreadMsgs.length > 0">

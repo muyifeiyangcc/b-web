@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="">
+        <div class="relative">
             <!-- 导航栏 -->
             <div ref="myRef" class="">
                 <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="showBottom = !showBottom" :border="false">
@@ -13,9 +13,8 @@
                 </van-nav-bar>
             </div>
             <!-- 相册列表 -->
-            <!-- bg-[url(userDetail.icon)] -->
-            <div class="h309 overflow-hidden ">
-                <img :src="userDetail.icon" class="absolute z--1 top-0 ">
+            <div class="">
+                <img :src="userDetail.icon" class="absolute  top-0">
                 <!-- 在线状态 -->
                 <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/20  absolute top-140 left-10">
                     <van-space :size="2">
@@ -37,7 +36,7 @@
                 </div>
             </div>
             <!-- 详细信息 -->
-            <div class="bg-#130021  top-250 rounded-t-24">
+            <div class="bg-#130021  top-250 rounded-t-24 absolute w-full pb80">
                 <!-- 个人介绍 -->
                 <div class="ml24 mt32">
                     <van-space direction="vertical">
@@ -210,6 +209,26 @@
                     <!-- 图片预览 -->
                     <van-image-preview />
                 </div>
+            </div>
+            <!-- 底部tab栏 -->
+            <div class="bg-#000/40 pt16 pb33 w-full fixed bottom-0 px24">
+                <van-space :size="18">
+                    <div class="bg-#fff/10 rounded-23 py12 px18">
+                        <img src="../../assets/icons_message.png" class="w20 h20">
+                    </div>
+                    <div class="bg-#fff/10 rounded-23 py12 px18">
+                        <van-icon name="like-o" color="#fff" :size="18" />
+                    </div>
+                    <div class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 py13 w190 rounded-23 text-center">
+                        <van-space :size="4">
+                            <div><img src="../../assets/video_call.png" class="w20"></div>
+                            <div class="text-14 font-bold c-#fff">100</div>
+                            <div class="i-my-icons-diamond text-14" />
+                            <div class="text-14  c-#fff">/Times</div>
+                        </van-space>
+                    </div>
+                </van-space>
+
             </div>
         </div>
     </div>

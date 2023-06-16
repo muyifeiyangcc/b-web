@@ -20,8 +20,8 @@
             </van-nav-bar>
         </div>
         <!-- 动画 -->
-        <div class="w390 h390 relative mt30" v-if="matching">
-            <div class="animate-wave mx-auto">
+        <div class="w390 h390 relative mt30 text-center inline-block" v-if="matching">
+            <div class="animate-wave ">
                 <div class="w1"></div>
                 <div class="w2"></div>
                 <div class="w3"></div>
