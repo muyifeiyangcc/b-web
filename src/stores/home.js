@@ -67,7 +67,6 @@ actions:{
     // 初始化nim
     const nim = NIMSDK.getInstance({
         appkey: '124f689baed25c488e1330bc42e528af',
-
         account: '1ef27c9ebb064b66989b523c0d108c37', // 云信账号
         token: '4fc8f80b57f0a9afd83b86490b11fb9b' // 云信密码
         // account: 'ece7d561b4594eedb8def4802f053b85', // 云信账号
