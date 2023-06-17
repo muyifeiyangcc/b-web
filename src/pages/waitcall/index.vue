@@ -2,6 +2,7 @@
     <div>
         <div>呼叫中</div>
         <van-button @click="ringOff">挂断</van-button>
+        <img src="../../assets/back.png" class="absolute  w-full h-full  top-0 z--1" />
     </div>
 </template>
 

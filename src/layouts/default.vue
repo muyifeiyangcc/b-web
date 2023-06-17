@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="max-w-400 mx-auto">
+    <div class="max-w-450 mx-auto">
       <RouterView />
     </div>
   </div>

@@ -37,7 +37,7 @@
         <div>
             <div class="c-#fff text-16 font-semibold ml20 mt32 ">Basic info</div>
             <div class="w97 h97 rounded-50% overflow-hidden mt15 mx-auto  relative text-center ">
-                <van-uploader v-model="avatar" multiple:max-count=1 preview-size="97" />
+                <van-uploader v-model="avatar" multiple:max-count=1 preview-size="97" :after-read="afterRead" />
                 <div class="bg-#fff/40 h20 w-full absolute bottom-0  z-3" @click="avatar = []">
                     <van-icon name="cross" class="text-16 c-#fff" />
                 </div>
@@ -183,11 +183,11 @@ const showCountry = ref(false)//选择国家弹窗
 const showBirth = ref(false)//选择生日弹窗
 const gender = ref(0)//临时性别数值
 const country = ref('')//临时国家数值
-const avatar = ref([])
-const currentDate = ref([]);
+const avatar = ref([])//头像上传列表
+const currentDate = ref([]);//目标日期
 const message = ref('')
 const value = ref('')
-const fileList = ref([])
+const fileList = ref([])//背景图上传列表
 const myBirthday = computed(() => currentDate.value[0] + '-' + currentDate.value[1] + '-' + currentDate.value[2])
 const minDate = new Date(1970, 0, 1)//日期选项最小日期
 const maxDate = new Date(2023, 5, 1)//日期选择最大日期
@@ -205,6 +205,7 @@ const setUserInfoOpt = ref({
 })
 const userStore = useUserStore()
 const mineInfo = computed(() => userStore.mineInfo)
+// 绑定必要数据
 const getData = () => {
     setUserInfoOpt.value.birthday = mineInfo.value.birthday
     currentDate.value = mineInfo.value.birthday.split('-')
@@ -220,10 +221,13 @@ const getData = () => {
 }
 //修改个人信息
 const setMineInfoData = async () => {
-
     await setUserInfo(setUserInfoOpt.value)
-
 }
+
+const afterRead = (file) => {
+    // 此时可以自行将文件上传至服务器
+    console.log(file);
+};
 onMounted(() => {
     //获取个人信息
     userStore.getMineInfoData()

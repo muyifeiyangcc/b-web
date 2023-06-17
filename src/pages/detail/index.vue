@@ -36,7 +36,7 @@
                 </div>
             </div>
             <!-- 详细信息 -->
-            <div class="bg-#130021  top-250 rounded-t-24 absolute w-full pb80">
+            <div class="bg-#130021  top-250 rounded-t-24 absolute w-full pb130">
                 <!-- 个人介绍 -->
                 <div class="ml24 mt32">
                     <van-space direction="vertical">
@@ -59,10 +59,13 @@
                     <div class="text-16 font-semibold c-#fff">
                         Videos
                     </div>
-                    <div class="mt8">
-                        <div class="rounded-4 overflow-hidden text-0 w95">
-                            <van-image width="95" height="95" src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
-                        </div>
+                    <div class="mt8 overflow-scroll w-full ">
+                        <van-space>
+                            <div class="rounded-4 overflow-hidden text-0 w95 h95 overflow-hidden"
+                                v-for="item, index in videoList" :key="index">
+                                <video :src="item.mediaUrl" :poster="item.videoCover"></video>
+                            </div>
+                        </van-space>
                     </div>
                 </div>
                 <!-- 信息 -->
@@ -210,16 +213,37 @@
                     <van-image-preview />
                 </div>
             </div>
+
             <!-- 底部tab栏 -->
-            <div class="bg-#000/40 pt16 pb33 w-full fixed bottom-0 px24">
-                <van-space :size="18">
-                    <div class="bg-#fff/10 rounded-23 py12 px18">
-                        <img src="../../assets/icons_message.png" class="w20 h20">
-                    </div>
-                    <div class="bg-#fff/10 rounded-23 py12 px18">
-                        <van-icon name="like-o" color="#fff" :size="18" />
-                    </div>
-                    <div class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 py13 w190 rounded-23 text-center">
+            <div class="bg-#000/40 pt16 pb33 w-full fixed bottom-0 ">
+                <!-- 引导条 -->
+                <div class="fixed bottom-98 w-full px8 py8 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 flex justify-between"
+                    v-if="showView">
+                    <van-space :size="0" align="center">
+                        <div><img src="../../assets/gift_heart.png" class="w41 h35"></div>
+                        <div class="c-#fff text-14 font-semibold ml5">Show her what you mean</div>
+                    </van-space>
+                    <van-space :size="0" align="center">
+                        <div
+                            class="c-#C915C7 text-14 font-semibold bg-gradient-to-r from-#FDE2FF/78  to-#FFFFFF/80 rounded-23 ml12 py7 px10">
+                            Send GIft
+                        </div>
+                        <div @click="showView = false">
+                            <img src="../../assets/btn_close.png" class="w16 h16 ml16">
+                        </div>
+                    </van-space>
+                </div>
+                <div class="px24 flex justify-between">
+
+                    <van-space :size="18">
+                        <div class="bg-#fff/10 rounded-23 py12 px18">
+                            <img src="../../assets/icons_message.png" class="w20 h20">
+                        </div>
+                        <div class="bg-#fff/10 rounded-23 py12 px18">
+                            <van-icon name="like-o" color="#fff" :size="18" />
+                        </div>
+                    </van-space>
+                    <div class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 py13 px20 rounded-23 text-center">
                         <van-space :size="4">
                             <div><img src="../../assets/video_call.png" class="w20"></div>
                             <div class="text-14 font-bold c-#fff">100</div>
@@ -227,7 +251,8 @@
                             <div class="text-14  c-#fff">/Times</div>
                         </van-space>
                     </div>
-                </van-space>
+
+                </div>
 
             </div>
         </div>
@@ -248,16 +273,17 @@ const userId = route.query.id;
 const yxAccid = route.query.yxId;
 const userDetail = ref({})//用户数据
 const momentData = ref([])//用户朋友圈内容
-const picList = ref([])
-const vedioList = ref([])
+const picList = ref([])//相册列表
+const videoList = ref([])//视频列表
+const showView = ref(true)
 //获取用户详情
 const getUserDetailData = async () => {
     userDetail.value = await getUserDetail({
         userId, yxAccid
     })
     picList.value = userDetail.value.picList.filter((item) => item.mediaType === 1)
-    vedioList.value = userDetail.value.picList.filter((item) => item.mediaType === 2)
-    console.log(userDetail.value, picList.value, vedioList.value);
+    videoList.value = userDetail.value.picList.filter((item) => item.mediaType === 2)
+    console.log(userDetail.value, picList.value, videoList.value);
 }
 
 //获取用户朋友圈内容

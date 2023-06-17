@@ -23,8 +23,8 @@
           <van-button :round=true class="c-#fff text-14 font-semibold w161 h33  bg-#fff/[.40] b-0">Open
             notification
           </van-button>
-          <div class="b-0 bg-#fff/[.40] w16 h16 rounded-50% absolute right-8 top-8" @click="isShow = false">
-            <van-icon name="cross" color="#fff" size="1rem" />
+          <div class="b-0 bg-#fff/[.40] px4 py4 rounded-50% absolute right-8 top-8" @click="isShow = false">
+            <van-icon name="cross" color="#fff" class="text-14" />
           </div>
         </van-space>
       </div>

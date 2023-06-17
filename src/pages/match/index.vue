@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="">
         <!-- 头部导航栏 -->
         <div ref="myRef">
             <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="" :border="false">
@@ -12,7 +12,7 @@
                     </div>
                 </template>
                 <template #title>
-                    <div class="c-#fff text-21 font-semibold">Edit profile</div>
+                    <div class="c-#fff text-21 font-semibold">Random Match</div>
                 </template>
                 <template #left>
                     <van-icon name="arrow-left" :size="22" color="#fff" />
@@ -20,16 +20,21 @@
             </van-nav-bar>
         </div>
         <!-- 动画 -->
-        <div class="w390 h390 relative mt30 text-center inline-block" v-if="matching">
-            <div class="animate-wave ">
-                <div class="w1"></div>
-                <div class="w2"></div>
-                <div class="w3"></div>
-                <div class="w4"></div>
+        <div v-if="matching" class="text-center w-full overflow-hidden">
+            <div class="w370 h370 inline-block relative mt30 ">
+                <!-- heart -->
+                <img src="../../assets/fx_yqw_icon_yypp.png " class="w156 h127 mx-auto mt130 relative z-2 heart_jump">
+                <!-- wave -->
+                <div class="animate-wave ">
+                    <div class="w1"></div>
+                    <div class="w2"></div>
+                    <div class="w3"></div>
+                    <div class="w4"></div>
+                </div>
             </div>
         </div>
         <!-- 匹配到的用户展示 -->
-        <div class="text-center mt90" v-else>
+        <div class="text-center mt130" v-else>
             <van-space direction="vertical" :size="0">
                 <div class="w152 h152 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-50% p2">
                     <img :src="target.icon" class="w148 h148  rounded-50%">
@@ -48,9 +53,9 @@
             </van-space>
         </div>
         <!-- 匹配中按钮 -->
-        <div v-if="matching">
+        <div v-if="matching" class="fixed bottom-200 left-50% ml--135">
             <van-button v-if="matching"
-                class="mx52 rounded-23 w270 h50 b-0  fixed bottom-150 text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 "
+                class=" rounded-23 w270 h50 b-0 text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 "
                 @click="cancelMatch = true">
                 <van-space :size="5">
                     <img class="w24 h20" src="../../assets/heart.png">
@@ -99,7 +104,7 @@
             <template #footer>
             </template>
         </van-dialog>
-
+        <img src="../../assets/back.png" class="absolute  w-full h-full  top-0 z--1" />
     </div>
 </template>
 
@@ -142,7 +147,7 @@ const invite = async () => {
 onMounted(() => {
     startMatch()
     //组件挂载完成设置背景色
-    document.querySelector('body').setAttribute('style', 'background-color:#130021')
+    // document.querySelector('body').setAttribute('style', '')
 })
 onBeforeUnmount(() => {
     //组件卸载前去掉背景色
@@ -169,11 +174,30 @@ onBeforeUnmount(() => {
     }
 }
 
+@keyframes heart {
+    from {
+        width: 39rem;
+        height: 31.75rem;
+        transform: rotate(0)
+    }
+
+    to {
+        width: 54.6rem;
+        height: 44.4rem;
+        transform: rotate(20deg);
+    }
+}
+
+.heart_jump {
+    animation: alternate heart 0.5s infinite;
+}
+
 .animate-wave * {
     background: #52315E;
     position: absolute;
     border-radius: 50%;
     animation: opac 4s infinite;
+    z-index: 0;
 }
 
 .animate-wave .w2 {

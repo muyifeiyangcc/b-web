@@ -66,9 +66,8 @@ onBeforeUnmount(() => {
         <index-content />
       </van-pull-refresh>
     </div>
-    <div>
-      <van-button
-        class="mx52 rounded-23 w270 h50 b-0  fixed bottom-100 text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"
+    <div class="fixed bottom-100 left-50% ml--135">
+      <van-button class=" rounded-23 w270 h50 b-0  text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"
         @click="router.push('match')">
         <!-- @click="homeStore.showGetDiamonds" -->
         <van-space direction="vertical" size="0">
