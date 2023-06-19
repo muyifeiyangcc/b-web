@@ -2,7 +2,7 @@
     <div>
         <!-- 顶部导航栏 -->
         <div ref="myRef">
-            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false">
+            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false" fixed="true">
                 <template #title>
                     <div class="text-#fff text-21 font-semibold">Friends</div>
                 </template>
@@ -12,23 +12,25 @@
             </van-nav-bar>
         </div>
         <!-- 中部tab栏 -->
-        <div class="mx22 bg-#1B0D2C text-center align-middle rounded-23 mt26">
-            <van-row>
-                <van-col span="8">
-                    <div class="c-#fff/40 text-14 font-semibold rounded-23 py11" :class="tabValue === 1 ? 'active' : ''"
-                        @click="tabClick(1)">Friends</div>
-                </van-col>
-                <van-col span="8">
-                    <div class="c-#fff/40 text-14 font-semibold rounded-23 py11 " :class="tabValue === 2 ? 'active' : ''"
-                        @click="tabClick(2)">Followers
-                    </div>
-                </van-col>
-                <van-col span="8">
-                    <div class="c-#fff/40 text-14 font-semibold rounded-23 py11 " :class="tabValue === 3 ? 'active' : ''"
-                        @click="tabClick(3)">Following
-                    </div>
-                </van-col>
-            </van-row>
+        <div class="pt56">
+            <div class="mx22  bg-#1B0D2C text-center align-middle rounded-23">
+                <van-row>
+                    <van-col span="8">
+                        <div class="c-#fff/40 text-14 font-semibold rounded-23 py11" :class="tabValue === 1 ? 'active' : ''"
+                            @click="tabClick(1)">Friends</div>
+                    </van-col>
+                    <van-col span="8">
+                        <div class="c-#fff/40 text-14 font-semibold rounded-23 py11 "
+                            :class="tabValue === 2 ? 'active' : ''" @click="tabClick(2)">Followers
+                        </div>
+                    </van-col>
+                    <van-col span="8">
+                        <div class="c-#fff/40 text-14 font-semibold rounded-23 py11 "
+                            :class="tabValue === 3 ? 'active' : ''" @click="tabClick(3)">Following
+                        </div>
+                    </van-col>
+                </van-row>
+            </div>
         </div>
         <!-- 名单列表 -->
         <div>
@@ -114,10 +116,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.van-nav-bar {
-    background-color: #130021;
-}
-
 .van-tab--active {
     background: red !important;
 }

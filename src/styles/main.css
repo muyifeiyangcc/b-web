@@ -1,7 +1,6 @@
 @import './markdown.css';
 html {
 font-size:4px;
-
 }
 html,
 body,
@@ -41,14 +40,31 @@ html.dark {
   --van-switch-on-background:linear-gradient(232deg, #4D09C1 0%, #7F04BA 47%,#D016C8  100%)
 }
 :root:root {
---van-picker-background:#130021
+  --van-picker-background:#130021
 }
 :root:root {
---van-picker-mask-color:transparent
+  --van-picker-mask-color:transparent
 }
 :root:root {
   --van-picker-confirm-action-color:#fff
 }
 :root:root {
- --van-picker-option-text-color:#fff
+  --van-picker-option-text-color:#fff
 }
+:root:root {
+  --van-nav-bar-background:#130021
+}
+:root:root {
+  --van-grid-item-content-background:transparent
+}
+:root:root {
+  --van-grid-item-content-padding:0
+}
+:root:root {
+  --van-border-color:#B25BFF
+}
+:root:root {
+  --van-border-width:0.5rem
+}
+
+

@@ -1,8 +1,8 @@
 <template>
-    <div class="">
+    <div class="pt80">
         <!-- 顶部导航栏 -->
         <div ref="myRef">
-            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false">
+            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false" fixed="true">
                 <template #title>
                     <div class="text-#fff text-21 font-semibold">Feedback</div>
                 </template>
@@ -12,7 +12,7 @@
             </van-nav-bar>
         </div>
         <!-- 单选框 -->
-        <div class="mx20 mt50">
+        <div class="mx20 ">
             <van-row :gutter="15">
                 <van-col :span="12">
                     <div class="text-14 c-#fff font-semibold bg-#1B0D2C text-center py17 rounded-2"
@@ -87,9 +87,7 @@ onBeforeUnmount(() => {
     background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);
 }
 
-.van-nav-bar {
-    background-color: #130021;
-}
+
 
 .van-field {
     background-color: #1B0D2C;

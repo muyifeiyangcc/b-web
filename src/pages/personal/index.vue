@@ -6,7 +6,6 @@
         <div>
           <van-space :size="16">
             <van-image round width="14.75rem" height="14.75rem" :src="mineInfo.icon" />
-            <!-- https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg -->
             <div class="c-#fff">
               <van-space direction="vertical">
                 <div class="text-22 font-bold">{{ mineInfo.nickname }}</div>
@@ -53,7 +52,8 @@
             </div>
           </van-space>
         </div>
-        <van-button :round=true class="text-#fff text-16 w68 h32 bg-#fff/[.40] b-0">Open</van-button>
+        <van-button :round=true class="text-#fff text-16 w68 h32 bg-#fff/[.40] b-0"
+          @click="router.push('getcoin')">Open</van-button>
       </div>
       <!-- 三个开关 -->
       <div class="mx20 px20 py27 bg-#AFA8FF/10 rounded-8">

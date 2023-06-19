@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="pt40">
         <!-- 顶部导航栏 -->
         <div ref="myRef">
-            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false">
+            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false" :fixed="true">
                 <template #title>
                     <van-tabs v-model:active="active" background="transparent" title-active-color="#fff"
                         @click-tab="onClickTab" title-inactive-color="rgba(255,255,255,0.6)" line-width="0px"
@@ -172,8 +172,4 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
-.van-nav-bar {
-    background-color: #130021;
-}
-</style>
+<style scoped></style>

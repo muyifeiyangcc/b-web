@@ -2,7 +2,7 @@
     <div>
         <!-- 顶部导航栏 -->
         <div ref="myRef">
-            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false">
+            <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false" fixed="true">
                 <template #title>
                     <div class="text-#fff text-21 font-semibold">Blocklist</div>
                 </template>
@@ -114,8 +114,4 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
-.van-nav-bar {
-    background-color: #130021;
-}
-</style>
+<style scoped></style>

@@ -1,15 +1,51 @@
 <template>
     <div>
-        <div>收到通话邀请</div>
-        <van-button @click="getThrough">接通</van-button>
-        <van-button @click="rejectInvite">拒绝</van-button>
+        <!-- 呼叫用户展示 -->
+        <div class="text-center pt130">
+            <van-space direction="vertical" :size="0">
+                <div class="w152 h152 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-50% p2">
+                    <img :src="userDetail.icon" class="w148 h148  rounded-50%">
+                    <!-- <div class="w148 h148 bg-amber rounded-50%"></div> -->
+                </div>
+                <div class="text-22 c-#fff font-bold mt14">
+                    {{ userDetail.nickname }}
+                </div>
+                <div class="mt15">
+                    <van-space>
+                        <div class="i-my-icons-famale text-14" v-if="userDetail.gender === 2" />
+                        <div class="i-my-icons-male text-14" v-else />
+                        <div class="text-14 c-#fff">{{ userDetail.age }}</div>
+                        <div class="text-14">{{ countryEmoji }}</div>
+                    </van-space>
+                </div>
+            </van-space>
+            <div class=" mt160">
+                <van-space :size="102">
+                    <!-- 挂断按钮 -->
+                    <div @click="rejectInvite">
+                        <img src="../../assets/hangup.png" class="w69 h69 inline-block">
+                    </div>
+                    <!-- 接通按钮 -->
+                    <div @click="getThrough">
+                        <img src="../../assets/answer.png" class="w69 h69 inline-block">
+                    </div>
+                </van-space>
+            </div>
+        </div>
+        <img src="../../assets/back.png" class="absolute  w-full h-full  top-0 z--1" />
     </div>
 </template>
 
 
 <script  setup>
+import { getEmoji } from '~/utils'
 const homeStore = useHomeStore()
+const userStore = useUserStore()
 const router = useRouter()
+const route = useRoute()
+const yxId = route.query.yxId
+const countryEmoji = ref('')
+const userDetail = computed(() => userStore.userDetail)
 // 接受邀请
 const getThrough = async () => {
     try {
@@ -66,8 +102,14 @@ const rejectInvite = async () => {
         }
     }
 }
-
-
+onMounted(() => {
+    //获取通话目标信息
+    userStore.getUserDetailData("", yxId)
+})
+// 获取国家emoji
+watch(userDetail, (newValue, oldValue) => {
+    countryEmoji.value = getEmoji(newValue.countryId)
+})
 </script>
 
 <style scoped></style>

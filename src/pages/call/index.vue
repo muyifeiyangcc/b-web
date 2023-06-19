@@ -1,15 +1,77 @@
 <template>
     <div>
-        <h1>
-            NERTC Video Call
-        </h1>
-        <div class="text-center">
-            <button type="button" id="startCall" @click="call" class="b-1 h30">开始通话</button>
-            <button type="button" id="finishCall" @click="finishCall" class="b-1 h30 ml20">结束通话</button>
-        </div>
-
-        <div ref="remoteVideoContent" class="relative b-1 max-w-400 h600" id="remoteVideoContent">
-            <div ref="div" id="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2"></div>
+        <div ref="remoteVideoContent" class="relative b-1 max-w-450  bg-lightblue " :style="{ height: viewHeight + 'px' }">
+            <!-- 本地视频窗口 -->
+            <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2"></div>
+            <!-- 左上角主播信息 -->
+            <div class="absolute left-16 top-50">
+                <van-space direction="vertical">
+                    <div class="bg-#000/25 pl3 pr7 rounded-23 inline-block">
+                        <van-space>
+                            <van-image round width="8.5rem" height="8.5rem"
+                                src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+                            <div>
+                                <van-space direction="vertical" :size="2">
+                                    <div class="text-14 c-#fff font-semibold">Stella Malone</div>
+                                    <div class="c-#E2E2E2 text-12 ">25</div>
+                                </van-space>
+                            </div>
+                            <div
+                                class="px7 py7 text-0 rounded-50% text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8">
+                                <van-icon name="plus" color="#fff" class="font-bold text-12" />
+                            </div>
+                        </van-space>
+                    </div>
+                    <div class="bg-#000/25 rounded-23 inline-block px16 pt8 pb3">
+                        <van-space :size="5">
+                            <img src="../../assets/weizhi.png" class="w12 h17">
+                            <div class="c-#E2E2E2 text-12">Vietnam</div>
+                        </van-space>
+                    </div>
+                </van-space>
+            </div>
+            <!-- 右侧限时充值 -->
+            <div class="absolute right-6 top-220" v-if="showDialog">
+                <img src="../../assets//recharge.png" class="w105 h105"><!--背景图 -->
+                <img src="../../assets/close.png" class="w16 h16 absolute top-0 right-12"
+                    @click="showDialog = false"><!--关闭按钮 -->
+                <div class="absolute left-50% ml--30 top-65">
+                    <van-space direction="vertical" align="center" :size="2">
+                        <div class="text-12 c-#fff font-medium">x2450</div>
+                        <div
+                            class="text-14 c-#fff font-semibold bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 w61 py6 text-center rounded-14">
+                            $4.99
+                        </div>
+                    </van-space>
+                </div>
+            </div>
+            <!-- 右下角切换摄像头等 -->
+            <div class="absolute right-14 bottom-100">
+                <van-space direction="vertical" :size="12">
+                    <div><img src="../../assets/ic_gift.png" class="w42 h42"></div>
+                    <div><img src="../../assets/ic_iens.png" class="w42 h42"></div>
+                    <div><img src="../../assets/ic_record.png" class="w42 h42"></div>
+                </van-space>
+            </div>
+            <!-- 聊天输入框 -->
+            <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent absolute bottom-38 w-full ">
+                <van-row>
+                    <van-col :span="20">
+                        <div class="">
+                            <van-field v-model="content" placeholder="Type a message..." ref="field" class="rounded-5">
+                                <template #button>
+                                    <img src="../../assets/emojbtn.png" class="w24 h24">
+                                </template>
+                            </van-field>
+                        </div>
+                    </van-col>
+                    <van-col :span="4">
+                        <div class="text-center ">
+                            <button class="w36 h36"><img src="../../assets/send.png" alt=""></button>
+                        </div>
+                    </van-col>
+                </van-row>
+            </div>
         </div>
     </div>
 </template>
@@ -21,8 +83,10 @@ let localStream;
 const homeStore = useHomeStore()
 const uid = '112'
 const client = NERTC.createClient({ appkey, debug: true })
-const div = ref()
+const localVideoContent = ref()
 const remoteVideoContent = ref()
+const viewHeight = ref(window.innerHeight)
+const showDialog = ref(true)
 // 监听远端用户发布视频流的事件
 client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -47,6 +111,7 @@ client.on('stream-subscribed', event => {
     remoteStream.play('remoteVideoContent');
 
 });
+//开始通话
 const call = async function () {
     // 进房成功后开始推流
     try {
@@ -80,12 +145,13 @@ const call = async function () {
     }
 }
 
+//结束通话
 const finishCall = async function () {
     await client.leave();
 }
 
 onMounted(() => {
-    call()
+    // call()
 })
 </script>
 

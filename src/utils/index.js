@@ -32,3 +32,19 @@ export function getMomentsTime (createTime) {
   if (time >= 60 * 24)
     return `${dayjs(createTime).format('MM-DD')}`
 }
+
+// 获取国家emoji
+export function getEmoji (countryId) {
+  const userStore=useUserStore()
+  if(countryId===''){
+    return ''
+  }
+  else{
+    const result = userStore.countryList.filter((item) => {
+
+        if (item.locale === countryId)
+            return item
+    })
+    return result[0].emoji
+  }
+}

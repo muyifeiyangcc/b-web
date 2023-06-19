@@ -7,5 +7,3 @@ export const getIndexList=(data)=>request.post('/api/anchor/v2/anchorList',data)
 export const setSave=(data)=>request.post('/api/device/save',data)
 //排行榜数据
 export const getRankingList=(data)=>request.post('/api/ranking/getRankingList',data)
-//查看用户详情
-export const getUserDetail=(data)=>request.post('/api/index/getUserDetail',data)

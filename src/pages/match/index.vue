@@ -83,6 +83,7 @@
                 </van-button>
             </div>
         </div>
+
         <!-- 确认清空消息记录 -->
         <van-dialog v-model:show="cancelMatch" class="important:bg-#130021">
             <template #default>
@@ -210,9 +211,5 @@ onBeforeUnmount(() => {
 
 .animate-wave .w4 {
     animation-delay: 3s;
-}
-
-.van-nav-bar {
-    background-color: #130021;
 }
 </style>

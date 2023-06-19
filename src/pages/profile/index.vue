@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="pt60">
         <!-- 头部导航栏 -->
         <div ref="myRef">
-            <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="" :border="false">
+            <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="" :border="false" fixed="true">
                 <template #right>
                     <div class="c-#fff text-16 px20 py5 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-23"
                         @click="setMineInfoData">
@@ -243,10 +243,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.van-nav-bar {
-    background-color: #130021;
-}
-
 .van-field {
     background-color: #1B0D2C;
 }

@@ -93,7 +93,7 @@ actions:{
     nim.signaling.on('signalingInvite', (event) => {
     this.acceptData = event
     console.log('收到邀请', event)
-    router.push('/waitconnect')
+    router.push({path:'waitconnect',query:{yxId:event.fromAccid}})
 })
     //监听对方已取消
 nim.signaling.on('signalingCancelInvite', function (event) {
@@ -178,12 +178,20 @@ async getSessionList(){
     })
     console.log(this.talkList);
 },
-//清空未读消息
+//清空某一条未读消息
 async resetUnread (sessionId) {
     await this.nim.session.resetSessionUnreadCount({
         id: sessionId,
     })
-}
+},
+// 清空全部未读消息
+async resetAllUnread () {
+    await this.nim.session.resetAllSessionsUnreadCount()
+},
+//清除会话列表
+async deleteAllSessions () {
+    await this.nim.session.deleteAllSessionsFromLocal()
+},
 },
 })
 export default useHomeStore

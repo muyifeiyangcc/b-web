@@ -15,3 +15,5 @@ export const getFollowUser=(data)=>request.post('/api/user/followUser',data)
 export const getMineInfo=()=>request.post('/api/user/getUserInfo',{})
 //修改用户信息
 export const setUserInfo=(data)=>request.post('/api/user/updateUserInfo',data)
+//查看用户详情
+export const getUserDetail=(data)=>request.post('/api/index/getUserDetail',data)

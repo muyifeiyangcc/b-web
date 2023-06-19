@@ -142,8 +142,4 @@ onBeforeUnmount(() => {
 .van-cell-group--inset {
     margin: 0
 }
-
-.van-nav-bar {
-    background-color: #130021;
-}
 </style>

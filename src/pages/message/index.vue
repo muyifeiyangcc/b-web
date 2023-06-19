@@ -23,7 +23,7 @@
           <van-button :round=true class="c-#fff text-14 font-semibold w161 h33  bg-#fff/[.40] b-0">Open
             notification
           </van-button>
-          <div class="b-0 bg-#fff/[.40] px4 py4 rounded-50% absolute right-8 top-8" @click="isShow = false">
+          <div class="b-0 bg-#fff/[.40] px4 py4 text-0 rounded-50% absolute right-8 top-8" @click="isShow = false">
             <van-icon name="cross" color="#fff" class="text-14" />
           </div>
         </van-space>
@@ -75,7 +75,8 @@
       <template #default>
         <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
         <div
-          class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#D016C8  via-#7F04BA to-#4D09C1 mt49">
+          class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#D016C8  via-#7F04BA to-#4D09C1 mt49"
+          @click="allRead">
           Mark all read
         </div>
         <div
@@ -83,7 +84,8 @@
           @click="sureEmpty">
           Empty all
         </div>
-        <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21">
+        <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21"
+          @click="showBottom = false">
           Cancel
         </div>
       </template>
@@ -134,11 +136,17 @@ const onRefresh = () => {
     loading.value = false;
   }, 1000);
 };
-
+//确认清空会话列表
 const sureEmpty = () => {
+  homeStore.deleteAllSessions()
+  homeStore.sessionList = []
   showEmpty.value = !showEmpty.value
 }
-
+// 全部已读
+const allRead = () => {
+  homeStore.resetAllUnread()
+  showBottom.value = false
+}
 onMounted(() => {
   //获取会话列表
   homeStore.getSessionList()

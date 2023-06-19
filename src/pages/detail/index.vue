@@ -3,7 +3,8 @@
         <div class="relative">
             <!-- 导航栏 -->
             <div ref="myRef" class="">
-                <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="showBottom = !showBottom" :border="false">
+                <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="showBottom = !showBottom" :border="false"
+                    :fixed="true">
                     <template #right>
                         <van-icon name="ellipsis" :size="22" color="#fff" font-bold />
                     </template>
@@ -14,22 +15,22 @@
             </div>
             <!-- 相册列表 -->
             <div class="">
-                <img :src="userDetail.icon" class="absolute  top-0">
+                <img :src="userStore.userDetail.icon" class="absolute  top-0">
                 <!-- 在线状态 -->
                 <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/20  absolute top-140 left-10">
                     <van-space :size="2">
-                        <div class="w6 h6 rounded-50% bg-#2BC100" v-if="userDetail.status === 1" />
-                        <div class="w6 h6 rounded-50% bg-#FE5A05" v-if="userDetail.status === 10000" />
-                        <div class="w6 h6 rounded-50% bg-#A0A0A9" v-if="userDetail.status === 2" />
-                        <div v-if="userDetail.status === 1">Online</div>
-                        <div v-if="userDetail.status === 10000">Busy</div>
-                        <div v-if="userDetail.status === 2">Offline</div>
+                        <div class="w6 h6 rounded-50% bg-#2BC100" v-if="userStore.userDetail.status === 1" />
+                        <div class="w6 h6 rounded-50% bg-#FE5A05" v-if="userStore.userDetail.status === 10000" />
+                        <div class="w6 h6 rounded-50% bg-#A0A0A9" v-if="userStore.userDetail.status === 2" />
+                        <div v-if="userStore.userDetail.status === 1">Online</div>
+                        <div v-if="userStore.userDetail.status === 10000">Busy</div>
+                        <div v-if="userStore.userDetail.status === 2">Offline</div>
                     </van-space>
                 </div>
                 <!-- 相册列表 -->
                 <div class="absolute top-180 overflow-scroll w-full  px10">
                     <van-space :size="4">
-                        <div v-for="item, index in picList" :key="index">
+                        <div v-for="item, index in userStore.picList" :key="index">
                             <van-image width="56" height="56" :src="item.mediaUrl" @click="showImg(item.mediaUrl)" />
                         </div>
                     </van-space>
@@ -40,17 +41,17 @@
                 <!-- 个人介绍 -->
                 <div class="ml24 mt32">
                     <van-space direction="vertical">
-                        <div class="text-22 font-bold c-#fff">{{ userDetail.nickname }}</div>
+                        <div class="text-22 font-bold c-#fff">{{ userStore.userDetail.nickname }}</div>
                         <div>
                             <van-space :size="10">
-                                <div class="i-my-icons-famale text-14 " v-if="userDetail.gender === 2" />
+                                <div class="i-my-icons-famale text-14 " v-if="userStore.userDetail.gender === 2" />
                                 <div class="i-my-icons-male text-14 " v-else />
-                                <div class="c-#fff text-14">{{ userDetail.age }}</div>
+                                <div class="c-#fff text-14">{{ userStore.userDetail.age }}</div>
 
                             </van-space>
                         </div>
                         <div class="c-#E2E2E2 text-12">
-                            {{ userDetail.description }}
+                            {{ userStore.userDetail.description }}
                         </div>
                     </van-space>
                 </div>
@@ -62,7 +63,7 @@
                     <div class="mt8 overflow-scroll w-full ">
                         <van-space>
                             <div class="rounded-4 overflow-hidden text-0 w95 h95 overflow-hidden"
-                                v-for="item, index in videoList" :key="index">
+                                v-for="item, index in userStore.videoList" :key="index">
                                 <video :src="item.mediaUrl" :poster="item.videoCover"></video>
                             </div>
                         </van-space>
@@ -76,7 +77,7 @@
                     <div class="bg-#AFA8FF/10  px16 py22 rounded-4 mt10">
                         <div class="flex items-center justify-between">
                             <div class="c-#E2E2E2 text-12 ">Country:</div>
-                            <div class="text-14 c-#fff font-semibold">{{ userDetail.countryId }}</div>
+                            <div class="text-14 c-#fff font-semibold">{{ userStore.userDetail.countryId }}</div>
                         </div>
 
                         <div class="flex items-center justify-between mt22">
@@ -86,13 +87,16 @@
                                     <div>
                                         <van-space :size="4">
                                             <img src="../../assets/thumbs-up_1f44d.png" class="w16 h20">
-                                            <div class="c-#E2E2E2 text-12">99</div>
+                                            <div class="c-#E2E2E2 text-12">{{ userStore.userDetail.thumbs ?
+                                                userStore.userDetail.thumbs[0].num : 0 }}
+                                            </div>
                                         </van-space>
                                     </div>
                                     <div>
                                         <van-space :size="4">
                                             <img src="../../assets/fx_im_icon_love_both.png" class="w22 h22">
-                                            <div class="c-#E2E2E2 text-12">99</div>
+                                            <div class="c-#E2E2E2 text-12">{{ userStore.userDetail.thumbs ?
+                                                userStore.userDetail.thumbs[1].num : 0 }}</div>
                                         </van-space>
                                     </div>
                                 </van-space>
@@ -120,7 +124,7 @@
                     <div class="text-16 font-semibold c-#fff">Gift received</div>
                     <div class="bg-#AFA8FF/10  px10 py15 rounded-4 mt10">
                         <van-space wrap>
-                            <div v-for="item, index in userDetail.giftList">
+                            <div v-for="item, index in userStore.userDetail.giftList">
                                 <div class="c-#fff text-12">
                                     <van-space direction="vertical" align="center">
                                         <gift :id="item.giftId" />
@@ -261,30 +265,17 @@
 
 
 <script  setup>
-import { getUserDetail } from '~/api/home'
 import { getFriendsCircle } from '~/api/moments'
 import { getMomentsTime } from '~/utils/index'
 import { showImagePreview } from 'vant';
-// const userStore = useUserStore()
-const momentsStore = useMomentsStore()
+const userStore = useUserStore()
 const route = useRoute()
-const router = useRouter()
 const userId = route.query.id;
 const yxAccid = route.query.yxId;
-const userDetail = ref({})//用户数据
+const momentsStore = useMomentsStore()
+const router = useRouter()
 const momentData = ref([])//用户朋友圈内容
-const picList = ref([])//相册列表
-const videoList = ref([])//视频列表
 const showView = ref(true)
-//获取用户详情
-const getUserDetailData = async () => {
-    userDetail.value = await getUserDetail({
-        userId, yxAccid
-    })
-    picList.value = userDetail.value.picList.filter((item) => item.mediaType === 1)
-    videoList.value = userDetail.value.picList.filter((item) => item.mediaType === 2)
-    console.log(userDetail.value, picList.value, videoList.value);
-}
 
 //获取用户朋友圈内容
 const getMomentData = async (id = "") => {
@@ -303,7 +294,7 @@ const showImg = (imgList) => {
 }
 onMounted(() => {
     //获取用户详情数据
-    getUserDetailData()
+    userStore.getUserDetailData(userId, yxAccid)
     //获取用户朋友圈内容
     getMomentData(userId)
     //组件挂载完成设置背景色
