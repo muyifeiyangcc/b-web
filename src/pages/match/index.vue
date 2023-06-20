@@ -137,7 +137,7 @@ const invite = async () => {
         homeStore.inviteData = data
         homeStore.channelInfo = channelInfo
         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
-        router.push('/waitcall')
+        router.push({ path: 'waitcall', query: { userId: target.value.userId } })
     } catch (error) {
         console.warn('创建频道失败，error：', error)
         if (error.code == 10405) {

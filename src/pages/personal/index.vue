@@ -120,7 +120,7 @@
         </div>
       </div>
 
-      <div class="mt40 mx44 px120 py15 bg-#AFA8FF/10 rounded-28 c-#fff text-14 font-semibold">Log out</div>
+      <div class="mt40 mx-auto w280 py15 bg-#AFA8FF/10 rounded-28 c-#fff text-14 font-semibold text-center">Log out</div>
 
       <div class="c-#fff/40 font-medium text-12 mt16 text-center">Version 1.0.0</div>
     </div>

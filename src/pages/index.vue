@@ -25,7 +25,7 @@ const onRefresh = () => {
   setTimeout(() => {
     homeStore.updateIndexListData(1, '', true)
     loading.value = false;
-  }, 1000);
+  }, 500);
 };
 
 let allowLoad = true
@@ -62,20 +62,18 @@ onMounted(() => {
   homeStore.imConnect()
   //保存设备信息
   setSave(saveOption)
+  //获取国家列表
+  userStore.getCountryListData()
   //获取首页tab列表
   homeStore.getIndexFatherTabList()
   //获取首页用户列表
   homeStore.updateIndexListData()
-  //获取国家列表
-  userStore.getCountryListData()
   //获取礼物列表
   giftStore.getGiftListData()
   //获取朋友圈列表
   momentsStore.getFriendsCircleList()
   //获取我的信息
   userStore.getMineInfoData()
-
-
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
