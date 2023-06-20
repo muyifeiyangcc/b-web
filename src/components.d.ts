@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     Comments: typeof import('./components/comments.vue')['default']
     GetDiamondsChat: typeof import('./components/get-diamonds-chat.vue')['default']
     Gift: typeof import('./components/gift.vue')['default']
+    GivePresent: typeof import('./components/give-present.vue')['default']
     IndexContent: typeof import('./components/index-content.vue')['default']
     IndexTag: typeof import('./components/index-tag.vue')['default']
     PostMoments: typeof import('./components/post-moments.vue')['default']

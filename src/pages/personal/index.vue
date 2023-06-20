@@ -133,6 +133,7 @@ const checked = ref(true);
 const router = useRouter()
 const userStore = useUserStore()
 const mineInfo = computed(() => userStore.mineInfo)
+
 onMounted(() => {
   userStore.getMineInfoData()
   //组件挂载完成设置背景色

@@ -9,8 +9,7 @@
     <!-- 朋友圈内容 -->
     <div class="overflow-scroll pb60 " :style="{ height: scrollHeight + 'px' }">
       <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功" z-2>
-        <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in momentsStore.friendsCircleList"
-          :key="index">
+        <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in data" :key="index">
           <!-- 第一行 -->
           <div class="flex justify-between">
             <div>
@@ -83,22 +82,19 @@
           </div>
           <!-- 评论区 -->
           <div class="mt25">
-            <template v-if="item.comment != []">
-              <div v-for="data, count in item.comment" :key="data.id" class="mb5">
-                <van-space :size="2">
-                  <div class="c-#3956E2 text-14 font-semibold">{{ data.nickname }}:</div>
-                  <div class="c-#fff text-14">{{ data.commentContent }}</div>
-                </van-space>
-              </div>
-            </template>
+            <div v-for="data, count in item.comment" :key="count" class="mb5">
+              <van-space :size="2">
+                <div class="c-#3956E2 text-14 font-semibold"> {{ data.nickname }} :</div>
+                <div class="c-#fff text-14"> {{ data.commentContent }} </div>
+              </van-space>
+            </div>
           </div>
 
         </div>
       </van-pull-refresh>
     </div>
-
     <!-- 朋友圈举报 -->
-    <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '25%' }" class="bg-#130021">
+    <van-popup v-model:show="showBottom" position="bottom" class="bg-#130021 h25%">
       <template #default>
         <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
         <div
@@ -113,7 +109,7 @@
     <!-- 图片预览 -->
     <van-image-preview />
     <!-- 发布评论 -->
-    <van-popup v-model:show="showComment" position="bottom" :style="{ height: '10%' }" overlay-class="bg-transparent">
+    <van-popup v-model:show="showComment" position="bottom" :style="{ height: '10%' }" overlay-class="bg-transparent ">
       <template #default>
         <div class="py20 bg-#130021">
           <van-space :size="10">
@@ -127,13 +123,12 @@
               </van-cell-group>
             </div>
             <div class="text-center">
-              <button class="w36 h36" @click="postComment"><img src="../../assets/send.png" alt=""></button>
+              <button class="w36 h36" @click="postComment"><img src="../../assets/send.png"></button>
             </div>
           </van-space>
         </div>
       </template>
     </van-popup>
-
   </div>
 </template>
 
@@ -146,12 +141,15 @@ import { getMomentsTime } from '~/utils'
 import dayjs from 'dayjs'
 const myRef = ref();//tab栏实例
 const field = ref()//输入框实例
-const scrollHeight = ref(0)
+const scrollHeight = ref(0)//滚动区域高度
 const showBottom = ref(false)//举报弹窗显示
 const loading = ref(false);//下拉刷新加载状态
 const showComment = ref(false)//评论输入框显示
 const cirlceFlag = ref(0)//标记点击了哪条朋友圈
 const momentsStore = useMomentsStore()
+const userStore = useUserStore()
+const data = computed(() => momentsStore.friendsCircleList)
+
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {
@@ -194,14 +192,20 @@ const postComment = async () => {
     "friendsCircleId": cirlceFlag.value,
     "parentCommentId": ""
   })
-  momentsStore.getFriendsCircleList()
-  content.value = ''
   showComment.value = false
+  momentsStore.friendsCircleList.forEach((item) => {
+    if (item.id === cirlceFlag.value) {
+      item.comment.push({
+        "nickname": "Dao",
+        "commentContent": content.value
+      })
+    }
+  })
+  content.value = ''
 }
 
 onMounted(() => {
-  //获取朋友圈列表
-  momentsStore.getFriendsCircleList()
+
   //动态计算滚动区高度
   scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色

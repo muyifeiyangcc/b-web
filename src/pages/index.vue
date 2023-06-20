@@ -1,10 +1,12 @@
-<script setup lang="ts">
+<script setup >
 import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
 const router = useRouter()
 const homeStore = useHomeStore()
 const userStore = useUserStore()
+const giftStore = useGiftStore()
+const momentsStore = useMomentsStore()
 const saveOption =
 {
   "appId": "77985415",
@@ -17,21 +19,45 @@ const saveOption =
   "pushToken": "",
   "useSimCard": 1
 }
-
 const loading = ref(false);
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {
-    homeStore.getIndexListData()
+    homeStore.updateIndexListData(1, '', true)
     loading.value = false;
   }, 1000);
 };
-const myRef = ref();
-const scrollHeight = ref(0)
 
+let allowLoad = true
+let page = 1
 
+const loadMore = () => {
+  if (allowLoad) {
+    allowLoad = false
+    page++
+    setTimeout(() => {
+      homeStore.updateIndexListData(page)
+      allowLoad = true
+      console.log('执行了', page);
+    }, 1000);
+  }
+}
+
+const scrollDom = ref()
+const scrollHandle = () => {
+  const scrollHeight = scrollDom.value.scrollHeight
+  const clientHeight = document.body.clientHeight
+  const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop
+  const distance = scrollHeight - scrollTop - clientHeight
+  console.log(distance, scrollHeight, clientHeight, scrollTop);
+  if (distance < 50) {
+    loadMore()
+  }
+}
 
 onMounted(() => {
+  //组件挂载时，添加scroll监听
+  window.addEventListener("scroll", scrollHandle);
   //初始化im
   homeStore.imConnect()
   //保存设备信息
@@ -39,13 +65,17 @@ onMounted(() => {
   //获取首页tab列表
   homeStore.getIndexFatherTabList()
   //获取首页用户列表
-  homeStore.getIndexListData()
+  homeStore.updateIndexListData()
   //获取国家列表
   userStore.getCountryListData()
   //获取礼物列表
-  userStore.getGiftListData()
-  //动态计算滚动区高度
-  scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
+  giftStore.getGiftListData()
+  //获取朋友圈列表
+  momentsStore.getFriendsCircleList()
+  //获取我的信息
+  userStore.getMineInfoData()
+
+
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
@@ -57,15 +87,15 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div>
-    <div ref="myRef">
-      <index-tag />
-    </div>
-    <div class="  overflow-scroll  " :style="{ height: scrollHeight + 'px' }">
-      <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
-        <index-content />
-      </van-pull-refresh>
-    </div>
+  <div ref="scrollDom">
+    <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
+      <div>
+        <index-tag />
+        <div class="px15">
+          <index-content />
+        </div>
+      </div>
+    </van-pull-refresh>
     <div class="fixed bottom-100 left-50% ml--135">
       <van-button class=" rounded-23 w270 h50 b-0  text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"
         @click="router.push('match')">
@@ -89,6 +119,7 @@ onBeforeUnmount(() => {
       </van-button>
     </div>
     <get-diamonds-chat />
+
   </div>
 </template>
 

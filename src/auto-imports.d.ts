@@ -33,6 +33,7 @@ declare global {
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const gift: typeof import('./stores/gift.js')['default']
   const h: typeof import('vue')['h']
   const home: typeof import('./stores/home.js')['default']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
@@ -178,6 +179,7 @@ declare global {
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
   const useGeolocation: typeof import('@vueuse/core')['useGeolocation']
+  const useGiftStore: typeof import('./stores/index.js')['useGiftStore']
   const useHead: typeof import('@vueuse/head')['useHead']
   const useHomeStore: typeof import('./stores/index.js')['useHomeStore']
   const useI18n: typeof import('vue-i18n')['useI18n']
@@ -335,6 +337,7 @@ declare module 'vue' {
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly gift: UnwrapRef<typeof import('./stores/gift.js')['default']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly home: UnwrapRef<typeof import('./stores/home.js')['default']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
@@ -479,6 +482,7 @@ declare module 'vue' {
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
+    readonly useGiftStore: UnwrapRef<typeof import('./stores/index.js')['useGiftStore']>
     readonly useHead: UnwrapRef<typeof import('@vueuse/head')['useHead']>
     readonly useHomeStore: UnwrapRef<typeof import('./stores/index.js')['useHomeStore']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
@@ -629,6 +633,7 @@ declare module '@vue/runtime-core' {
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly gift: UnwrapRef<typeof import('./stores/gift.js')['default']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly home: UnwrapRef<typeof import('./stores/home.js')['default']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
@@ -773,6 +778,7 @@ declare module '@vue/runtime-core' {
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
+    readonly useGiftStore: UnwrapRef<typeof import('./stores/index.js')['useGiftStore']>
     readonly useHead: UnwrapRef<typeof import('@vueuse/head')['useHead']>
     readonly useHomeStore: UnwrapRef<typeof import('./stores/index.js')['useHomeStore']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>

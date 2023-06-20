@@ -7,10 +7,10 @@
 <script  setup>
 import { getMoments, like } from '~/api/moments'
 const props = defineProps(['id'])
-const userStore = useUserStore()
+const giftStore = useGiftStore()
 const giftData = ref({})
 onMounted(() => {
-    giftData.value = userStore.giftList.filter((item) => item.id === props.id)[0]
+    giftData.value = giftStore.giftList.filter((item) => item.id === props.id)[0]
 })
 </script>
 

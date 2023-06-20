@@ -11,11 +11,8 @@ state:()=>({
     getIndexListOption: 
     {
     "currentPage": 1,
-    "endTime": "",
-    "keyword": "",
     "onlineStatus": 0,
     "pageSize": 10,
-    "startTime": "",
     "tagId": 13
 },
 //被邀请人信息
@@ -139,21 +136,26 @@ nim.signaling.on('signalingReject', (event) => {
             }
         })
     },
-    //获取首页用户列表
-    async getIndexListData() {
-    // this.getIndexListOption.tagId=this.indexTabsChildren[0].id
-    this.indexList= await getIndexList(this.getIndexListOption)
-},
+    
     // 更新首页列表
-    async updateIndexListData  (title) {
-    this.indexTabsChildren.map((item)=>{
+    async updateIndexListData  (page=1,title,tagFlag=false){
+    if(tagFlag){
+            this.indexTabsChildren.map((item)=>{
             if(item.tagName===title)
             {
                 this.getIndexListOption.tagId=item.id
             }
         })
-    this.getIndexListData()
+        this.indexList= await getIndexList(this.getIndexListOption)
+    }
+    else{
+        this.getIndexListOption.currentPage=page
+        //获取首页用户列表
+        const result= await getIndexList(this.getIndexListOption)
+        this.indexList=[...this.indexList,...result]
+    }
 },
+
     //获取会话记录
 async getSessionList(){
     const result = await this.nim.session.getSessions({

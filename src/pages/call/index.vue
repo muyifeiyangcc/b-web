@@ -48,10 +48,23 @@
             <!-- 右下角切换摄像头等 -->
             <div class="absolute right-14 bottom-100">
                 <van-space direction="vertical" :size="12">
-                    <div><img src="../../assets/ic_gift.png" class="w42 h42"></div>
+                    <div><img src="../../assets/ic_gift.png" class="w42 h42"
+                            @click="giftStore.showGiftView = !giftStore.showGiftView">
+                    </div>
                     <div><img src="../../assets/ic_iens.png" class="w42 h42"></div>
                     <div><img src="../../assets/ic_record.png" class="w42 h42"></div>
                 </van-space>
+            </div>
+            <!-- 聊天区域 -->
+            <div class="absolute bottom-100 left-15 w270 h200">
+                <div class="h150 overflow-scroll">
+                    <div class="c-#E2E2E2 text-14 " v-for=" in 80">
+                        you : what do you do
+                    </div>
+                </div>
+                <div class="c-#fff text-12 absolute bottom-0">⚠️&nbsp&nbspViolence, pornography, danger and other contents
+                    are prohibited
+                </div>
             </div>
             <!-- 聊天输入框 -->
             <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent absolute bottom-38 w-full ">
@@ -72,21 +85,24 @@
                     </van-col>
                 </van-row>
             </div>
+            <!-- 送礼弹框 -->
+            <give-present :show="presentShow" />
         </div>
     </div>
 </template>
 
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
-let appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
-let localStream;
-const homeStore = useHomeStore()
 const uid = '112'
+const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
+const homeStore = useHomeStore()
+const giftStore = useGiftStore()
 const client = NERTC.createClient({ appkey, debug: true })
 const localVideoContent = ref()
 const remoteVideoContent = ref()
-const viewHeight = ref(window.innerHeight)
+const viewHeight = window.innerHeight
 const showDialog = ref(true)
+const presentShow = ref(false)
 // 监听远端用户发布视频流的事件
 client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -123,12 +139,14 @@ const call = async function () {
         const cameras = await NERTC.getCameras();    //获取可用的视频输入设备
         const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
         console.log(cameras);
-        localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '9c3d509333b64864ab3d0a011262af936d6409d57686d64fd46f0ebd51306661' });
+
+        const localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '9c3d509333b64864ab3d0a011262af936d6409d57686d64fd46f0ebd51306661' });
+        //设置视频推流属性
         localStream.setVideoProfile({
             resolution: NERTC.VIDEO_QUALITY_1080p,//分辨率
             frameRate: NERTC.VIDEO_FRAME_RATE.CHAT_VIDEO_FRAME_RATE_30,//帧率
         })
-        console.log(cameras);
+        //初始化本地流
         await localStream.init();
         // 播放本地流
         localStream.play(div.value);

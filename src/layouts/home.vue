@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="max-w-450 mx-auto">
+    <div class="max-w-500 mx-auto">
       <RouterView />
       <van-tabbar route :border="false" class="py10">
         <van-tabbar-item to="/">

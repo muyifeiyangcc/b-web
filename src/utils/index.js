@@ -41,7 +41,6 @@ export function getEmoji (countryId) {
   }
   else{
     const result = userStore.countryList.filter((item) => {
-
         if (item.locale === countryId)
             return item
     })
