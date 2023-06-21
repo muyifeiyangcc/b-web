@@ -20,11 +20,21 @@
                 </div>
             </van-space>
             <!-- 挂断按钮 -->
-            <div @click="ringOff" class=" mt160">
+            <div class="px80 py9 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-23 mx40 mt160 "
+                @click="ringOff" v-if="fromMatch">
+                <van-space :size="3" align="center">
+                    <img src="../../assets/phone.png" class="w28 h28">
+                    <div class="c-#fff text-16 font-semibold">
+                        Connection....
+                    </div>
+                </van-space>
+            </div>
+            <div @click="ringOff" class=" mt160" v-else>
                 <img src="../../assets/hangup.png" class="w69 h69 inline-block">
             </div>
         </div>
         <img src="../../assets/back.png" class="absolute  w-full h-full  top-0 z--1" />
+        <audio src='https://1v1firendscircle.s3.ap-southeast-1.amazonaws.com/ios/sender.mp3' autoplay loop></audio>
     </div>
 </template>
 
@@ -37,6 +47,7 @@ const router = useRouter()
 const route = useRoute()
 const userId = route.query.userId
 const yxId = route.query.yxId
+const fromMatch = route.query.fromMatch
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
 //取消邀请
@@ -71,7 +82,6 @@ const invite = async (userId, yxId) => {
         homeStore.inviteData = data
         homeStore.channelInfo = channelInfo
         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
-        router.push({ path: 'waitcall', query: { userId, yxId } })
     } catch (error) {
         console.warn('创建频道失败，error：', error)
         if (error.code == 10405) {

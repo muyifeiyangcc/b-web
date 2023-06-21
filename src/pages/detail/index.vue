@@ -239,17 +239,23 @@
                         </div>
                     </van-space>
                 </div>
+                <!-- 工具 -->
                 <div class="px24 flex justify-between">
-
                     <van-space :size="18">
+                        <!-- 与主播聊天 -->
                         <div class="bg-#fff/10 rounded-23 py12 px18">
-                            <img src="../../assets/icons_message.png" class="w20 h20">
+                            <img src="../../assets/icons_message.png" class="w20 h20"
+                                @click="router.push({ path: 'talk', query: { to: yxAccid, nick: userStore.userDetail.nickname, avatar: userStore.userDetail.icon } })">
                         </div>
-                        <div class="bg-#fff/10 rounded-23 py12 px18">
-                            <van-icon name="like-o" color="#fff" :size="18" />
+                        <!-- 关注/取关 -->
+                        <div class="bg-#fff/10 rounded-23 py12 px18" @click="followOrNo">
+                            <van-icon name="like" color="#FB3A54" :size="18" v-if="userStore.userDetail.followed" />
+                            <van-icon name="like-o" color="#fff" :size="18" v-else />
                         </div>
                     </van-space>
-                    <div class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 py13 px20 rounded-23 text-center">
+                    <!-- 视频通话 -->
+                    <div class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 py13 px20 rounded-23 text-center"
+                        @click="router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })">
                         <van-space :size="4">
                             <div><img src="../../assets/video_call.png" class="w20"></div>
                             <div class="text-14 font-bold c-#fff">100</div>
@@ -257,9 +263,7 @@
                             <div class="text-14  c-#fff">/Times</div>
                         </van-space>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -293,6 +297,12 @@ const getMomentData = async (id = "") => {
 // 图片预览
 const showImg = (imgList) => {
     showImagePreview([imgList]);
+}
+// 关注/取关
+const followOrNo = () => {
+    const type = userStore.userDetail.followed === true ? 2 : 1
+    userStore.followUser(type, userStore.userDetail.userId)
+    userStore.userDetail.followed = !userStore.userDetail.followed
 }
 onMounted(() => {
     //获取用户详情数据

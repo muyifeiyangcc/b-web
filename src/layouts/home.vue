@@ -2,7 +2,7 @@
   <div>
     <div class="max-w-500 mx-auto">
       <RouterView />
-      <van-tabbar route :border="false" class="py10">
+      <van-tabbar route :border="false" class="pt10 pb20">
         <van-tabbar-item to="/">
           <template #icon="props">
             <img v-if="props.active" src="../assets/tab_home_hover.png" class=" w40 important:h40 " />

@@ -52,7 +52,7 @@
                             @click="giftStore.showGiftView = !giftStore.showGiftView">
                     </div>
                     <div><img src="../../assets/ic_iens.png" class="w42 h42"></div>
-                    <div><img src="../../assets/ic_record.png" class="w42 h42"></div>
+                    <div><img src="../../assets/ic_record.png" class="w42 h42" @click="finishCall"></div>
                 </van-space>
             </div>
             <!-- 聊天区域 -->
@@ -103,6 +103,7 @@ const remoteVideoContent = ref()
 const viewHeight = window.innerHeight
 const showDialog = ref(true)
 const presentShow = ref(false)
+const router = useRouter()
 // 监听远端用户发布视频流的事件
 client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -165,7 +166,7 @@ const call = async function () {
 
 //结束通话
 const finishCall = async function () {
-    await client.leave();
+    await client.leave().then(() => router.push('/'))
 }
 
 onMounted(() => {

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getCountryList,setUserInfo,getMineInfo,getUserDetail }from '~/api/user'
+import { getCountryList,setUserInfo,getMineInfo,getUserDetail, getFollowUser  }from '~/api/user'
 export const useUserStore = defineStore('useUserStore',{
 state:()=>({
     countryList:[],//国家列表
@@ -27,6 +27,14 @@ actions:{
     this.picList = this.userDetail.picList.filter((item) => item.mediaType === 1)
     this.videoList = this.userDetail.picList.filter((item) => item.mediaType === 2)
     console.log(this.userDetail,this. picList, this.videoList);
+},  
+    //关注/取消关注
+// type:1关注 2取关 3拉黑
+    async followUser (type, id){
+    await getFollowUser({
+        "followType": type,
+        "followUserId": id
+    })
 }
 }
 })

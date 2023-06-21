@@ -147,6 +147,19 @@ const allRead = () => {
   homeStore.resetAllUnread()
   showBottom.value = false
 }
+
+// const getCallRecord = () => {
+//   console.log(123);
+//   homeStore.nim.getLocalSessionsByMsgType({
+//     // exclude: 'notification',
+//     exclude: ['notification', 'image'],
+//     done: getLocalSessionsByMsgTypeDone
+//   });
+// }
+// function getLocalSessionsByMsgTypeDone(error, obj) {
+//   console.log('获取会话列表' + (!error ? '成功' : '失败'), error, obj);
+
+// }
 onMounted(() => {
   //获取会话列表
   homeStore.getSessionList()

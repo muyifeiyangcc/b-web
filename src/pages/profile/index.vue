@@ -45,9 +45,9 @@
         </div>
         <!-- choose avatar -->
         <div class="mx30 mt20 flex justify-between" @click="console.log(avatar)">
-            <div class=" bg-lightBlue w80 h80 rounded-50%"></div>
-            <div class=" bg-lightBlue w80 h80 rounded-50%"></div>
-            <div class=" bg-lightBlue w80 h80 rounded-50%"></div>
+            <img src="../../assets/avatar_1.jpg" class="w80 h80 rounded-50%">
+            <img src="../../assets/avatar_2.jpg" class="w80 h80 rounded-50%">
+            <img src="../../assets/avatar_3.jpg" class="w80 h80 rounded-50%">
         </div>
         <!-- name -->
         <div class="mx20 py20 mt20 b-b-1 b-#EFEFEF/5 flex justify-between items-center" @click="showName = true">

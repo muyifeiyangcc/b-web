@@ -29,14 +29,12 @@ const onRefresh = () => {
 };
 
 let allowLoad = true
-let page = 1
-
 const loadMore = () => {
   if (allowLoad) {
     allowLoad = false
-    page++
+    homeStore.getIndexListOption.currentPage++
     setTimeout(() => {
-      homeStore.updateIndexListData(page)
+      homeStore.updateIndexListData()
       allowLoad = true
     }, 1000);
   }
@@ -44,10 +42,11 @@ const loadMore = () => {
 
 const scrollDom = ref()
 const scrollHandle = () => {
-  const scrollHeight = scrollDom.value.scrollHeight
-  const clientHeight = document.body.clientHeight
-  const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop
-  const distance = scrollHeight - scrollTop - clientHeight
+  const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
+  const clientHeight = document.body.clientHeight//计算视口高度
+  const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop//计算滚动的距离
+  const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
+  //当快滑动到底部的时候
   if (distance < 50) {
     loadMore()
   }

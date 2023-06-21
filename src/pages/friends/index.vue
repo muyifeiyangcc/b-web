@@ -52,17 +52,17 @@
                                 <div class="text-16 font-semibold">{{ item.nickname }}</div>
                                 <div>
                                     <van-space>
-                                        <div class="i-my-icons-famale text-14" v-if="item.gender === 1" />
-                                        <div class="i-my-icons-male text-14" v-else />
+                                        <div class="i-my-icons-male text-14" v-if="item.gender === 1" />
+                                        <div class="i-my-icons-famale text-14" v-else />
                                         <div class="text-14">{{ item.age }}</div>
                                     </van-space>
                                 </div>
                             </div>
                             <!-- 关注/取关按钮 -->
                             <div @click="removeHandler(item.userId, item.nickname, item.yxAccid)">
-                                <button @click="followUser(2, item.userId)" v-if="tabValue === 1 || 3"
+                                <button @click="userStore.followUser(2, item.userId)" v-if="tabValue === 1 || 3"
                                     class="px12 py8 rounded-20 c-#C513C6 font-semibold text-14 bg-gradient-to-r from-#D0B2FF/10 to-#BEB4FF/10">Unfollow</button>
-                                <button @click="followUser(1, item.userId)" v-else
+                                <button @click="userStore.followUser(1, item.userId)" v-else
                                     class="px12 py8 rounded-20 c-#C513C6 font-semibold text-14 bg-gradient-to-r from-#D0B2FF/10 to-#BEB4FF/10">Follow</button>
                             </div>
                         </div>
@@ -77,6 +77,7 @@
 <script  setup>
 import { getFriends, getFollowUser } from '~/api/user'
 const router = useRouter()
+const userStore = useUserStore()
 const tabValue = ref(1)
 const friendsList = ref([])
 // 点击tab栏触发事件
@@ -95,14 +96,7 @@ const getFriendsList = async () => {
     friendsList.value = result
     console.log(friendsList.value);
 }
-//关注/取消关注
-// type:1关注 2取关 3拉黑
-const followUser = async (type, id) => {
-    await getFollowUser({
-        "followType": type,
-        "followUserId": id
-    })
-}
+
 onMounted(() => {
     // 获取好友列表
     getFriendsList()

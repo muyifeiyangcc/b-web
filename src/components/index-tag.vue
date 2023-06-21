@@ -4,7 +4,8 @@
             <van-tabs class="tabs_1 Tabs" background="transparent" title-active-color="#BE12C5" line-width="0px"
                 :ellipsis="false" v-model:active="futherTabActive" @change="onClickFatherTab">
                 <van-tab v-for="(item, index) in homeStore.indexTabsFather.parentTags" :key="index" :title="item.tagName"
-                    class="important:c-#fff"></van-tab>
+                    class="important:c-#fff">
+                </van-tab>
             </van-tabs>
 
             <div class="mr9">
@@ -56,10 +57,6 @@ const onClickFatherTab = (name, title) => {
     homeStore.getIndexTabChildrenList(title)//更新二级分类
     homeStore.updateIndexListData(1, title, true)//更新首页用户信息
 }
-//首页二级tab栏点击事件
-// const onClickChildrenTab = (name, title) => {
-//     homeStore.updateIndexListData(title)//更新首页用户信息
-// }
 // 点击二级tab栏触发事件
 const tabClick = (value) => {
     tabValue.value = value

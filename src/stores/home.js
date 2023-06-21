@@ -138,7 +138,7 @@ nim.signaling.on('signalingReject', (event) => {
     },
     
     // 更新首页列表
-    async updateIndexListData  (page=1,title,tagFlag=false){
+    async updateIndexListData  (title,tagFlag=false){
     if(tagFlag){
             this.indexTabsChildren.map((item)=>{
             if(item.tagName===title)
@@ -146,10 +146,10 @@ nim.signaling.on('signalingReject', (event) => {
                 this.getIndexListOption.tagId=item.id
             }
         })
+        this.getIndexListOption.currentPage=1
         this.indexList= await getIndexList(this.getIndexListOption)
     }
     else{
-        this.getIndexListOption.currentPage=page
         //获取首页用户列表
         const result= await getIndexList(this.getIndexListOption)
         this.indexList=[...this.indexList,...result]

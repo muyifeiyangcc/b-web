@@ -115,6 +115,7 @@ const sendTextMessage = async () => {
     sendTextMsgOption.value.body = ''
     homeStore.talkList.unshift(msg)
 }
+// 拉黑
 const setBlockUser = async () => {
     await blockUser({
         type: 1,
