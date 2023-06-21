@@ -63,13 +63,31 @@ const ringOff = async () => {
         }
     }
 }
+//邀请通话
+const invite = async (userId, yxId) => {
+    try {
+        const data = await homeStore.nim.signaling.callEx(homeStore.params)
+        const channelInfo = data.channelInfo
+        homeStore.inviteData = data
+        homeStore.channelInfo = channelInfo
+        console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
+        router.push({ path: 'waitcall', query: { userId, yxId } })
+    } catch (error) {
+        console.warn('创建频道失败，error：', error)
+        if (error.code == 10405) {
+            console.warn('频道已存在，请勿重复创建')
+        }
+    }
+}
 onMounted(() => {
     //获取通话目标信息
     userStore.getUserDetailData(userId, yxId)
+    invite(userId, yxId)
 })
 // 获取国家emoji
 watch(userDetail, (newValue, oldValue) => {
-    countryEmoji.value = getEmoji(newValue.countryId)
+    console.log(newValue.countryId.toUpperCase());
+    countryEmoji.value = getEmoji(newValue.countryId.toUpperCase())
 })
 </script>
 

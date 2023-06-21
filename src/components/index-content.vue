@@ -47,7 +47,8 @@
                                 </van-space>
                             </div>
                         </van-space>
-                        <div class="i-my-icons-video text-24" @click="invite(item.userId, item.yxAccid)" />
+                        <div class="i-my-icons-video text-24"
+                            @click="router.push({ path: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid } })" />
                     </div>
                 </div>
             </van-col>
@@ -60,22 +61,22 @@ import { useHomeStore } from '~/stores';
 import { getEmoji } from '~/utils'
 const homeStore = useHomeStore()
 const router = useRouter()
-//邀请通话
-const invite = async (userId, yxId) => {
-    try {
-        const data = await homeStore.nim.signaling.callEx(homeStore.params)
-        const channelInfo = data.channelInfo
-        homeStore.inviteData = data
-        homeStore.channelInfo = channelInfo
-        console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
-        router.push({ path: 'waitcall', query: { userId, yxId } })
-    } catch (error) {
-        console.warn('创建频道失败，error：', error)
-        if (error.code == 10405) {
-            console.warn('频道已存在，请勿重复创建')
-        }
-    }
-}
+// //邀请通话
+// const invite = async (userId, yxId) => {
+//     try {
+//         const data = await homeStore.nim.signaling.callEx(homeStore.params)
+//         const channelInfo = data.channelInfo
+//         homeStore.inviteData = data
+//         homeStore.channelInfo = channelInfo
+//         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
+//         router.push({ path: 'waitcall', query: { userId, yxId } })
+//     } catch (error) {
+//         console.warn('创建频道失败，error：', error)
+//         if (error.code == 10405) {
+//             console.warn('频道已存在，请勿重复创建')
+//         }
+//     }
+// }
 
 onMounted(() => {
 

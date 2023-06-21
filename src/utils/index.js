@@ -44,6 +44,8 @@ export function getEmoji (countryId) {
         if (item.locale === countryId)
             return item
     })
-    return result[0].emoji
+    if(result.length>0)
+      return result[0].emoji
   }
+  return
 }

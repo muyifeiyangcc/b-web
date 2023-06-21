@@ -38,7 +38,6 @@ const loadMore = () => {
     setTimeout(() => {
       homeStore.updateIndexListData(page)
       allowLoad = true
-      console.log('执行了', page);
     }, 1000);
   }
 }
@@ -49,7 +48,6 @@ const scrollHandle = () => {
   const clientHeight = document.body.clientHeight
   const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop
   const distance = scrollHeight - scrollTop - clientHeight
-  console.log(distance, scrollHeight, clientHeight, scrollTop);
   if (distance < 50) {
     loadMore()
   }
@@ -117,7 +115,6 @@ onBeforeUnmount(() => {
       </van-button>
     </div>
     <get-diamonds-chat />
-
   </div>
 </template>
 

@@ -11,8 +11,8 @@
                 </template>
             </van-nav-bar>
         </div>
-
-        <div>
+        <!-- 黑名单内容 -->
+        <div class="pt60">
             <div class="c-#fff pt20 mx20" v-for=" item, index in blackList" :key="index">
                 <van-row>
                     <van-col span="4">

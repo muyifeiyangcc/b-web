@@ -123,16 +123,18 @@
                 <div class="mx24 mt22">
                     <div class="text-16 font-semibold c-#fff">Gift received</div>
                     <div class="bg-#AFA8FF/10  px10 py15 rounded-4 mt10">
-                        <van-space wrap>
-                            <div v-for="item, index in userStore.userDetail.giftList">
-                                <div class="c-#fff text-12">
-                                    <van-space direction="vertical" align="center">
-                                        <gift :id="item.giftId" />
-                                        <div>x{{ item.num }}</div>
-                                    </van-space>
+                        <van-row>
+                            <van-col :span="6" v-for="item, index in userStore.userDetail.giftList">
+                                <div>
+                                    <div class="c-#fff text-12">
+                                        <van-space direction="vertical" align="center">
+                                            <gift :id="item.giftId" />
+                                            <div>x{{ item.num }}</div>
+                                        </van-space>
+                                    </div>
                                 </div>
-                            </div>
-                        </van-space>
+                            </van-col>
+                        </van-row>
                     </div>
                 </div>
                 <!-- 朋友圈 -->
@@ -219,7 +221,7 @@
             </div>
 
             <!-- 底部tab栏 -->
-            <div class="bg-#000/40 pt16 pb33 w-full fixed bottom-0 ">
+            <div class="bg-#000/40 pt16 pb33 w-full fixed bottom-0 backdrop-blur-20">
                 <!-- 引导条 -->
                 <div class="fixed bottom-98 w-full px8 py8 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 flex justify-between"
                     v-if="showView">

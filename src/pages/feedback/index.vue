@@ -53,6 +53,14 @@
             <div class="text-16 c-#fff font-medium mb12">Add Picture</div>
             <van-uploader v-model="fileList" multiple />
         </div>
+        <!-- 提交按钮 -->
+        <div class="text-center  mt40">
+            <van-button
+                class="c-#fff text-16 mx-auto w200 py10 b-0 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8  rounded-23">
+                Submit
+            </van-button>
+        </div>
+
     </div>
 </template>
 

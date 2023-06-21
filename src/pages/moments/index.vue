@@ -34,8 +34,12 @@
             </div>
             <div>
               <van-space :size="16">
-                <button><img src="../../assets/chat.png" class="w32 h32"></button>
-                <button><img src="../../assets/video.png" class="w32 h32"></button>
+                <button
+                  @click="router.push({ path: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })"><img
+                    src="../../assets/chat.png" class="w32 h32"></button>
+                <button
+                  @click="router.push({ path: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid } })"><img
+                    src="../../assets/video.png" class="w32 h32"></button>
               </van-space>
             </div>
           </div>
@@ -50,7 +54,7 @@
               <div class="text-12 c-#8F6FB8">View translations</div>
             </van-space>
           </div>
-          <!-- 第四行 -->
+          <!-- 第四行(图片) -->
           <div class="flex justify-between mt13">
             <div v-for="item, index in item.imgUrls" :key="index" class="rounded-4 overflow-hidden text-0">
               <van-image width="88" height="88" :src="item" :key="index" v-if="index < 3" fit="cover"
@@ -97,11 +101,12 @@
     <van-popup v-model:show="showBottom" position="bottom" class="bg-#130021 h25%">
       <template #default>
         <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
-        <div
+        <div @click="router.push('report')"
           class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt16">
           Report
         </div>
-        <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt16">
+        <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt16"
+          @click="showBottom = false">
           Cancel
         </div>
       </template>
@@ -149,7 +154,7 @@ const cirlceFlag = ref(0)//标记点击了哪条朋友圈
 const momentsStore = useMomentsStore()
 const userStore = useUserStore()
 const data = computed(() => momentsStore.friendsCircleList)
-
+const router = useRouter()
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {

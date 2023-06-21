@@ -167,7 +167,7 @@ export default defineConfig({
     noExternal: ['workbox-window', /vue-i18n/, 'vant'],
   },
   server: {
-     host: '192.168.2.71',
+     host: '192.168.2.34',
     proxy: {
       '/api': {
         // target: 'https://test.xxchat.chat/api',

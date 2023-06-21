@@ -165,6 +165,7 @@ async getSessionList(){
     const idList=result.map((item)=>item.to)
     this.talkUserDataList = await this.nim.user.getUsersNameCardFromServer({accounts:idList})
     this.sessionList=result
+    console.log(result);
 },
     // 获取聊天历史记录
     async getHistoryTalkList(to='c398a3961d954af7841f95b43ed6d85b',limit=20) {

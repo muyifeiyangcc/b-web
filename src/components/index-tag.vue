@@ -33,8 +33,8 @@
             :ellipsis="false" @change="onClickChildrenTab">
             <van-tab v-for="(item, index) in homeStore.indexTabsChildren" :key="index" :title="item.tagName"></van-tab>
         </van-tabs> -->
-        <div class="flex justify-around px15 h44">
-            <div class="c-#fff/70 text-14  rounded-23 px16 py11 " v-for="(item, index) in homeStore.indexTabsChildren"
+        <div class="flex justify-around px15 ">
+            <div class="c-#fff/70 text-14  rounded-23 px16 py7 " v-for="(item, index) in homeStore.indexTabsChildren"
                 :key="index" @click="tabClick(index)" :class="tabValue === index ? 'active' : ''">
                 {{ item.tagName }}
             </div>

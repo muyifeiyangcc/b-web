@@ -66,19 +66,20 @@
                 </van-space>
             </div>
         </div>
-
+        <!-- 拉黑弹窗 -->
         <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '37%' }" class="bg-#130021">
             <template #default>
                 <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
-                <div
+                <div @click="router.push('report')"
                     class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#D016C8  via-#7F04BA to-#4D09C1 mt49">
                     Report
                 </div>
-                <div
+                <div @click="setBlockUser()"
                     class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt10">
                     Block
                 </div>
-                <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21">
+                <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21"
+                    @click="showBottom = false">
                     Cancel
                 </div>
             </template>
@@ -88,23 +89,21 @@
 
 
 <script  setup>
+import { blockUser } from '~/api/user'
 const myRef = ref();
 const reference = ref()
 const showBottom = ref(false)
 const scrollHeight = ref(0)
 const homeStore = useHomeStore()
+const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
+const to = route.query.to
 const talkList = computed(() => homeStore.talkList)
-
-
-
-
-
 //发送文本消息配置项
 const sendTextMsgOption = ref({
     scene: "p2p",
-    to: route.query.to,
+    to,
     body: '',
     onSendBefore: function (msg) {
         console.log('发送了一条消息', msg);
@@ -116,12 +115,21 @@ const sendTextMessage = async () => {
     sendTextMsgOption.value.body = ''
     homeStore.talkList.unshift(msg)
 }
+const setBlockUser = async () => {
+    await blockUser({
+        type: 1,
+        userId: userStore.userDetail.userId,
+        yxAccid: to
+    }).then(() => showBottom.value = false)
 
+}
 onMounted(() => {
     //标记进入聊天页面
     homeStore.setInTalkPage(true)
     //获取聊天历史记录
     homeStore.getHistoryTalkList(route.query.to)
+    //获取聊天对象信息
+    userStore.getUserDetailData('', to)
     //动态计算滚动区高度
     scrollHeight.value = window.innerHeight - myRef.value.offsetHeight - reference.value.offsetHeight
     // 组件挂载完成设置背景色

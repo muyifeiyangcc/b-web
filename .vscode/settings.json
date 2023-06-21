@@ -12,5 +12,6 @@
     "*.css": "postcss"
   },
   "editor.formatOnSave": true,
-  "commentTranslate.source": "DarkCWK.youdao-youdao"
+  "commentTranslate.source": "DarkCWK.youdao-youdao",
+  "commentTranslate.multiLineMerge": false
 }
