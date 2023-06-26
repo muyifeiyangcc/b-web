@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="relative b-1 max-w-450" ref="remoteVideoContent" :style="{ height: viewHeight + 'px' }">
+        <div class="relative b-1 max-w-450 " ref="remoteVideoContent" :style="{ height: viewHeight + 'px' }">
             <!-- 本地视频窗口 -->
             <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2"></div>
             <!-- 左上角主播信息 -->
-            <div class="absolute left-16 top-50">
+            <div class="absolute left-16 top-50 z-99">
                 <van-space direction="vertical">
                     <div class="bg-#000/25 pl3 pr7 rounded-23 inline-block">
                         <van-space>
@@ -31,7 +31,7 @@
                 </van-space>
             </div>
             <!-- 右侧限时充值 -->
-            <div class="absolute right-6 top-220" v-if="showDialog">
+            <div class="absolute right-6 top-220 z-99" v-if="showDialog">
                 <img src="../../assets//recharge.png" class="w105 h105"><!--背景图 -->
                 <img src="../../assets/close.png" class="w16 h16 absolute top-0 right-12"
                     @click="showDialog = false"><!--关闭按钮 -->
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <!-- 右下角切换摄像头等 -->
-            <div class="absolute right-14 bottom-100">
+            <div class="absolute right-14 bottom-100 z-99">
                 <van-space direction="vertical" :size="12">
                     <div><img src="../../assets/ic_gift.png" class="w42 h42"
                             @click="giftStore.showGiftView = !giftStore.showGiftView">
@@ -56,7 +56,7 @@
                 </van-space>
             </div>
             <!-- 聊天区域 -->
-            <div class="absolute bottom-100 left-15 w270 h200">
+            <div class="absolute bottom-100 left-15 w270 h200 z-99">
                 <div class="h150 overflow-scroll">
                     <div class="c-#E2E2E2 text-14 " v-for=" in 80">
                         you : what do you do
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <!-- 聊天输入框 -->
-            <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent absolute bottom-38 w-full ">
+            <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent absolute bottom-38 w-full z-99">
                 <van-row>
                     <van-col :span="20">
                         <div class="">
