@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="remoteVideoContent" class="relative b-1 max-w-450  bg-lightblue " :style="{ height: viewHeight + 'px' }">
+        <div class="relative b-1 max-w-450" ref="remoteVideoContent" :style="{ height: viewHeight + 'px' }">
             <!-- 本地视频窗口 -->
             <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2"></div>
             <!-- 左上角主播信息 -->
@@ -110,6 +110,13 @@ client.on('stream-added', event => {
     const remoteStream = event.stream;
     console.warn('收到别人的发布消息: ', remoteStream.streamID, 'mediaType: ', event.mediaType)
     //订阅远端流
+    remoteStream.setSubscribeConfig({
+        audio: true,//订阅麦克风音频
+        audioSlave: true,//订阅音频辅流
+        video: true,//订阅视频
+        screenShare: true,//订阅屏幕共享
+        highOrLow: NERTC.STREAM_TYPE.HIGH,//订阅大流
+    })
     client.subscribe(remoteStream).then(() => {
         console.warn(`subscribe 成功 ${remoteStream.streamID}`)
     });
@@ -119,14 +126,15 @@ client.on('stream-subscribed', event => {
     // 远端流订阅成功
     const remoteStream = event.stream;
     console.warn('订阅别人的流成功的通知: ', remoteStream.streamID, 'mediaType: ', event.mediaType)
-    // 设置远端视频画布
-    remoteStream.setRemoteRenderMode({
-        width: remoteVideoContent.value.clientWidth,
-        height: remoteVideoContent.value.clientHeight,
-        cut: true
-    });
     // 播放远端流
-    remoteStream.play('remoteVideoContent');
+    remoteStream.play(remoteVideoContent.value).then(() => {
+        console.warn('播放对端的流成功')
+        // 设置远端视频画布
+        remoteStream.setRemoteRenderMode({
+            width: remoteVideoContent.value.clientWidth,
+            height: remoteVideoContent.value.clientHeight,
+        })
+    });
 });
 
 //开始通话
@@ -143,8 +151,8 @@ const call = async function () {
         const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
         console.log(cameras);
 
-        const localStream = NERTC.createStream({ uid, audio: true, video: true });
-        // const localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '9c3d509333b64864ab3d0a011262af936d6409d57686d64fd46f0ebd51306661' });
+        // const localStream = NERTC.createStream({ uid, audio: true, video: true });
+        const localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '9c3d509333b64864ab3d0a011262af936d6409d57686d64fd46f0ebd51306661' });
         //设置视频推流属性
         localStream.setVideoProfile({
             resolution: NERTC.VIDEO_QUALITY_1080p,//分辨率
@@ -153,11 +161,11 @@ const call = async function () {
         //初始化本地流
         await localStream.init();
         // 播放本地流
-        localStream.play(div.value);
+        localStream.play(localVideoContent.value);
         // 设置本地视频画布
         localStream.setLocalRenderMode({
-            width: div.value.clientWidth,
-            height: div.value.clientHeight,
+            width: localVideoContent.value.clientWidth,
+            height: localVideoContent.value.clientHeight,
             cut: false,
         });
         await client.publish(localStream);
@@ -172,7 +180,7 @@ const finishCall = async function () {
 }
 
 onMounted(() => {
-    // call()
+    call()
 })
 </script>
 

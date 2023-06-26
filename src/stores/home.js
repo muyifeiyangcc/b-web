@@ -21,7 +21,7 @@ state:()=>({
         //手机
         // toAccid:'c398a3961d954af7841f95b43ed6d85b',
         //电脑
-        toAccid:'ece7d561b4594eedb8def4802f053b85',
+        toAccid:'9957c75a49764910bb39f2c8939b0558',
         requestId: '1008611',
     },
     otherParams:{
@@ -62,10 +62,10 @@ actions:{
     async imConnect (){
     const router = useRouter()
     // 初始化nim
-    const nim = NIMSDK.getInstance({
+    const nim =new NIMSDK({
         appkey: '124f689baed25c488e1330bc42e528af',
         account: '1ef27c9ebb064b66989b523c0d108c37', // 云信账号
-        token: '4fc8f80b57f0a9afd83b86490b11fb9b' // 云信密码
+        token: '4fc8f80b57f0a9afd83b86490b11fb9b' ,// 云信密码
         // account: 'ece7d561b4594eedb8def4802f053b85', // 云信账号
         // token: 'c93db63790961481fe3d98a5849641fe' // 云信密码
         // debugLevel: 'debug',

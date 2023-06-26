@@ -50,7 +50,7 @@ const userDetail = computed(() => userStore.userDetail)
 // 接受邀请
 const getThrough = async () => {
     try {
-        let data = await nim.signaling.joinAndAccept({ channelId: homeStore.acceptData.metaData.channelInfo.channelId, fromAccid: homeStore.acceptData.fromAccid, requestId: homeStore.acceptData.requestId })
+        let data = await homeStore.nim.signaling.joinAndAccept({ channelId: homeStore.acceptData.metaData.channelInfo.channelId, fromAccid: homeStore.acceptData.fromAccid, requestId: homeStore.acceptData.requestId })
         console.warn('接受邀请并加入成功，data', data)
         homeStore.channelInfo = data.channelInfo//保存房间数据
         homeStore.memberList = data.memberList//保存房间内用户数据
@@ -79,7 +79,7 @@ const getThrough = async () => {
 //拒绝邀请
 const rejectInvite = async () => {
     try {
-        await nim.signaling.reject({ channelId: homeStore.acceptData.metaData.channelInfo.channelId, fromAccid: homeStore.acceptData.fromAccid, requestId: homeStore.acceptData.requestId })
+        await homeStore.nim.signaling.reject({ channelId: homeStore.acceptData.metaData.channelInfo.channelId, fromAccid: homeStore.acceptData.fromAccid, requestId: homeStore.acceptData.requestId })
         console.warn('拒绝邀请成功')
         router.go(-1)
     } catch (error) {
