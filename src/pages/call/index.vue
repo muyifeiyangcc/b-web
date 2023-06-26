@@ -51,7 +51,7 @@
                     <div><img src="../../assets/ic_gift.png" class="w42 h42"
                             @click="giftStore.showGiftView = !giftStore.showGiftView">
                     </div>
-                    <div><img src="../../assets/ic_iens.png" class="w42 h42"></div>
+                    <div><img src="../../assets/ic_iens.png" class="w42 h42" @click="changeCamera"></div>
                     <div><img src="../../assets/ic_record.png" class="w42 h42" @click="finishCall"></div>
                 </van-space>
             </div>
@@ -104,7 +104,9 @@ const viewHeight = window.innerHeight
 const showDialog = ref(true)
 const presentShow = ref(false)
 const router = useRouter()
-
+const allCamera = ref([])//全部的摄像头
+const nowCamera = ref({})//当前正在使用的摄像头
+const localStream = ref(null)
 // 监听远端用户发布视频流的事件
 client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -131,9 +133,12 @@ client.on('stream-subscribed', event => {
         console.warn('播放对端的流成功')
         // 设置远端视频画布
         remoteStream.setRemoteRenderMode({
-            width: remoteVideoContent.value.clientWidth,
+            // width: remoteVideoContent.value.clientWidth,
+            // height: remoteVideoContent.value.clientHeight,
+            width: 500,
             height: remoteVideoContent.value.clientHeight,
-        })
+            cut: true
+        });
     });
 });
 
@@ -150,25 +155,26 @@ const call = async function () {
         const cameras = await NERTC.getCameras();    //获取可用的视频输入设备
         const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
         console.log(cameras);
-
+        allCamera.value = cameras
+        nowCamera.value = cameras[0]
         // const localStream = NERTC.createStream({ uid, audio: true, video: true });
-        const localStream = NERTC.createStream({ uid, audio: true, video: true });
+        localStream.value = NERTC.createStream({ uid, audio: true, video: true, cameraId: nowCamera.value.deviceId });
         //设置视频推流属性
-        localStream.setVideoProfile({
+        localStream.value.setVideoProfile({
             resolution: NERTC.VIDEO_QUALITY_1080p,//分辨率
             frameRate: NERTC.VIDEO_FRAME_RATE.CHAT_VIDEO_FRAME_RATE_30,//帧率
         })
         //初始化本地流
-        await localStream.init();
+        await localStream.value.init();
         // 播放本地流
-        localStream.play(localVideoContent.value);
+        localStream.value.play(localVideoContent.value);
         // 设置本地视频画布
-        localStream.setLocalRenderMode({
+        localStream.value.setLocalRenderMode({
             width: localVideoContent.value.clientWidth,
             height: localVideoContent.value.clientHeight,
             cut: false,
         });
-        await client.publish(localStream);
+        await client.publish(localStream.value);
     } catch (error) {
         console.error(error);
     }
@@ -178,7 +184,17 @@ const call = async function () {
 const finishCall = async function () {
     await client.leave().then(() => router.push('/'))
 }
-
+//切换摄像头
+let i = 0
+const changeCamera = async () => {
+    if (i < allCamera.value.length - 1) {
+        i = i + 1
+    }
+    else { i = 0 }
+    nowCamera.value = allCamera.value[i]
+    console.log(i, allCamera.value.length, allCamera.value[i].deviceId);
+    await localStream.value.switchDevice('video', nowCamera.value.deviceId)
+}
 onMounted(() => {
     call()
 })
