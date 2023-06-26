@@ -152,7 +152,7 @@ const call = async function () {
         console.log(cameras);
 
         // const localStream = NERTC.createStream({ uid, audio: true, video: true });
-        const localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '9c3d509333b64864ab3d0a011262af936d6409d57686d64fd46f0ebd51306661' });
+        const localStream = NERTC.createStream({ uid, audio: true, video: true });
         //设置视频推流属性
         localStream.setVideoProfile({
             resolution: NERTC.VIDEO_QUALITY_1080p,//分辨率
