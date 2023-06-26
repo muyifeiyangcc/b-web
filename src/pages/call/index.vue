@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="relative b-1 max-w-450 bg-#000" ref="remoteVideoContent" :style="{ height: viewHeight + 'px' }">
+        <div class="relative  max-w-450 bg-#000  overflow-hidden" ref="remoteVideoContent"
+            :style="{ height: viewHeight + 'px' }">
             <!-- 本地视频窗口 -->
             <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2 bg-#000"></div>
             <!-- 左上角主播信息 -->
@@ -157,7 +158,6 @@ const call = async function () {
         console.log(cameras);
         allCamera.value = cameras
         nowCamera.value = cameras[0]
-        // const localStream = NERTC.createStream({ uid, audio: true, video: true });
         localStream.value = NERTC.createStream({ uid, audio: true, video: true, cameraId: nowCamera.value.deviceId });
         //设置视频推流属性
         localStream.value.setVideoProfile({
@@ -170,9 +170,9 @@ const call = async function () {
         localStream.value.play(localVideoContent.value);
         // 设置本地视频画布
         localStream.value.setLocalRenderMode({
-            width: localVideoContent.value.clientWidth,
+            width: 115,
             height: localVideoContent.value.clientHeight,
-            cut: false,
+            cut: true,
         });
         await client.publish(localStream.value);
     } catch (error) {

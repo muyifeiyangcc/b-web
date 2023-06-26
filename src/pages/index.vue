@@ -78,6 +78,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')
+  //组件卸载前解绑事件
+  window.removeEventListener("scroll", scrollHandle);
 })
 
 </script>

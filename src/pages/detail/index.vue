@@ -64,7 +64,8 @@
                         <van-space>
                             <div class="rounded-4 overflow-hidden text-0 w95 h95 overflow-hidden"
                                 v-for="item, index in userStore.videoList" :key="index" @click="startVideo(item.mediaUrl)">
-                                <video :src="item.mediaUrl" :poster="item.videoCover"></video>
+                                <video :src="item.mediaUrl"></video>
+                                <!-- :poster="item.videoCover" -->
                             </div>
                         </van-space>
                     </div>
