@@ -63,11 +63,14 @@
                     <div class="mt8 overflow-scroll w-full ">
                         <van-space>
                             <div class="rounded-4 overflow-hidden text-0 w95 h95 overflow-hidden"
-                                v-for="item, index in userStore.videoList" :key="index">
+                                v-for="item, index in userStore.videoList" :key="index" @click="startVideo(item.mediaUrl)">
                                 <video :src="item.mediaUrl" :poster="item.videoCover"></video>
                             </div>
                         </van-space>
                     </div>
+                    <van-popup v-model:show="showVideo" class="w-auto h-auto">
+                        <video :src="videoUrl" autoplay="true" controls="controls"></video>
+                    </van-popup>
                 </div>
                 <!-- 信息 -->
                 <div class="mx24 mt22">
@@ -303,6 +306,12 @@ const followOrNo = () => {
     const type = userStore.userDetail.followed === true ? 2 : 1
     userStore.followUser(type, userStore.userDetail.userId)
     userStore.userDetail.followed = !userStore.userDetail.followed
+}
+const showVideo = ref(false)
+let videoUrl = ref('')
+const startVideo = (url) => {
+    videoUrl.value = url
+    showVideo.value = true
 }
 onMounted(() => {
     //获取用户详情数据

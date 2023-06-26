@@ -7,6 +7,7 @@ const homeStore = useHomeStore()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
 const momentsStore = useMomentsStore()
+
 const saveOption =
 {
   "appId": "77985415",

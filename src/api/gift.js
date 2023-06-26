@@ -1,7 +1,7 @@
 import request from "~/composables/request"
 //获取礼物列表
-export const getGiftList= ()=>request.post('/api/gift/getGiftList')
+export const getGiftList= ()=>request.post('/api/api/gift/getGiftList')
 //打赏
-export const sendGift= (data)=>request.post('/api/gift/send',data)
+export const sendGift= (data)=>request.post('/api/api/gift/send',data)
 // 用户拒绝索要礼物接口
-export const rejectAskGift= ()=>request.post('/api/gift/rejectAskFor')
+export const rejectAskGift= ()=>request.post('/api/api/gift/rejectAskFor')

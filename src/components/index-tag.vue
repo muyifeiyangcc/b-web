@@ -56,11 +56,13 @@ const onClickFatherTab = (name, title) => {
     tabValue.value = 0
     homeStore.getIndexTabChildrenList(title)//更新二级分类
     homeStore.updateIndexListData(1, title, true)//更新首页用户信息
+    document.documentElement.scrollTop = 0//将页面滚动距离置0
 }
 // 点击二级tab栏触发事件
 const tabClick = (value) => {
     tabValue.value = value
     homeStore.updateIndexListData(1, homeStore.indexTabsChildren[value].tagName, true)//更新首页用户信息
+    document.documentElement.scrollTop = 0//将页面滚动距离置0
 }
 
 onMounted(() => {

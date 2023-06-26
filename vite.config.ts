@@ -167,13 +167,13 @@ export default defineConfig({
     noExternal: ['workbox-window', /vue-i18n/, 'vant'],
   },
   server: {
-     host: '192.168.2.34',
+    // host: '192.168.3.10',
     proxy: {
       '/api': {
         // target: 'https://test.xxchat.chat/api',
-        target: 'http://8.134.216.253:8000/api',
+        target: 'http://8.134.216.253:8000',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

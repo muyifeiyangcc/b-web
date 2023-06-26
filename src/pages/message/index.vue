@@ -30,8 +30,9 @@
       </div>
     </div>
     <!-- 聊天列表 -->
-    <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
-      <div class="pb50 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
+    <div class="pb100 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
+      <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
+
         <div class="c-#fff pt20 " v-for="item, index in sessionList " :key="index"
           @click="router.push({ path: '/talk', query: { to: item.to, nick: talkUserDataList[index].nick, avatar: talkUserDataList[index].avatar } })">
           <van-row>
@@ -68,8 +69,9 @@
             </van-col>
           </van-row>
         </div>
-      </div>
-    </van-pull-refresh>
+      </van-pull-refresh>
+
+    </div>
     <!-- 标记已读弹窗 -->
     <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '37%' }" class="bg-#130021">
       <template #default>
@@ -81,7 +83,7 @@
         </div>
         <div
           class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt10"
-          @click="sureEmpty">
+          @click="showEmpty = true">
           Empty all
         </div>
         <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt21"
@@ -103,7 +105,7 @@
                 @click="showEmpty = false;">Close</button>
               <button
                 class="w124 h40 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 c-#fff rounded-23 text-16 font-semibold"
-                @click="showEmpty = false; showBottom = false">Confirm</button>
+                @click="sureEmpty">Confirm</button>
             </van-space>
           </div>
         </div>
@@ -140,7 +142,8 @@ const onRefresh = () => {
 const sureEmpty = () => {
   homeStore.deleteAllSessions()
   homeStore.sessionList = []
-  showEmpty.value = !showEmpty.value
+  showEmpty.value = false
+  showBottom.value = false
 }
 // 全部已读
 const allRead = () => {

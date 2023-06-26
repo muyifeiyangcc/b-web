@@ -38,6 +38,7 @@
             <div class="c-#fff text-16 font-semibold ml20 mt32 ">Basic info</div>
             <div class="w97 h97 rounded-50% overflow-hidden mt15 mx-auto  relative text-center ">
                 <van-uploader v-model="avatar" multiple:max-count=1 preview-size="97" :after-read="afterRead" />
+                <!-- 删除图片按钮 -->
                 <div class="bg-#fff/40 h20 w-full absolute bottom-0  z-3" @click="avatar = []">
                     <van-icon name="cross" class="text-16 c-#fff" />
                 </div>
@@ -176,6 +177,8 @@
 
 <script  setup>
 import { getMineInfo, setUserInfo } from '~/api/user'
+import { getOssKey } from '~/api/home'
+import OSS from "ali-oss";
 const router = useRouter()
 const showName = ref(false)//修改昵称弹窗
 const showGender = ref(false)//选择性别弹窗
@@ -224,10 +227,50 @@ const setMineInfoData = async () => {
     await setUserInfo(setUserInfoOpt.value)
 }
 
+
+const ossInfo = ref({})
 const afterRead = (file) => {
-    // 此时可以自行将文件上传至服务器
     console.log(file);
+    // 此时可以自行将文件上传至服务器
+    uploadImage(file)
 };
+
+// 上传图片
+const uploadImage = async (data) => {
+    ossInfo.value = await getOssKey()//获取临时凭证
+    // 实例化OSS
+    const client = new OSS({
+        // region: ossInfo.reg,
+        accessKeyId: ossInfo.value.AccessKeyId,
+        accessKeySecret: ossInfo.value.AccessKeySecret,
+        stsToken: ossInfo.value.SecurityToken,
+        bucket: "app-bucket-test",
+        refreshSTSToken: async () => {
+            // 向您搭建的STS服务获取临时访问凭证。
+            const result = await getOssKey()
+            return {
+                accessKeyId: result.AccessKeyId, // 自己账户的accessKeyId或临时秘钥
+                accessKeySecret: result.AccessKeySecret, // 自己账户的accessKeySecret或临时秘钥
+                stsToken: result.SecurityToken, //  从STS服务获取的安全令牌（SecurityToken）。
+            }
+        },
+        // 刷新临时访问凭证的时间间隔，单位为毫秒。
+        refreshSTSTokenInterval: 3600 * 1000
+    });
+
+    let name = data.file.name;
+    let index = name.lastIndexOf(".");
+    let ext = name.substr(index + 1);
+    console.log(client);
+    console.log(Date.now() + "." + ext);
+    const result = await client.put(
+        Date.now() + "." + ext,
+        data.file
+    );
+    //返回的图片路径
+    console.log(result);
+}
+
 onMounted(() => {
     //获取个人信息
     userStore.getMineInfoData()
@@ -239,7 +282,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
     //组件卸载前去掉背景色
     document.querySelector('body').removeAttribute('style')
-})
+})  
 </script>
 
 <style scoped>
