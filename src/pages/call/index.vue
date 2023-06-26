@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="relative b-1 max-w-450 " ref="remoteVideoContent" :style="{ height: viewHeight + 'px' }">
+        <div class="relative b-1 max-w-450 bg-#000" ref="remoteVideoContent" :style="{ height: viewHeight + 'px' }">
             <!-- 本地视频窗口 -->
-            <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2"></div>
+            <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2 bg-#000"></div>
             <!-- 左上角主播信息 -->
             <div class="absolute left-16 top-50 z-99">
                 <van-space direction="vertical">

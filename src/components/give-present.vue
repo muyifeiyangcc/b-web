@@ -22,7 +22,7 @@
                         <van-row>
                             <van-col :span="6" v-for="item, index in giftStore.giftList" :key="index">
                                 <div @click="giftId = item.id" class="rounded-5"
-                                    :class="giftId === item.id ? 'bg-#000/30' : ''">
+                                    :class="giftId === item.id ? 'bg-#fff/15' : ''">
                                     <van-space direction="vertical" align="center">
                                         <img :src="item.giftImg" class="w57 h60">
                                         <div>
@@ -50,6 +50,7 @@
 <script  setup>
 import { sendGift } from '~/api/gift'
 const router = useRouter()
+const userStore = useUserStore()
 const giftStore = useGiftStore()
 const giftId = ref(null)
 
