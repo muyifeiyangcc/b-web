@@ -21,8 +21,8 @@ state:()=>({
         //手机
         // toAccid:'c398a3961d954af7841f95b43ed6d85b',
         //电脑
-        toAccid:'0d468462d7624684abd8f9735d777879',
-        requestId: '10086',
+        toAccid:'ece7d561b4594eedb8def4802f053b85',
+        requestId: '1008611',
     },
     otherParams:{
         channelId: 'YOUR_CHANNELID',

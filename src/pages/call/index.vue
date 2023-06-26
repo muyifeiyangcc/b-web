@@ -93,17 +93,18 @@
 
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
-const uid = '112'
+const uid = '112'//后期通过api获取
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const homeStore = useHomeStore()
 const giftStore = useGiftStore()
 const client = NERTC.createClient({ appkey, debug: true })
-const localVideoContent = ref()
-const remoteVideoContent = ref()
+const localVideoContent = ref()//本地视频流播放窗口
+const remoteVideoContent = ref()//远端视频流播放窗口
 const viewHeight = window.innerHeight
 const showDialog = ref(true)
 const presentShow = ref(false)
 const router = useRouter()
+
 // 监听远端用户发布视频流的事件
 client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -126,8 +127,8 @@ client.on('stream-subscribed', event => {
     });
     // 播放远端流
     remoteStream.play('remoteVideoContent');
-
 });
+
 //开始通话
 const call = async function () {
     // 进房成功后开始推流
@@ -137,11 +138,13 @@ const call = async function () {
         }).then((obj) => {
             console.info('加入房间成功...')
         })
+
         const cameras = await NERTC.getCameras();    //获取可用的视频输入设备
         const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
         console.log(cameras);
 
-        const localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '9c3d509333b64864ab3d0a011262af936d6409d57686d64fd46f0ebd51306661' });
+        const localStream = NERTC.createStream({ uid, audio: true, video: true });
+        // const localStream = NERTC.createStream({ uid, audio: true, video: true, cameraId: '9c3d509333b64864ab3d0a011262af936d6409d57686d64fd46f0ebd51306661' });
         //设置视频推流属性
         localStream.setVideoProfile({
             resolution: NERTC.VIDEO_QUALITY_1080p,//分辨率
@@ -157,7 +160,6 @@ const call = async function () {
             height: div.value.clientHeight,
             cut: false,
         });
-
         await client.publish(localStream);
     } catch (error) {
         console.error(error);
