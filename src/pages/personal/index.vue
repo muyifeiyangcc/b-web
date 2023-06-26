@@ -48,7 +48,7 @@
             <div class="i-my-icons-diamond text-35" />
             <div class="py16 pr23 text-#fff font-medium text-14">
               <div>Balance:</div>
-              <div>1020</div>
+              <div>{{ mineInfo.diamondNum }}</div>
             </div>
           </van-space>
         </div>

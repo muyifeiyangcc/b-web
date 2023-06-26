@@ -195,6 +195,7 @@ const changeCamera = async () => {
     console.log(i, allCamera.value.length, allCamera.value[i].deviceId);
     await localStream.value.switchDevice('video', nowCamera.value.deviceId)
 }
+
 onMounted(() => {
     call()
 })

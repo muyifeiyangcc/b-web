@@ -14,14 +14,15 @@
                         <div>
                             <van-space>
                                 <div class="i-my-icons-diamond text-18" />
-                                <div class="text-16 c-#fff">888</div>
+                                <div class="text-16 c-#fff">{{ userStore.mineInfo.diamondNum }}</div>
                             </van-space>
                         </div>
                     </div>
-                    <div class="text-center bg-#000/10 pt11 pb8 b-t-1 b-#000/50">
+                    <div class="px5 text-center bg-#000/10  pt11 pb8 b-t-1 b-#000/50">
                         <van-row>
                             <van-col :span="6" v-for="item, index in giftStore.giftList" :key="index">
-                                <div>
+                                <div @click="giftId = item.id" class="rounded-5"
+                                    :class="giftId === item.id ? 'bg-#000/30' : ''">
                                     <van-space direction="vertical" align="center">
                                         <img :src="item.giftImg" class="w57 h60">
                                         <div>
@@ -47,7 +48,10 @@
 
 
 <script  setup>
+import { sendGift } from '~/api/gift'
+const router = useRouter()
 const giftStore = useGiftStore()
+const giftId = ref(null)
 
 </script>
 

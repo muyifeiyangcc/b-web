@@ -7,7 +7,7 @@
                     <div>
                         <van-space :size="5">
                             <div class="i-my-icons-diamond" />
-                            <div class="c-#fff text-14 font-medium">100</div>
+                            <div class="c-#fff text-14 font-medium">{{ userStore.mineInfo.diamondNum }}</div>
                         </van-space>
                     </div>
                 </template>
@@ -51,6 +51,7 @@
 import { getRechargeList } from '~/api/wallet'
 const router = useRouter()
 const rechargeList = ref([])
+const userStore = useUserStore()
 const getRechargeListData = async () => {
     rechargeList.value = await getRechargeList()
     console.log(rechargeList.value);
