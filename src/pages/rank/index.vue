@@ -33,7 +33,7 @@
                         </div>
                         <div>
                             <van-space :size="3">
-                                <div class="text-14 c-#fff font-semibold">{{ 1 }}</div>
+                                <div class="text-14 c-#fff font-semibold">{{ rankingListTop[0].nickname }}</div>
                                 <div class="i-my-icons-famale text-11" />
                             </van-space>
                         </div>
@@ -56,7 +56,7 @@
                         </div>
                         <div>
                             <van-space :size="3">
-                                <div class="text-14 c-#fff font-semibold">Bom</div>
+                                <div class="text-14 c-#fff font-semibold">{{ rankingListTop[1].nickname }}</div>
                                 <div class="i-my-icons-famale text-11" />
                             </van-space>
                         </div>
@@ -79,7 +79,7 @@
                         </div>
                         <div>
                             <van-space :size="3">
-                                <div class="text-14 c-#fff font-semibold">admin</div>
+                                <div class="text-14 c-#fff font-semibold">{{ rankingListTop[2].nickname }}</div>
                                 <div class="i-my-icons-famale text-11" />
                             </van-space>
                         </div>
@@ -101,8 +101,7 @@
                     <van-space :size="0">
                         <div class="c-#BCA1E1 font-bold text-15 mr12">{{ index + 4 }}</div>
                         <div class="mr8">
-                            <van-image round width="10rem" height="10rem"
-                                src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+                            <van-image round width="10rem" height="10rem" :src="item.icon" />
                         </div>
                         <div>
                             <van-space direction="vertical" :size="0">
@@ -133,7 +132,7 @@ import { getRankingList } from '~/api/home'
 const active = ref('')
 const router = useRouter()
 const rankingList = ref([])
-const myValues = ref({})
+// const myValues = ref({})
 const rankingListTop = ref([])
 // tab栏切换回调
 const onClickTab = (event) => {
@@ -147,16 +146,16 @@ const onClickTab = (event) => {
     // getRankingListData()
 }
 //获取排行榜数据
-const getRankingListData = async (type = "ANCHOR_DAY") => {
+const getRankingListData = async (type = "ANCHOR_CHARM") => {
     const result = await getRankingList({
-        currentPage: 1,
+        currentPage: 0,
         pageSize: 100,
         rankType: type
     })
-    rankingList.value = result.rankingMembers//排行榜数据
+    rankingList.value = result//排行榜数据
     rankingListTop.value = rankingList.value.splice(0, 3)
-    myValues.value = result.rankingMineVo//个人信息
-    console.log(rankingList.value, rankingListTop.value);
+    // myValues.value = result.rankingMineVo//个人信息
+    // console.log(rankingList.value, rankingListTop.value);
 }
 onBeforeMount(() => {
     getRankingListData()

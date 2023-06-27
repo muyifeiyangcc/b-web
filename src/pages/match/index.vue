@@ -8,7 +8,7 @@
                     <div>
                         <van-space :size="5">
                             <div class="i-my-icons-diamond" />
-                            <div class="c-#fff text-14 font-medium">100</div>
+                            <div class="c-#fff text-14 font-medium">{{ userStore.mineInfo.diamondNum }}</div>
                         </van-space>
                     </div>
                 </template>
@@ -118,23 +118,26 @@ const cancelMatch = ref(false)
 const target = ref({})//匹配到的用户信息
 const matching = ref(true)//
 const homeStore = useHomeStore()
+const userStore = useUserStore()
 // 开始匹配
 const startMatch = async () => {
     matching.value = true
     const result = await getStartMatch({
-        "gender": 2,
-        "userType": 3
+        "gender": 2
     })
+    userStore.getUserDetailData(result.userId, result.yxAccid)
     target.value = result
+    console.log(result);
     setTimeout(() => {
         matching.value = false
     }, 5000)
 }
 //邀请通话
 const invite = async () => {
-    router.push({ path: 'waitcall', query: { userId: target.value.userId, fromMatch: true } })
+    router.push({ path: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true } })
 }
 onMounted(() => {
+
     startMatch()
     //组件挂载完成设置背景色
     // document.querySelector('body').setAttribute('style', '')

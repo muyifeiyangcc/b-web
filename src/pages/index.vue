@@ -2,12 +2,13 @@
 import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
+import mitt from 'mitt';
+const emitter = mitt();
 const router = useRouter()
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
 const momentsStore = useMomentsStore()
-
 const saveOption =
 {
   "appId": "77985415",
@@ -54,6 +55,10 @@ const scrollHandle = () => {
 }
 
 onMounted(() => {
+  emitter.on('*', (attachType) => {
+    // 处理事件的回调函数
+    console.log(attachType);
+  });
   //组件挂载时，添加scroll监听
   window.addEventListener("scroll", scrollHandle);
   //初始化im

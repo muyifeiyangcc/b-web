@@ -1,20 +1,20 @@
 <template>
     <div>
-        <div class="relative  max-w-450 bg-#000  overflow-hidden" ref="remoteVideoContent"
+        <div class="relative  max-w-450 relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
             <!-- 本地视频窗口 -->
+            <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
             <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2 bg-#000"></div>
             <!-- 左上角主播信息 -->
-            <div class="absolute left-16 top-50 z-99">
+            <div class="absolute left-16 top-50 z-99" @click="showGetCoinDialog">
                 <van-space direction="vertical">
                     <div class="bg-#000/25 pl3 pr7 rounded-23 inline-block">
                         <van-space>
-                            <van-image round width="8.5rem" height="8.5rem"
-                                src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+                            <van-image round width="8.5rem" height="8.5rem" :src="userStore.userDetail.icon" />
                             <div>
                                 <van-space direction="vertical" :size="2">
-                                    <div class="text-14 c-#fff font-semibold">Stella Malone</div>
-                                    <div class="c-#E2E2E2 text-12 ">25</div>
+                                    <div class="text-14 c-#fff font-semibold">{{ userStore.userDetail.nickname }}</div>
+                                    <div class="c-#E2E2E2 text-12 ">{{ userStore.userDetail.age }}</div>
                                 </van-space>
                             </div>
                             <div
@@ -26,13 +26,13 @@
                     <div class="bg-#000/25 rounded-23 inline-block px16 pt8 pb3">
                         <van-space :size="5">
                             <img src="../../assets/weizhi.png" class="w12 h17">
-                            <div class="c-#E2E2E2 text-12">Vietnam</div>
+                            <div class="c-#E2E2E2 text-12">{{ userStore.userDetail.countryId }}</div>
                         </van-space>
                     </div>
                 </van-space>
             </div>
-            <!-- 右侧限时充值 -->
-            <div class="absolute right-6 top-220 z-99" v-if="showDialog">
+            <!-- 右侧特惠充值 -->
+            <div class="absolute right-6 top-220 z-99" v-if="showDialog" @click="requestGift = true">
                 <img src="../../assets//recharge.png" class="w105 h105"><!--背景图 -->
                 <img src="../../assets/close.png" class="w16 h16 absolute top-0 right-12"
                     @click="showDialog = false"><!--关闭按钮 -->
@@ -57,8 +57,8 @@
                 </van-space>
             </div>
             <!-- 聊天区域 -->
-            <div class="absolute bottom-100 left-15 w270 h200 z-99">
-                <div class="h150 overflow-scroll">
+            <div class="absolute bottom-100 left-15 w270 h300 z-99">
+                <div class="h250 overflow-scroll">
                     <div class="c-#E2E2E2 text-14 " v-for=" in 80">
                         you : what do you do
                     </div>
@@ -86,28 +86,90 @@
                     </van-col>
                 </van-row>
             </div>
-            <!-- 送礼弹框 -->
+            <!-- 送礼 -->
             <give-present :show="presentShow" />
+            <!-- 索要礼物弹窗 -->
+            <van-popup v-model:show="requestGift" round overlay-class="bg-#000/40 backdrop-blur-20">
+                <div class="w343 h290 bg-#130021 text-center pt90">
+                    <div class="">
+                        <van-space direction="vertical" :size="20">
+                            <div>
+                                <van-space>
+                                    <div class="i-my-icons-diamond text-21" />
+                                    <div class="c-#fff text-18 font-bold">1500</div>
+                                    <!-- <div class="c-#fff text-18 font-bold">{{ userStore.mineInfo.diamondNum }}</div> -->
+                                </van-space>
+                            </div>
+                            <div class="c-#E3E3E3 text-16 font-medium">
+                                She ask me for this gift
+                            </div>
+                        </van-space>
+                    </div>
+                    <div class="mt48">
+                        <van-space :size="33">
+                            <div class="text-16 c-#5409C0 w124 py10 bg-#fff rounded-23 text-center font-semibold"
+                                @click="refuseGive">
+                                Refuse
+                            </div>
+                            <div class="text-16 c-#fff w124 py10 bg-gradient-to-rt from-#4D09C1  via-#7F04BA to-#D016C8 rounded-23 text-center font-semibold"
+                                @click="agreeGive">
+                                Agree</div>
+                        </van-space>
+                    </div>
+                </div>
+            </van-popup>
+            <!-- 余额不足，限时充值弹窗 -->
+            <van-popup v-model:show="showGetCoin" position="bottom"
+                class="h45% rounded-t-24 bg-gradient-to-rt from-#4D09C1  via-#7F04BA to-#D016C8">
+                <div class="text-center">
+                    <div class="mx-auto w177 h177 mt18 relative">
+                        <div class="absolute left-53 top-70">
+                            <van-count-down ref="countDown" :time="time" format="mm:ss"
+                                class="important:text-24 important:c-#fff important:font-bold " @finish="timeFinsh" />
+                        </div>
+                        <img src="../../assets/bg_circle.png" class="">
+                    </div>
+                    <div class="text-16 font-semibold c-#fff mx73">curreri all balance is insufficient please recharge</div>
+                    <div class="flex justify-between items-center mx30 mt30 py13 px15 bg-#fff/20 rounded-14">
+                        <div>
+                            <van-space>
+                                <div class="i-my-icons-diamond text-18" />
+                                <div class="text-15 font-bold c-#fff">9800</div>
+                            </van-space>
+                        </div>
+                        <div class="c-#4E09C1 text-15 font-medium px12 py6 rounded-20 bg-#fff">
+                            $19.99
+                        </div>
+                    </div>
+                </div>
+            </van-popup>
         </div>
     </div>
 </template>
 
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
+import mitt from 'mitt';
+const emitter = mitt();
 const uid = '112'//后期通过api获取
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const homeStore = useHomeStore()
 const giftStore = useGiftStore()
-const client = NERTC.createClient({ appkey, debug: true })
+const userStore = useUserStore()
 const localVideoContent = ref()//本地视频流播放窗口
 const remoteVideoContent = ref()//远端视频流播放窗口
 const viewHeight = window.innerHeight
 const showDialog = ref(true)
 const presentShow = ref(false)
+const requestGift = ref(false)
+const showGetCoin = ref(false)
+const time = ref(0);
+
 const router = useRouter()
 const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
 const localStream = ref(null)
+const client = NERTC.createClient({ appkey, debug: true })
 // 监听远端用户发布视频流的事件
 client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -142,7 +204,6 @@ client.on('stream-subscribed', event => {
         });
     });
 });
-
 //开始通话
 const call = async function () {
     // 进房成功后开始推流
@@ -179,7 +240,6 @@ const call = async function () {
         console.error(error);
     }
 }
-
 //结束通话
 const finishCall = async function () {
     await client.leave().then(() => router.push('/'))
@@ -195,9 +255,30 @@ const changeCamera = async () => {
     console.log(i, allCamera.value.length, allCamera.value[i].deviceId);
     await localStream.value.switchDevice('video', nowCamera.value.deviceId)
 }
+//确认赠送主播索要礼物
+const agreeGive = () => {
+    requestGift.value = false
+}
+//拒绝赠送主播索要礼物
+const refuseGive = () => {
+    requestGift.value = false
+}
+//触发限时充值弹窗
+const showGetCoinDialog = () => {
+    time.value = 10000
+    showGetCoin.value = true
+    emitter.emit('SystemNotificationHandler', { attachType: 6 });
+}
+const timeFinsh = () => {
+    const countDown = ref();
+    console.log(countDown.value);
+    // countDown.value.reset()
+    showGetCoin.value = false
+}
 
 onMounted(() => {
     call()
+
 })
 </script>
 

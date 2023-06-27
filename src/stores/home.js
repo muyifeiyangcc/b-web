@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import NIMSDK from 'nim-web-sdk-ng/dist/NIM_BROWSER_SDK'
 import { getIndexTab,getIndexList } from '~/api/home'
+
 export const useHomeStore = defineStore('useHomeStore',{
 state:()=>({
     nim:{},
@@ -60,6 +61,7 @@ state:()=>({
 actions:{
     //连接im
     async imConnect (){
+        
     const router = useRouter()
     // 初始化nim
     const nim =new NIMSDK({
@@ -90,7 +92,7 @@ actions:{
     nim.signaling.on('signalingInvite', (event) => {
     this.acceptData = event
     console.log('收到邀请', event)
-    router.push({path:'waitconnect',query:{yxId:event.fromAccid}})
+    router.push({name:'waitconnect',query:{yxId:event.fromAccid}})
 })
     //监听对方已取消
 nim.signaling.on('signalingCancelInvite', function (event) {

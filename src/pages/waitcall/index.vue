@@ -45,11 +45,17 @@ const homeStore = useHomeStore()
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
-const userId = route.query.userId
-const yxId = route.query.yxId
-const fromMatch = route.query.fromMatch
+const userId = route.query.userId//对象ID
+const yxId = route.query.yxId//对象云信ID
+const fromMatch = route.query.fromMatch//对象是否来自匹配
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
+
+if (fromMatch) {
+    setTimeout(() => {
+        router.push({ name: 'call', query: { userId } })
+    }, 3000);
+}
 //取消邀请
 const ringOff = async () => {
     try {
@@ -76,6 +82,7 @@ const ringOff = async () => {
 }
 //邀请通话
 const invite = async (userId, yxId) => {
+    homeStore.params.toAccid = yxId
     try {
         const data = await homeStore.nim.signaling.callEx(homeStore.params)
         const channelInfo = data.channelInfo

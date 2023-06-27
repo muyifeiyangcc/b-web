@@ -23,6 +23,7 @@
     "@vueuse/head": "^1.1.26",
     "ali-oss": "^6.17.1",
     "dayjs": "^1.11.8",
+    "mitt": "^3.0.0",
     "nertc-web-sdk": "^4.6.50",
     "nim-web-sdk-ng": "^0.14.0",
     "nprogress": "^0.2.0",
