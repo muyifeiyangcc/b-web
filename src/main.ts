@@ -8,7 +8,7 @@ import generatedRoutes from '~pages'
 import '@unocss/reset/tailwind.css'
 import './styles/main.css'
 import 'uno.css'
-
+import mitt from 'mitt'
 const routes = setupLayouts(generatedRoutes)
 
 export const createApp = ViteSSG(
@@ -18,6 +18,6 @@ export const createApp = ViteSSG(
     // install all modules under `modules/`
     Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
       .forEach(i => i.install?.(ctx))
-    // ctx.app.use(Previewer)
+    ctx.app.config.globalProperties.emitter = mitt()
   },
 )

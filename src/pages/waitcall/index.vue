@@ -59,9 +59,13 @@ if (fromMatch) {
 //取消邀请
 const ringOff = async () => {
     try {
-        let data = await homeStore.nim.signaling.cancelInvite({ channelId: homeStore.inviteData.channelInfo.channelId, toAccid: homeStore.params.toAccid, requestId: homeStore.params.requestId })
-        console.warn('取消邀请成功，data：', data)
-        router.push('/')
+        await homeStore.nim.signaling.cancelInvite({ channelId: homeStore.inviteData.channelInfo.channelId, toAccid: homeStore.params.toAccid, requestId: homeStore.params.requestId })
+            .then((res) => {
+                console.warn('取消邀请成功，data：', res)
+                router.push('/')
+            })
+
+
     } catch (error) {
         console.warn('取消邀请失败，error：', error)
         switch (error.code) {
@@ -83,6 +87,7 @@ const ringOff = async () => {
 //邀请通话
 const invite = async (userId, yxId) => {
     homeStore.params.toAccid = yxId
+    console.log(yxId);
     try {
         const data = await homeStore.nim.signaling.callEx(homeStore.params)
         const channelInfo = data.channelInfo

@@ -10,7 +10,7 @@
 
             <div class="mr9">
                 <van-space>
-                    <button><img src="../assets/Specialrecharge.png" class="w30 h30" @click="waitMake"></button>
+                    <button><img src="../assets/Specialrecharge.png" class="w30 h30"></button>
                     <button><img src="../assets/ranking.png" class="w30 h30" @click="router.push('/rank')"></button>
                 </van-space>
             </div>
@@ -42,11 +42,8 @@
         </div>
     </div>
 </template>
-
-
 <script  setup>
-import mitt from 'mitt';
-const emitter = mitt();
+
 const futherTabActive = ref(0);
 // const childrenTabActive = ref(0);
 const homeStore = useHomeStore()//引入pinia组件
@@ -66,9 +63,7 @@ const tabClick = (value) => {
     homeStore.updateIndexListData(1, homeStore.indexTabsChildren[value].tagName, true)//更新首页用户信息
     document.documentElement.scrollTop = 0//将页面滚动距离置0
 }
-const waitMake = () => {
-    emitter.emit('SystemNotificationHandler', { attachType: 6 });
-}
+
 onMounted(() => {
 
 })

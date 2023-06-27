@@ -149,9 +149,7 @@
 
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
-import mitt from 'mitt';
-const emitter = mitt();
-const uid = '112'//后期通过api获取
+const { emitter } = getCurrentInstance().appContext.config.globalProperties
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const homeStore = useHomeStore()
 const giftStore = useGiftStore()
@@ -164,7 +162,7 @@ const presentShow = ref(false)
 const requestGift = ref(false)
 const showGetCoin = ref(false)
 const time = ref(0);
-
+const uid = userStore.mineInfo.userId//后期通过api获取
 const router = useRouter()
 const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
@@ -186,6 +184,7 @@ client.on('stream-added', event => {
         console.warn(`subscribe 成功 ${remoteStream.streamID}`)
     });
 });
+
 //播放订阅的对端的音视频流
 client.on('stream-subscribed', event => {
     // 远端流订阅成功
@@ -204,12 +203,45 @@ client.on('stream-subscribed', event => {
         });
     });
 });
+
+client.on('peer-online', evt => {
+    console.log(`${evt.uid} 加入房间`)
+    addLog(`${evt.uid} 加入房间`)
+})
+client.on('connection-state-change', (evt) => {
+    console.log(`connection-state-change ${evt.prevState} => ${evt.curState}。是否重连：${evt.reconnect}`)
+})
+//远端用户加入房间通知回调，建议在收到此回调后再进行设置远端视图等的操作
+client.on('peer-online', evt => {
+    console.log(`${evt.uid} 加入房间`)
+    addLog(`${evt.uid} 加入房间`)
+})
+//远端用户退出房间通知回调
+client.on('peer-leave', evt => {
+    console.log(`${evt.uid} 退出房间`)
+    leaveLog(`${evt.uid} 退出房间`)
+})
+
+client.on("stream-removed", (evt) => {
+    // 远端流停止，则关闭渲染
+    evt.stream.stop(evt.mediaType);
+});
+// //网络质量通知回调（请列出所有枚举）
+// client.on('network-quality', stats => {
+//     console.log('=====房间里所有成员的网络状况：', stats)
+//     let status = null
+//     stats.forEach(item => {
+//         status = 'uid: ' + item.uid + ',上行： ' + item.uplinkNetworkQuality + ',下行： ' + item.downlinkNetworkQuality
+//         console.log(status)
+//     })
+// })
 //开始通话
 const call = async function () {
     // 进房成功后开始推流
     try {
         await client.join({
-            channelName: homeStore.channelInfo.name, uid
+            channelName: homeStore.channelInfo.name,
+            uid
         }).then((obj) => {
             console.info('加入房间成功...')
         })
@@ -235,7 +267,9 @@ const call = async function () {
             height: localVideoContent.value.clientHeight,
             cut: true,
         });
-        await client.publish(localStream.value);
+        await client.publish(localStream.value).then(() => {
+            console.warn('本地 publish 成功')
+        });
     } catch (error) {
         console.error(error);
     }
@@ -267,7 +301,7 @@ const refuseGive = () => {
 const showGetCoinDialog = () => {
     time.value = 10000
     showGetCoin.value = true
-    emitter.emit('SystemNotificationHandler', { attachType: 6 });
+    emitter.emit('SystemNotificationHandler', 6);
 }
 const timeFinsh = () => {
     const countDown = ref();

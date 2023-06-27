@@ -9,11 +9,8 @@ actions:{
     async getFriendsCircleList (id=""){
     const result = await getFriendsCircle({
     "currentPage": 1,
-    "endTime": "",
-    "keyword": id,
-    "onlyImgFlag": 0,
-    "pageSize": 10,
-    "startTime": ""
+    "keyword": id,  
+    "pageSize": 10
 })
 // 获取评论数据，添加在朋友圈数据中
     result.forEach(async(item) => {

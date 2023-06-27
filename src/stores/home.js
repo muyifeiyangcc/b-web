@@ -22,7 +22,7 @@ state:()=>({
         //手机
         // toAccid:'c398a3961d954af7841f95b43ed6d85b',
         //电脑
-        toAccid:'9957c75a49764910bb39f2c8939b0558',
+        toAccid:'ee970d9f2f744a3082fc2ed49dd4b345',
         requestId: '1008611',
     },
     otherParams:{
@@ -87,6 +87,8 @@ actions:{
         this.getSessionList()
     }
     });
+
+    nim.on('sysMsg', event=>console.log("收到系统消息",event))
 
     // 监听收到邀请
     nim.signaling.on('signalingInvite', (event) => {

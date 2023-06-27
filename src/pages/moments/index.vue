@@ -210,7 +210,6 @@ const postComment = async () => {
 }
 
 onMounted(() => {
-
   //动态计算滚动区高度
   scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
