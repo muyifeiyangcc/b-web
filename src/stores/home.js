@@ -94,7 +94,6 @@ actions:{
     }
     });
 
-    
 
     // 监听收到邀请
     nim.signaling.on('signalingInvite', (event) => {
@@ -110,7 +109,7 @@ nim.signaling.on('signalingCancelInvite', function (event) {
     //对方已加入
 nim.signaling.on('signalingJoin', (event) => {
     console.log('对方已加入', event)
-    router.push({name:'call',query:{mark:'calling'}})
+    router.push({name:'call',query: { channelName: JSON.parse(event.metaData.ext).channelName,mark:'calling' }})
 })
     //监听对方已拒绝
 nim.signaling.on('signalingReject', (event) => {

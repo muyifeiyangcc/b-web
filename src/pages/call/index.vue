@@ -152,6 +152,7 @@
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
+const secondCount = ref(0)
 const homeStore = useHomeStore()
 const giftStore = useGiftStore()
 const userStore = useUserStore()
@@ -170,7 +171,8 @@ const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
 const localStream = ref(null)
 const mark = route.query.mark
-const channelName = mark === 'calling' ? homeStore.channelInfo.name : route.query.channelName
+// const channelName = mark === 'calling' ? homeStore.channelInfo.channelId : route.query.channelName
+const channelName = route.query.channelName
 // 监听远端用户发布视频流的事件
 homeStore.client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -227,7 +229,7 @@ homeStore.client.on("stream-removed", (evt) => {
 });
 
 const join = async () => {
-    console.log(channelName, homeStore.channelInfo.name, channelName === homeStore.channelInfo.name ? '拨打' : '接听');
+    // console.log(channelName, homeStore.channelInfo.name, channelName === homeStore.channelInfo.name ? '拨打' : '接听');
     await homeStore.client.join({
         channelName,
         uid,
@@ -318,9 +320,17 @@ const findGift = (id) => {
     console.log(result);
     return result[0].giftImg
 }
+var interval = setInterval(() => {
+    secondCount.value++
+    console.log(secondCount.value);
+}, 1000)
+
 onMounted(() => {
     join()
-    // initLocalStream()
+})
+
+onBeforeUnmount(() => {
+    clearInterval(interval)
 })
 </script>
 

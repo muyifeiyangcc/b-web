@@ -41,7 +41,7 @@
 
 <script  setup>
 import { getEmoji } from '~/utils'
-import { getRandomString } from '~/utils'
+// import { getRandomString } from '~/utils'
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const router = useRouter()
@@ -51,7 +51,7 @@ const yxId = route.query.yxId//对象云信ID
 const fromMatch = route.query.fromMatch//对象是否来自匹配
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
-const cname = getRandomString(32)
+// const cname = getRandomString(32)
 const option = {
     // "type": 'directCall', //需要判断
     // "userId": userStore.mineInfo.userId,
@@ -64,7 +64,7 @@ const option = {
     'callUserList': [userStore.mineInfo.yxAccid],
     'videoPrice': userStore.mineInfo.videoPrice,
     'otherUserType': userStore.userDetail.userType,
-    'channelName': `${cname}|0|${userStore.mineInfo.userId}`,
+    'channelName': `${homeStore.channelInfo.channelId}|0|${userStore.mineInfo.userId}`,
     'userType': userStore.mineInfo.userType,
     "otherUserId": userId,
 }
@@ -120,7 +120,7 @@ const invite = async (userId, yxId) => {
         const channelInfo = data.channelInfo
         homeStore.inviteData = data
         homeStore.channelInfo = channelInfo
-        homeStore.channelInfo.name = cname
+        // homeStore.channelInfo.name = cname
         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
     } catch (error) {
         console.warn('创建频道失败，error：', error)
