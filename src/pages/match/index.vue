@@ -127,14 +127,13 @@ const startMatch = async () => {
     })
     userStore.getUserDetailData(result.userId, result.yxAccid)
     target.value = result
-    console.log(result);
     setTimeout(() => {
         matching.value = false
     }, 5000)
 }
 //邀请通话
 const invite = async () => {
-    router.push({ path: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true } })
+    router.push({ name: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true } })
 }
 onMounted(() => {
 

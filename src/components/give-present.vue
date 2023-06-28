@@ -38,7 +38,8 @@
                     </div>
                     <div class="flex flex-row-reverse px15 mt12">
                         <van-button
-                            class="c-#fff font-semibold text-14 px28 py8 rounded-15 b-0 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8">Send</van-button>
+                            class="c-#fff font-semibold text-14 px28 py8 rounded-15 b-0 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"
+                            @click="sendGift">Send</van-button>
                     </div>
                 </div>
             </template>
@@ -48,12 +49,14 @@
 
 
 <script  setup>
-import { sendGift } from '~/api/gift'
 const router = useRouter()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
 const giftId = ref(null)
-
+const sendGift = () => {
+    giftStore.postGift(giftId.value, 1, 'VIDEO', userStore.userDetail.yxAccid)
+    userStore.getMineInfoData()
+}
 </script>
 
 <style scoped></style>

@@ -12,6 +12,7 @@ state:()=>({
     indexList:[],//首页用户列表
     getDiamondsVisible:false,//控制钻石不足弹窗显示
     requestGift:false,//直播间索要礼物弹窗
+    giftId:'',//索要礼物Id
     attachEvent:{},//系统消息事件对象
     getIndexListOption: 
     {
@@ -57,7 +58,6 @@ state:()=>({
         to: 'c398a3961d954af7841f95b43ed6d85b',//通信对象的cid
         limit: 20,//返回条数
     }
-
 }),
 //  persist: {
 //     paths: ['indexTabs'],
@@ -73,8 +73,8 @@ actions:{
         // account: '1ef27c9ebb064b66989b523c0d108c37', // 云信账号
         // token: '4fc8f80b57f0a9afd83b86490b11fb9b' ,// 云信密码
         account: "225f921a42e347019b55cd633b7754a7", // 云信账号
-        token: "7a30b992c1cde7759f499db202a20f7b" // 云信密码
-        // debugLevel: 'debug',
+        token: "7a30b992c1cde7759f499db202a20f7b", // 云信密码
+        debugLevel: 'debug',
 })
     const client = NERTC.createClient({appkey: '124f689baed25c488e1330bc42e528af', debug: true })
     this.nim=nim
@@ -119,11 +119,13 @@ nim.signaling.on('signalingReject', (event) => {
     //系统消息
 nim.on('sysMsg', event=>{
     this.attachEvent=event.attach
+
     if(event.attach.attachType){
         const attachType=event.attach.attachType
         if(attachType===5){
             console.log('索要礼物');
             this.requestGift=true
+            this.giftId=event.attach.giftId
         }
     }
     console.log("收到系统消息",event)

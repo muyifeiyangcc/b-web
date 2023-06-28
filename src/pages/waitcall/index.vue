@@ -68,11 +68,13 @@ const option = {
     'userType': userStore.mineInfo.userType,
     "otherUserId": userId,
 }
+
 if (fromMatch) {
     setTimeout(() => {
-        router.push({ name: 'call', query: { userId } })
+        router.push({ name: 'call', query: { userId, fromMatch } })
     }, 3000);
 }
+
 //取消邀请
 const ringOff = async () => {
     try {

@@ -5,6 +5,7 @@ state:()=>({
     countryList:[],//国家列表
     mineInfo:{},//我的信息
     userDetail:{},//用户详情
+    matchDetail:{},//匹配到的用户详情
     picList:[],//用户相册列表
     videoList:[]//用户视频列表
 }),
@@ -26,7 +27,7 @@ actions:{
     console.log(12313131331,this.userDetail);
     this.picList = this.userDetail.picList.filter((item) => item.mediaType === 1)
     this.videoList = this.userDetail.picList.filter((item) => item.mediaType === 2)
-    console.log(this.userDetail,this. picList, this.videoList);
+    // console.log(this.userDetail,this. picList, this.videoList);
 },  
     //关注/取消关注
 // type:1关注 2取关 3拉黑

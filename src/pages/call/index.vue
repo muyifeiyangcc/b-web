@@ -2,6 +2,7 @@
     <div>
         <div class="relative  max-w-450 relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
+            <video :src="userStore.userDetail.callVideoUrl" class="w-full h-full" autoplay v-if="fromMatch"></video>
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
             <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2 bg-#000"></div>
@@ -91,14 +92,16 @@
             <!-- 索要礼物弹窗 -->
             <van-popup v-model:show="homeStore.requestGift" round overlay-class="bg-#000/40 backdrop-blur-20">
                 <div class="w343 h290 bg-#130021 text-center pt90 relative rounded-16">
-                    <img :src="findGift(homeStore.attachEvent.giftId)"
+                    <img :src="findGift(homeStore.attachEvent.giftId).giftImg"
                         class="w133 h133 absolute top--50 left-50% ml--61 z-2004">
                     <div class="">
                         <van-space direction="vertical" :size="20">
                             <div>
                                 <van-space>
                                     <div class="i-my-icons-diamond text-21" />
-                                    <div class="c-#fff text-18 font-bold">1500</div>
+                                    <div class="c-#fff text-18 font-bold">{{
+                                        findGift(homeStore.attachEvent.giftId).giftPrice
+                                    }}</div>
                                     <!-- <div class="c-#fff text-18 font-bold">{{ userStore.mineInfo.diamondNum }}</div> -->
                                 </van-space>
                             </div>
@@ -151,6 +154,7 @@
 
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
+import { rejectAskGift } from '~/api/gift'
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const secondCount = ref(0)
 const homeStore = useHomeStore()
@@ -171,8 +175,10 @@ const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
 const localStream = ref(null)
 const mark = route.query.mark
+const fromMatch = route.query.fromMatch || ''
 // const channelName = mark === 'calling' ? homeStore.channelInfo.channelId : route.query.channelName
-const channelName = route.query.channelName
+let channelName = route.query.channelName
+if (fromMatch) { channelName = 'robot' }
 // 监听远端用户发布视频流的事件
 homeStore.client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -262,7 +268,7 @@ const initLocalStream = async function () {
             localStream.value.play(localVideoContent.value);
             // 设置本地视频画布
             localStream.value.setLocalRenderMode({
-                width: 115,
+                width: 130,
                 height: localVideoContent.value.clientHeight,
                 cut: true,
             });
@@ -289,12 +295,17 @@ const changeCamera = async () => {
     console.log(i, allCamera.value.length, allCamera.value[i].deviceId);
     await localStream.value.switchDevice('video', nowCamera.value.deviceId)
 }
+
 //确认赠送主播索要礼物
 const agreeGive = () => {
     homeStore.requestGift = false
+    giftStore.postGift(homeStore.giftId, 1, 'VIDEO', userStore.userDetail.yxAccid)
+    userStore.getMineInfoData()
 }
 //拒绝赠送主播索要礼物
-const refuseGive = () => {
+const refuseGive = async () => {
+    const result = await rejectAskGift({ anchorYxAccid: userStore.userDetail.yxAccid, giftId: homeStore.giftId })
+    console.log(result);
     homeStore.requestGift = false
 }
 //触发限时充值弹窗
@@ -318,11 +329,11 @@ const findGift = (id) => {
     })
 
     console.log(result);
-    return result[0].giftImg
+    return result[0]
 }
 var interval = setInterval(() => {
     secondCount.value++
-    console.log(secondCount.value);
+    // console.log(secondCount.value);
 }, 1000)
 
 onMounted(() => {
