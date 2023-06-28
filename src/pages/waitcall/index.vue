@@ -89,7 +89,30 @@ const invite = async (userId, yxId) => {
     homeStore.params.toAccid = yxId
     console.log(yxId);
     try {
-        const data = await homeStore.nim.signaling.callEx(homeStore.params)
+        // const data = await homeStore.nim.signaling.callEx(homeStore.params)
+        const data = await homeStore.nim.signaling.callEx({
+            type: 2,
+            toAccid: yxId,
+            requestId: '1008611',
+            uid: userStore.mineInfo.userId,
+            attachExt: JSON.stringify({
+                "type": 'directCall', //需要判断
+                "userId": userStore.mineInfo.userId,
+                "userType": userStore.mineInfo.userType
+                // 'imAccid': userStore.mineInfo.yxAccid,
+                // 'type': 'directCall', //需要判断
+                // 'version': '1.4.2', //需要确认
+                // 'userId': userStore.mineInfo.userId,
+                // 'callType': 0,
+                // 'callUserList': [userStore.mineInfo.yxAccid],
+                // 'videoPrice': userStore.mineInfo.videoPrice,
+                // 'otherUserType': userStore.userDetail.userType,
+                // 'channelName': `${homeStore.acceptData.requestId}|0|${userStore.mineInfo.userId}`,
+                // 'userType': userStore.mineInfo.userType,
+                // "otherUserId": userStore.userDetail.userId,
+
+            })
+        })
         const channelInfo = data.channelInfo
         homeStore.inviteData = data
         homeStore.channelInfo = channelInfo

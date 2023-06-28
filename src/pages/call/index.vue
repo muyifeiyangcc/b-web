@@ -167,9 +167,9 @@ const router = useRouter()
 const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
 const localStream = ref(null)
-const client = NERTC.createClient({ appkey, debug: true })
+// const client = NERTC.createClient({ appkey, debug: true })
 // 监听远端用户发布视频流的事件
-client.on('stream-added', event => {
+homeStore.client.on('stream-added', event => {
     const remoteStream = event.stream;
     console.warn('收到别人的发布消息: ', remoteStream.streamID, 'mediaType: ', event.mediaType)
     //订阅远端流
@@ -180,13 +180,13 @@ client.on('stream-added', event => {
         screenShare: true,//订阅屏幕共享
         highOrLow: NERTC.STREAM_TYPE.HIGH,//订阅大流
     })
-    client.subscribe(remoteStream).then(() => {
+    homeStore.client.subscribe(remoteStream).then(() => {
         console.warn(`subscribe 成功 ${remoteStream.streamID}`)
     });
 });
 
 //播放订阅的对端的音视频流
-client.on('stream-subscribed', event => {
+homeStore.client.on('stream-subscribed', event => {
     // 远端流订阅成功
     const remoteStream = event.stream;
     console.warn('订阅别人的流成功的通知: ', remoteStream.streamID, 'mediaType: ', event.mediaType)
@@ -204,48 +204,40 @@ client.on('stream-subscribed', event => {
     });
 });
 
-client.on('peer-online', evt => {
-    console.log(`${evt.uid} 加入房间`)
-    addLog(`${evt.uid} 加入房间`)
-})
-client.on('connection-state-change', (evt) => {
+homeStore.client.on('connection-state-change', (evt) => {
     console.log(`connection-state-change ${evt.prevState} => ${evt.curState}。是否重连：${evt.reconnect}`)
 })
 //远端用户加入房间通知回调，建议在收到此回调后再进行设置远端视图等的操作
-client.on('peer-online', evt => {
+homeStore.client.on('peer-online', evt => {
     console.log(`${evt.uid} 加入房间`)
     addLog(`${evt.uid} 加入房间`)
+
+    initLocalStream()
 })
 //远端用户退出房间通知回调
-client.on('peer-leave', evt => {
+homeStore.client.on('peer-leave', evt => {
     console.log(`${evt.uid} 退出房间`)
     leaveLog(`${evt.uid} 退出房间`)
 })
 
-client.on("stream-removed", (evt) => {
+homeStore.client.on("stream-removed", (evt) => {
     // 远端流停止，则关闭渲染
     evt.stream.stop(evt.mediaType);
 });
-// //网络质量通知回调（请列出所有枚举）
-// client.on('network-quality', stats => {
-//     console.log('=====房间里所有成员的网络状况：', stats)
-//     let status = null
-//     stats.forEach(item => {
-//         status = 'uid: ' + item.uid + ',上行： ' + item.uplinkNetworkQuality + ',下行： ' + item.downlinkNetworkQuality
-//         console.log(status)
-//     })
-// })
+
+const join = async () => {
+    await homeStore.client.join({
+        channelName: homeStore.channelInfo.name,
+        uid
+    }).then((obj) => {
+        console.info('加入房间成功...')
+    })
+}
+
 //开始通话
-const call = async function () {
+const initLocalStream = async function () {
     // 进房成功后开始推流
     try {
-        await client.join({
-            channelName: homeStore.channelInfo.name,
-            uid
-        }).then((obj) => {
-            console.info('加入房间成功...')
-        })
-
         const cameras = await NERTC.getCameras();    //获取可用的视频输入设备
         const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
         console.log(cameras);
@@ -258,25 +250,27 @@ const call = async function () {
             frameRate: NERTC.VIDEO_FRAME_RATE.CHAT_VIDEO_FRAME_RATE_30,//帧率
         })
         //初始化本地流
-        await localStream.value.init();
-        // 播放本地流
-        localStream.value.play(localVideoContent.value);
-        // 设置本地视频画布
-        localStream.value.setLocalRenderMode({
-            width: 115,
-            height: localVideoContent.value.clientHeight,
-            cut: true,
-        });
-        await client.publish(localStream.value).then(() => {
-            console.warn('本地 publish 成功')
-        });
+        localStream.value.init().then(() => {
+            console.warn('音视频初始化完成，播放本地视频')
+            // 播放本地流
+            localStream.value.play(localVideoContent.value);
+            // 设置本地视频画布
+            localStream.value.setLocalRenderMode({
+                width: 115,
+                height: localVideoContent.value.clientHeight,
+                cut: true,
+            });
+            homeStore.client.publish(localStream.value).then(() => {
+                console.warn('本地 publish 成功')
+            });
+        })
     } catch (error) {
         console.error(error);
     }
 }
 //结束通话
-const finishCall = async function () {
-    await client.leave().then(() => router.push('/'))
+const finishCall = function () {
+    homeStore.client.leave().then(() => router.push('/'))
 }
 //切换摄像头
 let i = 0
@@ -311,7 +305,8 @@ const timeFinsh = () => {
 }
 
 onMounted(() => {
-    call()
+    join()
+    // initLocalStream()
 
 })
 </script>

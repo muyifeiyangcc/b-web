@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import NIMSDK from 'nim-web-sdk-ng/dist/NIM_BROWSER_SDK'
+import NERTC from "nertc-web-sdk/NERTC"
 import { getIndexTab,getIndexList } from '~/api/home'
 
 export const useHomeStore = defineStore('useHomeStore',{
 state:()=>({
     nim:{},
+    client:{},
     indexTabsFather:{},//一级分类
     indexTabsChildren:[],//二级分类
     indexList:[],//首页用户列表
@@ -72,7 +74,9 @@ actions:{
         // token: 'c93db63790961481fe3d98a5849641fe' // 云信密码
         // debugLevel: 'debug',
 })
+    const client = NERTC.createClient({appkey: '124f689baed25c488e1330bc42e528af', debug: true })
     this.nim=nim
+    this.client=client
     //监听收到新消息
     nim.on('msg', async (res) => {
     console.log('收到新消息', res);
@@ -111,7 +115,6 @@ nim.signaling.on('signalingReject', (event) => {
     console.log('对方已拒绝', event)
     router.go(-1)
 })
-    
 
     if (nim.status === 'unconnected') {
     await nim.connect()

@@ -57,20 +57,20 @@ const getThrough = async () => {
             requestId: homeStore.acceptData.requestId,
             uid: userStore.mineInfo.userId,
             attachExt: JSON.stringify({
-                // "type": 'directCall', //需要判断
-                // "userId": userStore.mineInfo.userId,
-                // "userType": userStore.mineInfo.userType
-                'imAccid': userStore.mineInfo.yxAccid,
-                'type': 'directCall', //需要判断
-                'version': '1.4.2', //需要确认
-                'userId': userStore.mineInfo.userId,
-                'callType': 0,
-                'callUserList': [userStore.mineInfo.yxAccid],
-                'videoPrice': userStore.mineInfo.videoPrice,
-                'otherUserType': userStore.userDetail.userType,
-                'channelName': `${homeStore.acceptData.requestId}|0|${userStore.mineInfo.userId}`,
-                'userType': userStore.mineInfo.userType,
-                "otherUserId": userStore.userDetail.userId,
+                "type": 'directCall', //需要判断
+                "userId": userStore.mineInfo.userId,
+                "userType": userStore.mineInfo.userType
+                // 'imAccid': userStore.mineInfo.yxAccid,
+                // 'type': 'directCall', //需要判断
+                // 'version': '1.4.2', //需要确认
+                // 'userId': userStore.mineInfo.userId,
+                // 'callType': 0,
+                // 'callUserList': [userStore.mineInfo.yxAccid],
+                // 'videoPrice': userStore.mineInfo.videoPrice,
+                // 'otherUserType': userStore.userDetail.userType,
+                // 'channelName': `${homeStore.acceptData.requestId}|0|${userStore.mineInfo.userId}`,
+                // 'userType': userStore.mineInfo.userType,
+                // "otherUserId": userStore.userDetail.userId,
 
             })
         })
@@ -100,6 +100,7 @@ const getThrough = async () => {
         }
     }
 }
+
 //拒绝邀请
 const rejectInvite = async () => {
     try {
