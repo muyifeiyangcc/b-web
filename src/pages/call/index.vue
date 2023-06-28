@@ -32,7 +32,7 @@
                 </van-space>
             </div>
             <!-- 右侧特惠充值 -->
-            <div class="absolute right-6 top-220 z-99" v-if="showDialog" @click="requestGift = true">
+            <div class="absolute right-6 top-220 z-99" v-if="showDialog">
                 <img src="../../assets//recharge.png" class="w105 h105"><!--背景图 -->
                 <img src="../../assets/close.png" class="w16 h16 absolute top-0 right-12"
                     @click="showDialog = false"><!--关闭按钮 -->
@@ -89,8 +89,10 @@
             <!-- 送礼 -->
             <give-present :show="presentShow" />
             <!-- 索要礼物弹窗 -->
-            <van-popup v-model:show="requestGift" round overlay-class="bg-#000/40 backdrop-blur-20">
-                <div class="w343 h290 bg-#130021 text-center pt90">
+            <van-popup v-model:show="homeStore.requestGift" round overlay-class="bg-#000/40 backdrop-blur-20">
+                <div class="w343 h290 bg-#130021 text-center pt90 relative rounded-16">
+                    <img :src="findGift(homeStore.attachEvent.giftId)"
+                        class="w133 h133 absolute top--50 left-50% ml--61 z-2004">
                     <div class="">
                         <van-space direction="vertical" :size="20">
                             <div>
@@ -149,7 +151,6 @@
 
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
-const { emitter } = getCurrentInstance().appContext.config.globalProperties
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const homeStore = useHomeStore()
 const giftStore = useGiftStore()
@@ -159,15 +160,17 @@ const remoteVideoContent = ref()//远端视频流播放窗口
 const viewHeight = window.innerHeight
 const showDialog = ref(true)
 const presentShow = ref(false)
-const requestGift = ref(false)
+// const requestGift = ref(false)
 const showGetCoin = ref(false)
 const time = ref(0);
 const uid = userStore.mineInfo.userId//后期通过api获取
 const router = useRouter()
+const route = useRoute()
 const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
 const localStream = ref(null)
-// const client = NERTC.createClient({ appkey, debug: true })
+const mark = route.query.mark
+const channelName = mark === 'calling' ? homeStore.channelInfo.name : route.query.channelName
 // 监听远端用户发布视频流的事件
 homeStore.client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -196,9 +199,9 @@ homeStore.client.on('stream-subscribed', event => {
         // 设置远端视频画布
         remoteStream.setRemoteRenderMode({
             // width: remoteVideoContent.value.clientWidth,
-            // height: remoteVideoContent.value.clientHeight,
-            width: 500,
             height: remoteVideoContent.value.clientHeight,
+            width: 700,
+            // height: 1000,
             cut: true
         });
     });
@@ -210,14 +213,12 @@ homeStore.client.on('connection-state-change', (evt) => {
 //远端用户加入房间通知回调，建议在收到此回调后再进行设置远端视图等的操作
 homeStore.client.on('peer-online', evt => {
     console.log(`${evt.uid} 加入房间`)
-    addLog(`${evt.uid} 加入房间`)
-
-    initLocalStream()
 })
+
 //远端用户退出房间通知回调
 homeStore.client.on('peer-leave', evt => {
     console.log(`${evt.uid} 退出房间`)
-    leaveLog(`${evt.uid} 退出房间`)
+    finishCall()
 })
 
 homeStore.client.on("stream-removed", (evt) => {
@@ -226,10 +227,13 @@ homeStore.client.on("stream-removed", (evt) => {
 });
 
 const join = async () => {
+    console.log(channelName, homeStore.channelInfo.name, channelName === homeStore.channelInfo.name ? '拨打' : '接听');
     await homeStore.client.join({
-        channelName: homeStore.channelInfo.name,
-        uid
+        channelName,
+        uid,
+        token: null
     }).then((obj) => {
+        initLocalStream()
         console.info('加入房间成功...')
     })
 }
@@ -238,12 +242,12 @@ const join = async () => {
 const initLocalStream = async function () {
     // 进房成功后开始推流
     try {
-        const cameras = await NERTC.getCameras();    //获取可用的视频输入设备
-        const microphones = await NERTC.getMicrophones();     //获取可用的麦克风设备
+        const microphones = await NERTC.getMicrophones();//获取可用的麦克风设备
+        const cameras = await NERTC.getCameras();//获取可用的视频输入设备
         console.log(cameras);
         allCamera.value = cameras
         nowCamera.value = cameras[0]
-        localStream.value = NERTC.createStream({ uid, audio: true, video: true, cameraId: nowCamera.value.deviceId });
+        localStream.value = NERTC.createStream({ uid, audio: true, video: true, cameraId: nowCamera.value.deviceId, client: homeStore.client });
         //设置视频推流属性
         localStream.value.setVideoProfile({
             resolution: NERTC.VIDEO_QUALITY_1080p,//分辨率
@@ -285,30 +289,43 @@ const changeCamera = async () => {
 }
 //确认赠送主播索要礼物
 const agreeGive = () => {
-    requestGift.value = false
+    homeStore.requestGift = false
 }
 //拒绝赠送主播索要礼物
 const refuseGive = () => {
-    requestGift.value = false
+    homeStore.requestGift = false
 }
 //触发限时充值弹窗
 const showGetCoinDialog = () => {
     time.value = 10000
     showGetCoin.value = true
-    emitter.emit('SystemNotificationHandler', 6);
 }
+//倒计时结束
 const timeFinsh = () => {
     const countDown = ref();
     console.log(countDown.value);
     // countDown.value.reset()
     showGetCoin.value = false
 }
+// 根据礼物id查找礼物
+const findGift = (id) => {
+    const result = giftStore.giftList.filter((item) => {
+        if (item.id === id) {
+            return item
+        }
+    })
 
+    console.log(result);
+    return result[0].giftImg
+}
 onMounted(() => {
     join()
     // initLocalStream()
-
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+:deep(.van-popup) {
+    overflow: visible;
+}
+</style>

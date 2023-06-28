@@ -11,6 +11,8 @@ state:()=>({
     indexTabsChildren:[],//二级分类
     indexList:[],//首页用户列表
     getDiamondsVisible:false,//控制钻石不足弹窗显示
+    requestGift:false,//直播间索要礼物弹窗
+    attachEvent:{},//系统消息事件对象
     getIndexListOption: 
     {
     "currentPage": 1,
@@ -68,10 +70,10 @@ actions:{
     // 初始化nim
     const nim =new NIMSDK({
         appkey: '124f689baed25c488e1330bc42e528af',
-        account: '1ef27c9ebb064b66989b523c0d108c37', // 云信账号
-        token: '4fc8f80b57f0a9afd83b86490b11fb9b' ,// 云信密码
-        // account: 'ece7d561b4594eedb8def4802f053b85', // 云信账号
-        // token: 'c93db63790961481fe3d98a5849641fe' // 云信密码
+        // account: '1ef27c9ebb064b66989b523c0d108c37', // 云信账号
+        // token: '4fc8f80b57f0a9afd83b86490b11fb9b' ,// 云信密码
+        account: "225f921a42e347019b55cd633b7754a7", // 云信账号
+        token: "7a30b992c1cde7759f499db202a20f7b" // 云信密码
         // debugLevel: 'debug',
 })
     const client = NERTC.createClient({appkey: '124f689baed25c488e1330bc42e528af', debug: true })
@@ -92,7 +94,7 @@ actions:{
     }
     });
 
-    nim.on('sysMsg', event=>console.log("收到系统消息",event))
+    
 
     // 监听收到邀请
     nim.signaling.on('signalingInvite', (event) => {
@@ -108,13 +110,26 @@ nim.signaling.on('signalingCancelInvite', function (event) {
     //对方已加入
 nim.signaling.on('signalingJoin', (event) => {
     console.log('对方已加入', event)
-    router.push('/call')
+    router.push({name:'call',query:{mark:'calling'}})
 })
     //监听对方已拒绝
 nim.signaling.on('signalingReject', (event) => {
     console.log('对方已拒绝', event)
     router.go(-1)
 })
+    //系统消息
+nim.on('sysMsg', event=>{
+    this.attachEvent=event.attach
+    if(event.attach.attachType){
+        const attachType=event.attach.attachType
+        if(attachType===5){
+            console.log('索要礼物');
+            this.requestGift=true
+        }
+    }
+    console.log("收到系统消息",event)
+})
+
 
     if (nim.status === 'unconnected') {
     await nim.connect()

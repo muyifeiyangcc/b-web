@@ -41,6 +41,7 @@
 
 <script  setup>
 import { getEmoji } from '~/utils'
+import { getRandomString } from '~/utils'
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const router = useRouter()
@@ -50,7 +51,23 @@ const yxId = route.query.yxId//对象云信ID
 const fromMatch = route.query.fromMatch//对象是否来自匹配
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
-
+const cname = getRandomString(32)
+const option = {
+    // "type": 'directCall', //需要判断
+    // "userId": userStore.mineInfo.userId,
+    // "userType": userStore.mineInfo.userType
+    'imAccid': userStore.mineInfo.yxAccid,
+    'type': 'directCall', //需要判断
+    'version': '1.4.2', //需要确认
+    'userId': userStore.mineInfo.userId,
+    'callType': 0,
+    'callUserList': [userStore.mineInfo.yxAccid],
+    'videoPrice': userStore.mineInfo.videoPrice,
+    'otherUserType': userStore.userDetail.userType,
+    'channelName': `${cname}|0|${userStore.mineInfo.userId}`,
+    'userType': userStore.mineInfo.userType,
+    "otherUserId": userId,
+}
 if (fromMatch) {
     setTimeout(() => {
         router.push({ name: 'call', query: { userId } })
@@ -86,6 +103,7 @@ const ringOff = async () => {
 }
 //邀请通话
 const invite = async (userId, yxId) => {
+
     homeStore.params.toAccid = yxId
     console.log(yxId);
     try {
@@ -95,27 +113,14 @@ const invite = async (userId, yxId) => {
             toAccid: yxId,
             requestId: '1008611',
             uid: userStore.mineInfo.userId,
-            attachExt: JSON.stringify({
-                "type": 'directCall', //需要判断
-                "userId": userStore.mineInfo.userId,
-                "userType": userStore.mineInfo.userType
-                // 'imAccid': userStore.mineInfo.yxAccid,
-                // 'type': 'directCall', //需要判断
-                // 'version': '1.4.2', //需要确认
-                // 'userId': userStore.mineInfo.userId,
-                // 'callType': 0,
-                // 'callUserList': [userStore.mineInfo.yxAccid],
-                // 'videoPrice': userStore.mineInfo.videoPrice,
-                // 'otherUserType': userStore.userDetail.userType,
-                // 'channelName': `${homeStore.acceptData.requestId}|0|${userStore.mineInfo.userId}`,
-                // 'userType': userStore.mineInfo.userType,
-                // "otherUserId": userStore.userDetail.userId,
-
-            })
+            attachExt: JSON.stringify(option)
         })
+        console.log(option);
+
         const channelInfo = data.channelInfo
         homeStore.inviteData = data
         homeStore.channelInfo = channelInfo
+        homeStore.channelInfo.name = cname
         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
     } catch (error) {
         console.warn('创建频道失败，error：', error)

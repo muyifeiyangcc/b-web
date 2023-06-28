@@ -55,30 +55,13 @@ const getThrough = async () => {
             channelId: homeStore.acceptData.metaData.channelInfo.channelId,
             fromAccid: homeStore.acceptData.fromAccid,
             requestId: homeStore.acceptData.requestId,
-            uid: userStore.mineInfo.userId,
-            attachExt: JSON.stringify({
-                "type": 'directCall', //需要判断
-                "userId": userStore.mineInfo.userId,
-                "userType": userStore.mineInfo.userType
-                // 'imAccid': userStore.mineInfo.yxAccid,
-                // 'type': 'directCall', //需要判断
-                // 'version': '1.4.2', //需要确认
-                // 'userId': userStore.mineInfo.userId,
-                // 'callType': 0,
-                // 'callUserList': [userStore.mineInfo.yxAccid],
-                // 'videoPrice': userStore.mineInfo.videoPrice,
-                // 'otherUserType': userStore.userDetail.userType,
-                // 'channelName': `${homeStore.acceptData.requestId}|0|${userStore.mineInfo.userId}`,
-                // 'userType': userStore.mineInfo.userType,
-                // "otherUserId": userStore.userDetail.userId,
-
-            })
+            uid: userStore.mineInfo.userId
         })
 
         console.warn('接受邀请并加入成功，data', data)
         homeStore.channelInfo = data.channelInfo//保存房间数据
         homeStore.memberList = data.memberList//保存房间内用户数据
-        router.push('/call')
+        router.push({ name: 'call', query: { channelName: JSON.parse(homeStore.acceptData.metaData.ext).channelName.slice(0, 32) }, mark: 'answer' })
     } catch (error) {
         console.warn('接受邀请并加入失败，error：', error)
         switch (error.code) {
