@@ -2,10 +2,12 @@
     <div>
         <div class="relative  max-w-450 relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
-            <video :src="userStore.userDetail.callVideoUrl" class="w-full h-full" autoplay v-if="fromMatch"></video>
+            <video class="w-full h-full object-cover" :src="robotVideoList" loop autoplay
+                v-if="fromMatch || pushRobot"></video>
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
-            <div ref="localVideoContent" class="absolute right-14 top-50 w115 h151 b-1 z-2 bg-#000"></div>
+            <div ref="localVideoContent"
+                class="absolute right-14 top-50 w115 h151 b-1 z-2 bg-#000 overflow-hidden rounded-11"></div>
             <!-- 左上角主播信息 -->
             <div class="absolute left-16 top-50 z-99" @click="showGetCoinDialog">
                 <van-space direction="vertical">
@@ -59,9 +61,9 @@
             </div>
             <!-- 聊天区域 -->
             <div class="absolute bottom-100 left-15 w270 h300 z-99">
-                <div class="h250 overflow-scroll">
-                    <div class="c-#E2E2E2 text-14 " v-for=" in 80">
-                        you : what do you do
+                <div class="h250 overflow-scroll flex flex-col-reverse ">
+                    <div class="c-#E2E2E2 text-14 " v-for="item, index in homeStore.talkList" :key="index">
+                        {{ item.user }}:{{ item.content }}
                     </div>
                 </div>
                 <div class="c-#fff text-12 absolute bottom-0">⚠️&nbsp&nbspViolence, pornography, danger and other contents
@@ -82,7 +84,7 @@
                     </van-col>
                     <van-col :span="4">
                         <div class="text-center ">
-                            <button class="w36 h36"><img src="../../assets/send.png" alt=""></button>
+                            <button class="w36 h36" @click="sendMsg"><img src="../../assets/send.png"></button>
                         </div>
                     </van-col>
                 </van-row>
@@ -92,7 +94,7 @@
             <!-- 索要礼物弹窗 -->
             <van-popup v-model:show="homeStore.requestGift" round overlay-class="bg-#000/40 backdrop-blur-20">
                 <div class="w343 h290 bg-#130021 text-center pt90 relative rounded-16">
-                    <img :src="findGift(homeStore.attachEvent.giftId).giftImg"
+                    <img :src="findGift(homeStore.giftId).giftImg"
                         class="w133 h133 absolute top--50 left-50% ml--61 z-2004">
                     <div class="">
                         <van-space direction="vertical" :size="20">
@@ -100,7 +102,7 @@
                                 <van-space>
                                     <div class="i-my-icons-diamond text-21" />
                                     <div class="c-#fff text-18 font-bold">{{
-                                        findGift(homeStore.attachEvent.giftId).giftPrice
+                                        findGift(homeStore.giftId).giftPrice
                                     }}</div>
                                     <!-- <div class="c-#fff text-18 font-bold">{{ userStore.mineInfo.diamondNum }}</div> -->
                                 </van-space>
@@ -130,7 +132,7 @@
                     <div class="mx-auto w177 h177 mt18 relative">
                         <div class="absolute left-53 top-70">
                             <van-count-down ref="countDown" :time="time" format="mm:ss"
-                                class="important:text-24 important:c-#fff important:font-bold " @finish="timeFinsh" />
+                                class="important:text-24 important:c-#fff important:font-bold " @finish="timeFinish" />
                         </div>
                         <img src="../../assets/bg_circle.png" class="">
                     </div>
@@ -149,14 +151,17 @@
                 </div>
             </van-popup>
         </div>
+        <van-toast />
     </div>
 </template>
 
 <script  setup>
 import NERTC from "nertc-web-sdk/NERTC"
 import { rejectAskGift } from '~/api/gift'
+import { getRobotVideo } from '~/api/match'
+import { heartbeat } from '~/api/wallet'
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
-const secondCount = ref(0)
+const secondCount = ref(0)//进入直播页面开始计时
 const homeStore = useHomeStore()
 const giftStore = useGiftStore()
 const userStore = useUserStore()
@@ -174,11 +179,45 @@ const route = useRoute()
 const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
 const localStream = ref(null)
-const mark = route.query.mark
-const fromMatch = route.query.fromMatch || ''
+const content = ref('')
+const robotVideoList = ref('')
+const fromMatch = route.query.fromMatch//是否来自匹配的标记
+const pushRobot = route.query.pushRobot//是否来自推送的机器人
+const remark = route.query.remark//拨打类型
+const type = route.query.type//通话类型
 // const channelName = mark === 'calling' ? homeStore.channelInfo.channelId : route.query.channelName
-let channelName = route.query.channelName
-if (fromMatch) { channelName = 'robot' }
+let channelName = route.query.channelName//通话频道名称，用于加入通话房间
+var heartBeatTimeout
+var freeTimeout
+if (fromMatch || pushRobot) {
+    channelName = 'robot'
+    getRobotVideoList()
+}
+if (userStore.userDetail.free === 1) {
+    freeTimeout = setTimeout(() => { router.go(-1) }, homeStore.attachEvent.callTime * 50)
+}
+//获取主播视频列表
+async function getRobotVideoList() {
+    const result = await getRobotVideo({ userId: userStore.userDetail.userId })
+    robotVideoList.value = result[1].videoUrl
+}
+let nextHeartBeat = 0
+//用户心跳    remark拨打类型=>callIn：呼入，callOut：打出  type通话类型=>match：匹配，directCall：直接发起通话
+const userHeartBeat = async () => {
+    const option = {
+        channelId: "a",
+        free: userStore.userDetail.free,
+        receiverYxAccid: userStore.userDetail.yxAccid,
+        remark,
+        type
+    }
+    heartbeat(option).then((res) => {
+        heartBeatTimeout = setTimeout(() => userHeartBeat(option), res.nextRequestInterval * 1000)
+    })
+
+    console.log('心跳执行了')
+}
+
 // 监听远端用户发布视频流的事件
 homeStore.client.on('stream-added', event => {
     const remoteStream = event.stream;
@@ -233,7 +272,7 @@ homeStore.client.on("stream-removed", (evt) => {
     // 远端流停止，则关闭渲染
     evt.stream.stop(evt.mediaType);
 });
-
+//加入通话房间
 const join = async () => {
     // console.log(channelName, homeStore.channelInfo.name, channelName === homeStore.channelInfo.name ? '拨打' : '接听');
     await homeStore.client.join({
@@ -245,7 +284,6 @@ const join = async () => {
         console.info('加入房间成功...')
     })
 }
-
 //开始通话
 const initLocalStream = async function () {
     // 进房成功后开始推流
@@ -284,6 +322,7 @@ const initLocalStream = async function () {
 const finishCall = function () {
     homeStore.client.leave().then(() => router.push('/'))
 }
+
 //切换摄像头
 let i = 0
 const changeCamera = async () => {
@@ -305,7 +344,7 @@ const agreeGive = () => {
 //拒绝赠送主播索要礼物
 const refuseGive = async () => {
     const result = await rejectAskGift({ anchorYxAccid: userStore.userDetail.yxAccid, giftId: homeStore.giftId })
-    console.log(result);
+    homeStore.sendImMsg(userStore.userDetail.yxAccid, { attachType: 16 })
     homeStore.requestGift = false
 }
 //触发限时充值弹窗
@@ -314,11 +353,19 @@ const showGetCoinDialog = () => {
     showGetCoin.value = true
 }
 //倒计时结束
-const timeFinsh = () => {
+const timeFinish = () => {
     const countDown = ref();
     console.log(countDown.value);
     // countDown.value.reset()
     showGetCoin.value = false
+}
+//发送消息
+const sendMsg = () => {
+    // homeStore.sendImMsg(userStore.userDetail.yxAccid, content.value)
+    homeStore.sendImMsg(userStore.userDetail.yxAccid, { attachType: -1, content: content.value })
+    homeStore.talkList.unshift({ user: 'my', content: content.value })
+    console.log(homeStore.talkList);
+    content.value = ''
 }
 // 根据礼物id查找礼物
 const findGift = (id) => {
@@ -331,18 +378,34 @@ const findGift = (id) => {
     console.log(result);
     return result[0]
 }
+
 var interval = setInterval(() => {
     secondCount.value++
     // console.log(secondCount.value);
 }, 1000)
 
+// var sentUserState = setInterval(() => {
+//     homeStore.sendImMsg(userStore.userDetail.yxAccid, { attachType: -1, content: '哈哈哈' })
+// }, 10000);
+
+watch(secondCount, () => {
+    if (secondCount.value === 20) {
+        homeStore.robotRequestGift()
+    }
+})
 onMounted(() => {
+    userHeartBeat()
     join()
 })
 
 onBeforeUnmount(() => {
     clearInterval(interval)
+    // clearInterval(sentUserState)
+    clearTimeout(heartBeatTimeout)
+    clearTimeout(freeTimeout)
+    homeStore.talkList = []
 })
+
 </script>
 
 <style scoped>

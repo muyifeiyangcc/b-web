@@ -71,7 +71,7 @@ const option = {
 
 if (fromMatch) {
     setTimeout(() => {
-        router.push({ name: 'call', query: { userId, fromMatch } })
+        router.push({ name: 'call', query: { userId, fromMatch, remark: 'callOut', type: 'match' } })
     }, 3000);
 }
 
@@ -107,7 +107,7 @@ const ringOff = async () => {
 const invite = async (userId, yxId) => {
 
     homeStore.params.toAccid = yxId
-    console.log(yxId);
+    // console.log(yxId);
     try {
         // const data = await homeStore.nim.signaling.callEx(homeStore.params)
         const data = await homeStore.nim.signaling.callEx({

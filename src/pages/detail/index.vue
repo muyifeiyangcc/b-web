@@ -69,8 +69,8 @@
                             </div>
                         </van-space>
                     </div>
-                    <van-popup v-model:show="showVideo" class="w-auto h-auto">
-                        <video :src="videoUrl" autoplay="true" controls="controls"></video>
+                    <van-popup v-model:show="showVideo" overlay-class="bg-#000/40 backdrop-blur-20">
+                        <video :src="videoUrl" autoplay="true" controls="controls" class="w-full object-cover"></video>
                     </van-popup>
                 </div>
                 <!-- 信息 -->
@@ -331,5 +331,9 @@ onBeforeUnmount(() => {
 <style scoped>
 .van-nav-bar {
     background-color: transparent;
+}
+
+:deep(.van-popup--center) {
+    max-width: 125rem
 }
 </style>

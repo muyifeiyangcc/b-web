@@ -45,72 +45,90 @@ const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const yxId = route.query.yxId
+const pushRobot = route.query.pushRobot
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
 // const options = ref()
+if (pushRobot) {
+    var autoExit = setTimeout(() => { router.go(-1) }, homeStore.attachEvent.waitTime * 1000)
+}
+
 // 接受邀请
 const getThrough = async () => {
-    try {
-        let data = await homeStore.nim.signaling.joinAndAccept({
+    if (!pushRobot) {
+        const option = {
             channelId: homeStore.acceptData.metaData.channelInfo.channelId,
             fromAccid: homeStore.acceptData.fromAccid,
             requestId: homeStore.acceptData.requestId,
             uid: userStore.mineInfo.userId
-        })
-
-        console.warn('接受邀请并加入成功，data', data)
-        homeStore.channelInfo = data.channelInfo//保存房间数据
-        homeStore.memberList = data.memberList//保存房间内用户数据
-        router.push({ name: 'call', query: { channelName: JSON.parse(homeStore.acceptData.metaData.ext).channelName.slice(0, 32) }, mark: 'answer' })
-    } catch (error) {
-        console.warn('接受邀请并加入失败，error：', error)
-        switch (error.code) {
-            case 10407:
-                console.warn('已经在频道内')
-                break
-            case 10419:
-                console.warn('频道人数超限')
-                break
-            case 10417:
-                console.warn('频道成员uid冲突了')
-                break
-            case 10420:
-                console.warn('当前账号在其他端已经登录，并且已经在频道内')
-                break
-            case 10404:
-                console.warn('频道不存在')
-                break
         }
+        try {
+            let data = await homeStore.nim.signaling.joinAndAccept(option)
+            console.warn('接受邀请并加入成功，data', data)
+            homeStore.channelInfo = data.channelInfo//保存房间数据
+            homeStore.memberList = data.memberList//保存房间内用户数据
+            router.push({ name: 'call', query: { channelName: homeStore.channelInfo.channelId, remark: 'callIn', type: 'directCall' } })
+        } catch (error) {
+            console.warn('接受邀请并加入失败，error：', error)
+            switch (error.code) {
+                case 10407:
+                    console.warn('已经在频道内')
+                    break
+                case 10419:
+                    console.warn('频道人数超限')
+                    break
+                case 10417:
+                    console.warn('频道成员uid冲突了')
+                    break
+                case 10420:
+                    console.warn('当前账号在其他端已经登录，并且已经在频道内')
+                    break
+                case 10404:
+                    console.warn('频道不存在')
+                    break
+            }
+        }
+    }
+    else {
+        clearTimeout(autoExit)
+        router.push({ name: 'call', query: { pushRobot, remark: 'callIn', type: 'directCall' } })
     }
 }
 
 //拒绝邀请
 const rejectInvite = async () => {
-    try {
-        await homeStore.nim.signaling.reject({ channelId: homeStore.acceptData.metaData.channelInfo.channelId, fromAccid: homeStore.acceptData.fromAccid, requestId: homeStore.acceptData.requestId })
-        console.warn('拒绝邀请成功')
-        router.go(-1)
-    } catch (error) {
-        console.warn('拒绝邀请失败，error：', error)
-        switch (error.code) {
-            case 10408:
-                console.warn('邀请不存在或已过期')
-                break
-            case 10409:
-                console.warn('邀请已经拒绝')
-                break
-            case 10410:
-                console.warn('邀请已经接受')
-                break
-            case 10201:
-                console.warn('对方不在线')
-                break
-            case 10404:
-                console.warn('频道不存在')
-                break
+    if (!pushRobot) {
+        try {
+            await homeStore.nim.signaling.reject({ channelId: homeStore.acceptData.metaData.channelInfo.channelId, fromAccid: homeStore.acceptData.fromAccid, requestId: homeStore.acceptData.requestId })
+            console.warn('拒绝邀请成功')
+            router.go(-1)
+        } catch (error) {
+            console.warn('拒绝邀请失败，error：', error)
+            switch (error.code) {
+                case 10408:
+                    console.warn('邀请不存在或已过期')
+                    break
+                case 10409:
+                    console.warn('邀请已经拒绝')
+                    break
+                case 10410:
+                    console.warn('邀请已经接受')
+                    break
+                case 10201:
+                    console.warn('对方不在线')
+                    break
+                case 10404:
+                    console.warn('频道不存在')
+                    break
+            }
         }
     }
+    else {
+        clearTimeout(autoExit)
+        router.go(-1)
+    }
 }
+
 onMounted(() => {
     //获取通话目标信息
     userStore.getUserDetailData("", yxId)
