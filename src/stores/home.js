@@ -4,6 +4,7 @@ import NERTC from "nertc-web-sdk/NERTC"
 import { getIndexTab, getIndexList } from '~/api/home'
 import { getStartMatchRobot } from '~/api/match'
 import { showSuccessToast } from 'vant';
+
 export const useHomeStore = defineStore('useHomeStore', {
     state: () => ({
         isInit: false,//是否已经初始化
@@ -109,7 +110,8 @@ export const useHomeStore = defineStore('useHomeStore', {
             //对方已加入
             nim.signaling.on('signalingJoin', (event) => {
                 console.log('对方已加入', event)
-                router.push({ name: 'call', query: { channelName: JSON.parse(event.metaData.ext).channelName, remark: 'callOut', type: 'directCall' } })
+                const userStore = useUserStore()
+                router.push({ name: 'call', query: { channelName: JSON.parse(event.metaData.ext).channelName, remark: 'callOut', type: 'directCall', free: userStore.userDetail.videoPrice > 0 ? 0 : 1 } })
             })
             //监听对方已拒绝
             nim.signaling.on('signalingReject', (event) => {

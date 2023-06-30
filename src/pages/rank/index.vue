@@ -210,6 +210,7 @@ const rankingListTop = ref([])
 // tab栏切换回调
 const onClickTab = (event) => {
     type.value = event.title
+    rankingList.value = []
     if (event.title === "Charm") {
         getRankingListData('ANCHOR_CHARM')
     }
