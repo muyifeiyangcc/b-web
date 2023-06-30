@@ -9,7 +9,7 @@
             <div ref="localVideoContent"
                 class="absolute right-14 top-50 w115 h151 b-1 z-2 bg-#000 overflow-hidden rounded-11"></div>
             <!-- 左上角主播信息 -->
-            <div class="absolute left-16 top-50 z-99" @click="showGetCoinDialog">
+            <div class="absolute left-16 top-50 z-99">
                 <van-space direction="vertical">
                     <div class="bg-#000/25 pl3 pr7 rounded-23 inline-block">
                         <van-space>
@@ -129,7 +129,7 @@
             </van-popup>
             <!-- 余额不足，限时充值弹窗 -->
             <van-popup v-model:show="showGetCoin" position="bottom" :close-on-click-overlay="false"
-                class="h45% rounded-t-24 bg-gradient-to-rt from-#4D09C1  via-#7F04BA to-#D016C8">
+                class="h50% rounded-t-24 bg-gradient-to-rt from-#4D09C1  via-#7F04BA to-#D016C8">
                 <div class="text-center">
                     <div class="mx-auto w177 h177 mt18 relative">
                         <div class="absolute left-53 top-70">

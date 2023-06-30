@@ -42,7 +42,7 @@
             </div>
         </div>
         <!-- 输入区 -->
-        <div ref="reference" class="mx15 ">
+        <div ref="reference" class="mx15 py20">
             <van-space :size="10">
                 <div class="w295">
                     <van-cell-group inset>
@@ -58,7 +58,7 @@
                     <button class="w36 h36" @click="sendTextMessage"><img src="../../assets/send.png" alt=""></button>
                 </div>
             </van-space>
-            <div class="pt18 ">
+            <div class="pt18">
                 <van-space :size="32">
                     <button class="w32 h32"><img src="../../assets/voice.png" alt=""></button>
                     <button class="w32 h32"><img src="../../assets/album.png" alt=""></button>

@@ -114,7 +114,7 @@
     <!-- 图片预览 -->
     <van-image-preview />
     <!-- 发布评论 -->
-    <van-popup v-model:show="showComment" position="bottom" :style="{ height: '10%' }" overlay-class="bg-transparent ">
+    <van-popup v-model:show="showComment" position="bottom" :style="{ height: auto }" overlay-class="bg-transparent ">
       <template #default>
         <div class="py20 bg-#130021">
           <van-space :size="10">
