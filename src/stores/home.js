@@ -138,10 +138,9 @@ export const useHomeStore = defineStore('useHomeStore', {
                             hitRecordId: this.attachEvent.hitRecordId,
                         })
                         if (routerName !== 'call' && routerName !== 'waitconnect' && routerName !== 'waitcall') {
-                            router.push({ name: 'waitconnect', query: { userId: result.userId, yxId: result.yxAccid, pushRobot: true } })
+                            router.push({ name: 'waitconnect', query: { userId: result.userId, yxId: result.yxAccid, pushRobot: true, free: result.free } })
                         }
                         console.log(result);
-                        console.log(router.currentRoute.value.name);
                     }
                     if (attachType === 6) {
                         showSuccessToast(`充值成功`)
@@ -184,13 +183,7 @@ export const useHomeStore = defineStore('useHomeStore', {
         robotRequestGift() {
             this.requestGift = true
             this.giftId = 2
-        }
-        ,
-        //直播间给主播发消息
-        // sendTalk(yxId, msg) {
-        //     this.sendImMsg(yxId, { attachType: -1, content: msg })
-        //     this.talkList.push({ user: 'my', content: msg })
-        // },
+        },
         //标记进入talk页面
         setInTalkPage(data) {
             this.inTalkPage = data

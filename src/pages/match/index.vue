@@ -133,7 +133,7 @@ const startMatch = async () => {
 }
 //邀请通话
 const invite = async () => {
-    router.push({ name: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true } })
+    router.push({ name: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true, pushRobot: true } })
 }
 onMounted(() => {
 

@@ -19,7 +19,14 @@ export const useGiftStore = defineStore('useGiftStore', {
                 num,
                 scene,
                 yxAccid
-            }).then((res) => { showSuccessToast(`送礼成功,余额：${res.diamondNum}`) })
+            }).then((res) => {
+                if (res) {
+                    showSuccessToast(`送礼成功,余额：${res.diamondNum}`)
+                }
+                else {
+                    showSuccessToast("余额不足")
+                }
+            })
         }
     }
 })

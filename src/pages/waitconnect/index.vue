@@ -46,6 +46,7 @@ const router = useRouter()
 const route = useRoute()
 const yxId = route.query.yxId
 const pushRobot = route.query.pushRobot
+const free = route.query.free
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
 // const options = ref()
@@ -67,7 +68,7 @@ const getThrough = async () => {
             console.warn('接受邀请并加入成功，data', data)
             homeStore.channelInfo = data.channelInfo//保存房间数据
             homeStore.memberList = data.memberList//保存房间内用户数据
-            router.push({ name: 'call', query: { channelName: homeStore.channelInfo.channelId, remark: 'callIn', type: 'directCall' } })
+            router.push({ name: 'call', query: { channelName: homeStore.channelInfo.channelId, remark: 'callIn', type: 'directCall', free } })
         } catch (error) {
             console.warn('接受邀请并加入失败，error：', error)
             switch (error.code) {
@@ -91,7 +92,7 @@ const getThrough = async () => {
     }
     else {
         clearTimeout(autoExit)
-        router.push({ name: 'call', query: { pushRobot, remark: 'callIn', type: 'directCall' } })
+        router.push({ name: 'call', query: { pushRobot, remark: 'callIn', type: 'directCall', free } })
     }
 }
 

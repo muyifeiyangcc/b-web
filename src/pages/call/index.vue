@@ -66,16 +66,16 @@
                         {{ item.user }}:{{ item.content }}
                     </div>
                 </div>
-                <div class="c-#fff text-12 absolute bottom-0">⚠️&nbsp&nbspViolence, pornography, danger and other contents
+                <!-- <div class="c-#fff text-12 absolute bottom-0">⚠️&nbsp&nbspViolence, pornography, danger and other contents
                     are prohibited
-                </div>
+                </div> -->
             </div>
             <!-- 聊天输入框 -->
             <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent absolute bottom-38 w-full z-99">
                 <van-row>
                     <van-col :span="20">
                         <div class="">
-                            <van-field v-model="content" placeholder="Type a message..." ref="field" class="rounded-5">
+                            <van-field v-model="msg" placeholder="Type a message..." ref="field" class="rounded-5">
                                 <template #button>
                                     <img src="../../assets/emojbtn.png" class="w24 h24">
                                 </template>
@@ -84,7 +84,7 @@
                     </van-col>
                     <van-col :span="4">
                         <div class="text-center ">
-                            <button class="w36 h36" @click="sendMsg"><img src="../../assets/send.png"></button>
+                            <button class="w36 h36" @click="sendMsg()"><img src="../../assets/send.png"></button>
                         </div>
                     </van-col>
                 </van-row>
@@ -92,7 +92,8 @@
             <!-- 送礼 -->
             <give-present :show="presentShow" />
             <!-- 索要礼物弹窗 -->
-            <van-popup v-model:show="homeStore.requestGift" round overlay-class="bg-#000/40 backdrop-blur-20">
+            <van-popup v-model:show="homeStore.requestGift" round overlay-class="bg-#000/40 backdrop-blur-20"
+                :close-on-click-overlay="false">
                 <div class="w343 h290 bg-#130021 text-center pt90 relative rounded-16">
                     <img :src="findGift(homeStore.giftId).giftImg"
                         class="w133 h133 absolute top--50 left-50% ml--61 z-2004">
@@ -115,24 +116,26 @@
                     <div class="mt48">
                         <van-space :size="33">
                             <div class="text-16 c-#5409C0 w124 py10 bg-#fff rounded-23 text-center font-semibold"
-                                @click="refuseGive">
+                                @click="refuseGive" v-if="!(free === 1 && pushRobot)">
                                 Refuse
                             </div>
                             <div class="text-16 c-#fff w124 py10 bg-gradient-to-rt from-#4D09C1  via-#7F04BA to-#D016C8 rounded-23 text-center font-semibold"
                                 @click="agreeGive">
-                                Agree</div>
+                                Agree
+                            </div>
                         </van-space>
                     </div>
                 </div>
             </van-popup>
             <!-- 余额不足，限时充值弹窗 -->
-            <van-popup v-model:show="showGetCoin" position="bottom"
+            <van-popup v-model:show="showGetCoin" position="bottom" :close-on-click-overlay="false"
                 class="h45% rounded-t-24 bg-gradient-to-rt from-#4D09C1  via-#7F04BA to-#D016C8">
                 <div class="text-center">
                     <div class="mx-auto w177 h177 mt18 relative">
                         <div class="absolute left-53 top-70">
-                            <van-count-down ref="countDown" :time="time" format="mm:ss"
-                                class="important:text-24 important:c-#fff important:font-bold " @finish="timeFinish" />
+                            <van-count-down ref="countDown" :time="10000" format="mm:ss"
+                                class="important:text-24 important:c-#fff important:font-bold " @finish="timeFinish"
+                                :auto-start="false" />
                         </div>
                         <img src="../../assets/bg_circle.png" class="">
                     </div>
@@ -160,6 +163,7 @@ import NERTC from "nertc-web-sdk/NERTC"
 import { rejectAskGift } from '~/api/gift'
 import { getRobotVideo } from '~/api/match'
 import { heartbeat } from '~/api/wallet'
+import { showSuccessToast } from 'vant';
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const secondCount = ref(0)//进入直播页面开始计时
 const homeStore = useHomeStore()
@@ -172,50 +176,39 @@ const showDialog = ref(true)
 const presentShow = ref(false)
 // const requestGift = ref(false)
 const showGetCoin = ref(false)
-const time = ref(0);
+// const time = ref(10000);
 const uid = userStore.mineInfo.userId//后期通过api获取
 const router = useRouter()
 const route = useRoute()
 const allCamera = ref([])//全部的摄像头
 const nowCamera = ref({})//当前正在使用的摄像头
 const localStream = ref(null)
-const content = ref('')
+const msg = ref('')
 const robotVideoList = ref('')
+const countDown = ref()//倒计时组件实例
 const fromMatch = route.query.fromMatch//是否来自匹配的标记
 const pushRobot = route.query.pushRobot//是否来自推送的机器人
+const free = route.query.free//是否来自推送的机器人
 const remark = route.query.remark//拨打类型
 const type = route.query.type//通话类型
 // const channelName = mark === 'calling' ? homeStore.channelInfo.channelId : route.query.channelName
 let channelName = route.query.channelName//通话频道名称，用于加入通话房间
 var heartBeatTimeout
 var freeTimeout
+
 if (fromMatch || pushRobot) {
     channelName = 'robot'
     getRobotVideoList()
 }
+// callTime: 通话时长(如果是免费的, 这个时间一到就挂电话)
 if (userStore.userDetail.free === 1) {
-    freeTimeout = setTimeout(() => { router.go(-1) }, homeStore.attachEvent.callTime * 50)
+    freeTimeout = setTimeout(() => { router.go(-1) }, homeStore.attachEvent.callTime * 1000)
 }
+
 //获取主播视频列表
 async function getRobotVideoList() {
     const result = await getRobotVideo({ userId: userStore.userDetail.userId })
     robotVideoList.value = result[1].videoUrl
-}
-let nextHeartBeat = 0
-//用户心跳    remark拨打类型=>callIn：呼入，callOut：打出  type通话类型=>match：匹配，directCall：直接发起通话
-const userHeartBeat = async () => {
-    const option = {
-        channelId: "a",
-        free: userStore.userDetail.free,
-        receiverYxAccid: userStore.userDetail.yxAccid,
-        remark,
-        type
-    }
-    heartbeat(option).then((res) => {
-        heartBeatTimeout = setTimeout(() => userHeartBeat(option), res.nextRequestInterval * 1000)
-    })
-
-    console.log('心跳执行了')
 }
 
 // 监听远端用户发布视频流的事件
@@ -272,6 +265,7 @@ homeStore.client.on("stream-removed", (evt) => {
     // 远端流停止，则关闭渲染
     evt.stream.stop(evt.mediaType);
 });
+
 //加入通话房间
 const join = async () => {
     // console.log(channelName, homeStore.channelInfo.name, channelName === homeStore.channelInfo.name ? '拨打' : '接听');
@@ -347,25 +341,51 @@ const refuseGive = async () => {
     homeStore.sendImMsg(userStore.userDetail.yxAccid, { attachType: 16 })
     homeStore.requestGift = false
 }
-//触发限时充值弹窗
+//余额不足触发限时充值弹窗
 const showGetCoinDialog = () => {
-    time.value = 10000
     showGetCoin.value = true
+    nextTick(() => countDown.value.start())
 }
 //倒计时结束
 const timeFinish = () => {
-    const countDown = ref();
-    console.log(countDown.value);
-    // countDown.value.reset()
     showGetCoin.value = false
+    // countDown.value.reset()
+    finishCall()
+}
+//用户心跳    remark拨打类型=>callIn：呼入，callOut：打出  type通话类型=>match：匹配，directCall：直接发起通话
+const userHeartBeat = async () => {
+    const option = {
+        channelId: "robot",
+        free,
+        receiverYxAccid: userStore.userDetail.yxAccid,
+        remark,
+        type
+    }
+    heartbeat(option).then((res) => {
+        console.log(res);
+        if (res) {
+            if (res.nextBalanceIsSufficient === 1) {
+                heartBeatTimeout = setTimeout(() => userHeartBeat(option), res.nextRequestInterval * 1000)
+                userStore.getMineInfoData()
+            }
+            else {
+                showSuccessToast(`余额不足`)
+                showGetCoinDialog()
+            }
+        }
+        else {
+            showSuccessToast(`余额不足`)
+            showGetCoinDialog()
+        }
+    })
+    console.log('心跳执行了')
 }
 //发送消息
-const sendMsg = () => {
-    // homeStore.sendImMsg(userStore.userDetail.yxAccid, content.value)
-    homeStore.sendImMsg(userStore.userDetail.yxAccid, { attachType: -1, content: content.value })
-    homeStore.talkList.unshift({ user: 'my', content: content.value })
+const sendMsg = (user = 'my', content = msg.value) => {
+    homeStore.sendImMsg(userStore.userDetail.yxAccid, { attachType: -1, content: msg.value })
+    homeStore.talkList.unshift({ user, content })
     console.log(homeStore.talkList);
-    content.value = ''
+    msg.value = ''
 }
 // 根据礼物id查找礼物
 const findGift = (id) => {
@@ -378,21 +398,41 @@ const findGift = (id) => {
     console.log(result);
     return result[0]
 }
-
+//开始通话计时
 var interval = setInterval(() => {
     secondCount.value++
-    // console.log(secondCount.value);
 }, 1000)
 
-// var sentUserState = setInterval(() => {
-//     homeStore.sendImMsg(userStore.userDetail.yxAccid, { attachType: -1, content: '哈哈哈' })
-// }, 10000);
-
 watch(secondCount, () => {
-    if (secondCount.value === 20) {
-        homeStore.robotRequestGift()
+    // 是机器人
+    if (pushRobot) {
+        //免费机器人
+        if (free === 1) {
+            if (secondCount.value === 1) {
+                sendMsg('her', 'Hi,What\'s your name?')
+            }
+            if (secondCount.value === 20) {
+                sendMsg('her', 'Give me a gift, I will show you more!')
+            }
+            if (secondCount.value === 25) {
+                sendMsg('her', 'Give me a gift, I will show you more!')
+            }
+            if (secondCount.value === 30) {
+                homeStore.robotRequestGift()
+            }
+        }
+        //付费机器人
+        else {
+            if (secondCount.value === 1) {
+                sendMsg('her', 'Hi,What\'s your name?')
+            }
+            if (secondCount.value % 50 === 0) {
+                homeStore.robotRequestGift()
+            }
+        }
     }
 })
+
 onMounted(() => {
     userHeartBeat()
     join()

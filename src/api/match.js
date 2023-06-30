@@ -5,3 +5,5 @@ export const getStartMatch = (data) => request.post('/api/match/v2/userStartMatc
 export const getStartMatchRobot = (data) => request.post('/api/match/userReqMatchRobot', data)
 // 获取机器人通话视频列表
 export const getRobotVideo = (data) => request.post('/api/user/getRobotVideoList', data)
+//机器人通话完成调用
+export const getRobotFinish = (data) => request.post('/api/match/robotCallFinish', data)

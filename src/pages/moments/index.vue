@@ -3,7 +3,7 @@
     <!-- 页首 -->
     <div ref="myRef" class="flex justify-between py25">
       <div class="c-white text-21 font-bold">Moments</div>
-      <img src="../../assets/publish.png" class=" w35 h35">
+      <!-- <img src="../../assets/publish.png" class=" w35 h35"> -->
     </div>
 
     <!-- 朋友圈内容 -->
