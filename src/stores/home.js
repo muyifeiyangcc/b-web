@@ -137,7 +137,7 @@ export const useHomeStore = defineStore('useHomeStore', {
                             gender: 2,
                             hitRecordId: this.attachEvent.hitRecordId,
                         })
-                        if (routerName !== 'call' && routerName !== 'waitconnect' && routerName !== 'waitcall') {
+                        if (routerName !== 'call' && routerName !== 'waitconnect' && routerName !== 'waitcall' && routerName !== 'match') {
                             router.push({ name: 'waitconnect', query: { userId: result.userId, yxId: result.yxAccid, pushRobot: true, free: result.free } })
                         }
                         console.log(result);

@@ -107,6 +107,8 @@
             </template>
         </van-dialog>
         <img src="../../assets/back.png" class="absolute  w-full h-full  top-0 z--1" />
+        <audio src='https://1v1firendscircle.s3.ap-southeast-1.amazonaws.com/ios/sender.mp3' autoplay loop
+            v-if="matching"></audio>
     </div>
 </template>
 
