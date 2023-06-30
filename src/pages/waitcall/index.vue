@@ -49,6 +49,7 @@ const route = useRoute()
 const userId = route.query.userId//对象ID
 const yxId = route.query.yxId//对象云信ID
 const fromMatch = route.query.fromMatch//对象是否来自匹配
+const free = route.query.free
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
 // const cname = getRandomString(32)
@@ -70,8 +71,8 @@ const option = {
 }
 
 if (fromMatch) {
-    setTimeout(() => {
-        router.push({ name: 'call', query: { userId, fromMatch, remark: 'callOut', type: 'match' } })
+    var waitMatch = setTimeout(() => {
+        router.push({ name: 'call', query: { userId, fromMatch, remark: 'callOut', type: 'match', free } })
     }, 3000);
 }
 
@@ -105,36 +106,44 @@ const ringOff = async () => {
 }
 //邀请通话
 const invite = async (userId, yxId) => {
+    if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
+        homeStore.params.toAccid = yxId
+        // console.log(yxId);
+        try {
+            // const data = await homeStore.nim.signaling.callEx(homeStore.params)
+            const data = await homeStore.nim.signaling.callEx({
+                type: 2,
+                toAccid: yxId,
+                requestId: '1008611',
+                uid: userStore.mineInfo.userId,
+                attachExt: JSON.stringify(option)
+            })
+            console.log(option);
 
-    homeStore.params.toAccid = yxId
-    // console.log(yxId);
-    try {
-        // const data = await homeStore.nim.signaling.callEx(homeStore.params)
-        const data = await homeStore.nim.signaling.callEx({
-            type: 2,
-            toAccid: yxId,
-            requestId: '1008611',
-            uid: userStore.mineInfo.userId,
-            attachExt: JSON.stringify(option)
-        })
-        console.log(option);
-
-        const channelInfo = data.channelInfo
-        homeStore.inviteData = data
-        homeStore.channelInfo = channelInfo
-        // homeStore.channelInfo.name = cname
-        console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
-    } catch (error) {
-        console.warn('创建频道失败，error：', error)
-        if (error.code == 10405) {
-            console.warn('频道已存在，请勿重复创建')
+            const channelInfo = data.channelInfo
+            homeStore.inviteData = data
+            homeStore.channelInfo = channelInfo
+            // homeStore.channelInfo.name = cname
+            console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
+        } catch (error) {
+            console.warn('创建频道失败，error：', error)
+            if (error.code == 10405) {
+                console.warn('频道已存在，请勿重复创建')
+            }
         }
+    }
+    else {
+        router.push('/')
+        homeStore.getDiamondsVisible = true
     }
 }
 onMounted(() => {
     //获取通话目标信息
     userStore.getUserDetailData(userId, yxId)
     invite(userId, yxId)
+})
+onBeforeUnmount(() => {
+    clearTimeout(waitMatch)
 })
 // 获取国家emoji
 watch(userDetail, (newValue, oldValue) => {

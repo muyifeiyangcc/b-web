@@ -135,7 +135,7 @@ const startMatch = async () => {
 }
 //邀请通话
 const invite = async () => {
-    router.push({ name: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true, pushRobot: true } })
+    router.push({ name: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true, pushRobot: true, free: target.value.free } })
 }
 onMounted(() => {
 

@@ -62,10 +62,7 @@
 
 
 <script lang="ts" setup>
-import { useHomeStore } from '~/stores';
 const homeStore = useHomeStore()
-
-
 </script>
 
 <style scoped></style>

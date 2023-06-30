@@ -133,14 +133,14 @@ export const useHomeStore = defineStore('useHomeStore', {
                     if (attachType === 29) {
                         console.log('机器人邀请通话');
                         const routerName = router.currentRoute.value.name
-                        const result = await getStartMatchRobot({
-                            gender: 2,
-                            hitRecordId: this.attachEvent.hitRecordId,
-                        })
                         if (routerName !== 'call' && routerName !== 'waitconnect' && routerName !== 'waitcall' && routerName !== 'match') {
+                            const result = await getStartMatchRobot({
+                                gender: 2,
+                                hitRecordId: this.attachEvent.hitRecordId,
+                            })
+                            console.log(result);
                             router.push({ name: 'waitconnect', query: { userId: result.userId, yxId: result.yxAccid, pushRobot: true, free: result.free } })
                         }
-                        console.log(result);
                     }
                     if (attachType === 6) {
                         showSuccessToast(`充值成功`)

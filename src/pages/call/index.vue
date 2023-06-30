@@ -250,6 +250,7 @@ homeStore.client.on('stream-subscribed', event => {
 homeStore.client.on('connection-state-change', (evt) => {
     console.log(`connection-state-change ${evt.prevState} => ${evt.curState}。是否重连：${evt.reconnect}`)
 })
+
 //远端用户加入房间通知回调，建议在收到此回调后再进行设置远端视图等的操作
 homeStore.client.on('peer-online', evt => {
     console.log(`${evt.uid} 加入房间`)
@@ -355,23 +356,16 @@ const timeFinish = () => {
 //用户心跳    remark拨打类型=>callIn：呼入，callOut：打出  type通话类型=>match：匹配，directCall：直接发起通话
 const userHeartBeat = async () => {
     const option = {
-        channelId: "robot",
+        channelId: Date.now(),
         free,
         receiverYxAccid: userStore.userDetail.yxAccid,
         remark,
         type
     }
     heartbeat(option).then((res) => {
-        console.log(res);
-        if (res) {
-            if (res.nextBalanceIsSufficient === 1) {
-                heartBeatTimeout = setTimeout(() => userHeartBeat(option), res.nextRequestInterval * 1000)
-                userStore.getMineInfoData()
-            }
-            else {
-                showSuccessToast(`余额不足`)
-                showGetCoinDialog()
-            }
+        if (res.nextBalanceIsSufficient === 1) {
+            heartBeatTimeout = setTimeout(() => userHeartBeat(option), res.nextRequestInterval * 1000)
+            userStore.getMineInfoData()
         }
         else {
             showSuccessToast(`余额不足`)

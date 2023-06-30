@@ -34,6 +34,7 @@
         </div>
         <img src="../../assets/back.png" class="absolute  w-full h-full  top-0 z--1" />
         <audio src='https://1v1firendscircle.s3.ap-southeast-1.amazonaws.com/ios/receive.mp3' autoplay loop></audio>
+        <get-diamonds-chat />
     </div>
 </template>
 
@@ -56,43 +57,49 @@ if (pushRobot) {
 
 // 接受邀请
 const getThrough = async () => {
-    if (!pushRobot) {
-        const option = {
-            channelId: homeStore.acceptData.metaData.channelInfo.channelId,
-            fromAccid: homeStore.acceptData.fromAccid,
-            requestId: homeStore.acceptData.requestId,
-            uid: userStore.mineInfo.userId
-        }
-        try {
-            let data = await homeStore.nim.signaling.joinAndAccept(option)
-            console.warn('接受邀请并加入成功，data', data)
-            homeStore.channelInfo = data.channelInfo//保存房间数据
-            homeStore.memberList = data.memberList//保存房间内用户数据
-            router.push({ name: 'call', query: { channelName: homeStore.channelInfo.channelId, remark: 'callIn', type: 'directCall', free } })
-        } catch (error) {
-            console.warn('接受邀请并加入失败，error：', error)
-            switch (error.code) {
-                case 10407:
-                    console.warn('已经在频道内')
-                    break
-                case 10419:
-                    console.warn('频道人数超限')
-                    break
-                case 10417:
-                    console.warn('频道成员uid冲突了')
-                    break
-                case 10420:
-                    console.warn('当前账号在其他端已经登录，并且已经在频道内')
-                    break
-                case 10404:
-                    console.warn('频道不存在')
-                    break
+    if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
+        if (!pushRobot) {
+            const option = {
+                channelId: homeStore.acceptData.metaData.channelInfo.channelId,
+                fromAccid: homeStore.acceptData.fromAccid,
+                requestId: homeStore.acceptData.requestId,
+                uid: userStore.mineInfo.userId
             }
+            try {
+                let data = await homeStore.nim.signaling.joinAndAccept(option)
+                console.warn('接受邀请并加入成功，data', data)
+                homeStore.channelInfo = data.channelInfo//保存房间数据
+                homeStore.memberList = data.memberList//保存房间内用户数据
+                router.push({ name: 'call', query: { channelName: homeStore.channelInfo.channelId, remark: 'callIn', type: 'directCall', free } })
+            } catch (error) {
+                console.warn('接受邀请并加入失败，error：', error)
+                switch (error.code) {
+                    case 10407:
+                        console.warn('已经在频道内')
+                        break
+                    case 10419:
+                        console.warn('频道人数超限')
+                        break
+                    case 10417:
+                        console.warn('频道成员uid冲突了')
+                        break
+                    case 10420:
+                        console.warn('当前账号在其他端已经登录，并且已经在频道内')
+                        break
+                    case 10404:
+                        console.warn('频道不存在')
+                        break
+                }
+            }
+        }
+        else {
+            clearTimeout(autoExit)
+            router.push({ name: 'call', query: { pushRobot, remark: 'callIn', type: 'directCall', free } })
         }
     }
     else {
-        clearTimeout(autoExit)
-        router.push({ name: 'call', query: { pushRobot, remark: 'callIn', type: 'directCall', free } })
+        rejectInvite()
+        homeStore.getDiamondsVisible = true
     }
 }
 
