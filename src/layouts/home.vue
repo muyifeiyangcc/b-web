@@ -17,8 +17,10 @@
         </van-tabbar-item>
         <van-tabbar-item to="/message">
           <template #icon="props">
-            <img v-if="props.active" src="../assets/tab_Chat_hover.png" class=" w40 important:h40" />
-            <img v-else src="../assets/tab_Chat.png" class=" w40 important:h40" />
+            <van-badge :content="homeStore.unReadMsgCount" :show-zero="false">
+              <img v-if="props.active" src="../assets/tab_Chat_hover.png" class=" w40 important:h40" />
+              <img v-else src="../assets/tab_Chat.png" class=" w40 important:h40" />
+            </van-badge>
           </template>
         </van-tabbar-item>
         <van-tabbar-item to="/personal">
@@ -32,5 +34,5 @@
   </div>
 </template>
 <script setup lang="ts">
-
+const homeStore = useHomeStore()
 </script>

@@ -82,7 +82,7 @@ const ringOff = async () => {
         await homeStore.nim.signaling.cancelInvite({ channelId: homeStore.inviteData.channelInfo.channelId, toAccid: homeStore.params.toAccid, requestId: homeStore.params.requestId })
             .then((res) => {
                 console.warn('取消邀请成功，data：', res)
-                router.push('/')
+                router.go(-1)
             })
 
 

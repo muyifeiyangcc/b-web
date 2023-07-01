@@ -10,7 +10,7 @@ export const useMomentsStore = defineStore('useMomentsStore', {
             const result = await getFriendsCircle({
                 "currentPage": 1,
                 "keyword": id,
-                "pageSize": 10
+                "pageSize": 50
             })
             // 获取评论数据，添加在朋友圈数据中
             result.forEach(async (item) => {

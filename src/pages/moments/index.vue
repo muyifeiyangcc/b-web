@@ -221,7 +221,11 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+:deep(.van-pull-refresh) {
+  overflow: visible;
+}
+</style>
 <route lang="yaml">
 meta:
   layout: home

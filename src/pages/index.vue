@@ -65,6 +65,7 @@ const init = () => {
     homeStore.updateIndexListData()
     //获取礼物列表
     giftStore.getGiftListData()
+
     //获取朋友圈列表
     momentsStore.getFriendsCircleList()
     //获取我的信息

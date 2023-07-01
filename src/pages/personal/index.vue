@@ -59,17 +59,17 @@
       <div class="mx20 px20 py27 bg-#AFA8FF/10 rounded-8">
         <div class="c-#fff flex justify-between items-center">
           <div class="text-14 font-medium">Do not disturb - Call</div>
-          <van-switch v-model="checked" />
+          <van-switch v-model="checked0" />
         </div>
 
         <div class="c-#fff flex justify-between items-center my30">
           <div class="text-14 font-medium">Do not disturb - Message</div>
-          <van-switch v-model="checked" />
+          <van-switch v-model="checked1" />
         </div>
 
         <div class="c-#fff flex justify-between items-center">
           <div class="text-14 font-medium">Do not disturb - Message</div>
-          <van-switch v-model="checked" />
+          <van-switch v-model="checked2" />
         </div>
       </div>
 
@@ -129,7 +129,9 @@
 
 
 <script setup>
-const checked = ref(true);
+const checked0 = ref(true);
+const checked1 = ref(true);
+const checked2 = ref(false);
 const router = useRouter()
 const userStore = useUserStore()
 const mineInfo = computed(() => userStore.mineInfo)

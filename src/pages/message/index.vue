@@ -32,7 +32,6 @@
     <!-- 聊天列表 -->
     <div class="pb100 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
       <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
-
         <div class="c-#fff pt20 " v-for="item, index in sessionList " :key="index"
           @click="router.push({ path: '/talk', query: { to: item.to, nick: talkUserDataList[index].nick, avatar: talkUserDataList[index].avatar } })">
           <van-row>
@@ -70,8 +69,8 @@
           </van-row>
         </div>
       </van-pull-refresh>
-
     </div>
+
     <!-- 标记已读弹窗 -->
     <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '37%' }" class="bg-#130021">
       <template #default>
@@ -154,9 +153,8 @@ const allRead = () => {
 onMounted(() => {
   //获取会话列表
   homeStore.getSessionList()
-  console.log(talkUserDataList.value, sessionList.value);
   //动态计算滚动区高度
-  scrollHeight.value = window.innerHeight - myRef.value.offsetHeight
+  scrollHeight.value = window.screen.height - myRef.value.offsetHeight
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background-color:#130021')
 })
@@ -167,7 +165,11 @@ onBeforeUnmount(() => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+:deep(.van-pull-refresh) {
+  overflow: visible;
+}
+</style>
 <route lang="yaml">
 meta:
   layout: home

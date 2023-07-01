@@ -54,12 +54,12 @@
                                 <div class="i-my-icons-famale text-11" />
                             </van-space>
                         </div>
-                        <div>
+                        <!-- <div>
                             <van-space :size="4">
                                 <div class="i-my-icons-diamond text-18" />
                                 <div class="text-14 c-#fff font-medium">{{ 1 }}</div>
                             </van-space>
-                        </div>
+                        </div> -->
                     </van-space>
                     <van-image round width="16rem" height="16rem" src="" class="b-3 b-#FED530" v-else />
                 </div>
@@ -81,7 +81,7 @@
                         {{ rankingListTop[1].anchorNickname }} & {{ rankingListTop[1].userNickname }}
                     </div>
                 </div>
-                <div class="absolute bottom-125 left-10" v-else>
+                <div class="absolute bottom-130 left-10" v-else>
                     <img src="../../assets/two.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
                     <van-space direction="vertical" align="center" :size="0" v-if="rankingListTop.length >= 2">
                         <div>
@@ -94,12 +94,12 @@
                                 <div class="i-my-icons-famale text-11" />
                             </van-space>
                         </div>
-                        <div>
+                        <!-- <div>
                             <van-space :size="4">
                                 <div class="i-my-icons-diamond text-18" />
                                 <div class="text-14 c-#fff font-medium">1220K</div>
                             </van-space>
-                        </div>
+                        </div> -->
                     </van-space>
                     <van-image round width="16rem" height="16rem" src="" class="b-3 b-#E1F8FF" v-else />
                 </div>
@@ -134,12 +134,12 @@
                                 <div class="i-my-icons-famale text-11" />
                             </van-space>
                         </div>
-                        <div>
+                        <!-- <div>
                             <van-space :size="4">
                                 <div class="i-my-icons-diamond text-18" />
                                 <div class="text-14 c-#fff font-medium">1220K</div>
                             </van-space>
-                        </div>
+                        </div> -->
                     </van-space>
                     <van-image round width="16rem" height="16rem" src="" class="b-3 b-#FFB784" v-else />
                 </div>

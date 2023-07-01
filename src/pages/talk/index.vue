@@ -1,7 +1,8 @@
 <template>
     <div>
         <div ref="myRef">
-            <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="showBottom = !showBottom" :border="false">
+            <van-nav-bar left-arrow @click-left="router.go(-1)" @click-right="showBottom = !showBottom" :border="false"
+                :fixed="true">
                 <template #right>
                     <van-icon name="ellipsis" :size="22" color="#fff" />
                 </template>
@@ -18,25 +19,24 @@
             <div v-for=" item, index in talkList " class=" c-#fff text-16 font-medium mt44 " :key="index">
                 <!-- 时间，待开发 -->
                 <!-- <div>time</div> -->
-                <!-- 左侧气泡 -->
+                <!-- 左侧气泡---对方 -->
                 <div class="" v-if="item.flow === 'in'">
                     <van-space :size="11">
                         <van-image round width="12rem" height="12rem"
                             :src="route.query.avatar || 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'" />
-                        <div class="bg-#1B0D2C py13 px22 rounded-r-12 rounded-lt-12 max-w250 break-words">{{ item.body }}
+                        <div class="bg-#1B0D2C py10 px22 rounded-r-12 rounded-lt-12 max-w250 break-words">{{ item.body }}
                         </div>
                     </van-space>
                 </div>
-                <!-- 右侧气泡 -->
+                <!-- 右侧气泡---我 -->
                 <div class="flex flex-row-reverse " v-if="item.flow === 'out'">
                     <van-space>
                         <div
-                            class="bg-#1B0D2C py13 px22 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-l-12 rounded-rt-12 max-w250 break-words">
+                            class="bg-#1B0D2C py10 px22 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-l-12 rounded-rt-12 max-w250 break-words">
                             {{ item.body }}
 
                         </div>
-                        <van-image round width="12rem" height="12rem"
-                            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+                        <van-image round width="12rem" height="12rem" :src="userStore.mineInfo.icon" />
                     </van-space>
                 </div>
             </div>
@@ -60,9 +60,10 @@
             </van-space>
             <div class="pt18">
                 <van-space :size="32">
-                    <button class="w32 h32"><img src="../../assets/voice.png" alt=""></button>
-                    <button class="w32 h32"><img src="../../assets/album.png" alt=""></button>
-                    <button class="w32 h32"><img src="../../assets/video.png" alt=""></button>
+                    <button class="w32 h32"><img src="../../assets/voice.png"></button>
+                    <button class="w32 h32"><img src="../../assets/album.png"></button>
+                    <button class="w32 h32"><img src="../../assets/video.png"
+                            @click="router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })"></button>
                 </van-space>
             </div>
         </div>

@@ -49,6 +49,8 @@ export const useHomeStore = defineStore('useHomeStore', {
         memberList: [],
         //会话记录
         sessionList: [],
+        //未读消息总数
+        unReadMsgCount: 0,
         // 聊天历史记录
         talkList: [],
         // 会话页面用户信息列表
@@ -160,7 +162,7 @@ export const useHomeStore = defineStore('useHomeStore', {
             })
 
             if (nim.status === 'unconnected') {
-                await nim.connect()
+                nim.connect().then(() => this.getSessionList())
             }
         },
         //发送系统消息
@@ -237,16 +239,20 @@ export const useHomeStore = defineStore('useHomeStore', {
         //获取会话记录
         async getSessionList() {
             const result = await this.nim.session.getSessions({
-                "limit": 10,
+                "limit": 50,
                 "desc": false
             })
+            this.unReadMsgCount = 0
+            result.forEach(item => {
+                this.unReadMsgCount += item.unread
+            });
             const idList = result.map((item) => item.to)
             this.talkUserDataList = await this.nim.user.getUsersNameCardFromServer({ accounts: idList })
             this.sessionList = result
             console.log(result);
         },
         // 获取聊天历史记录
-        async getHistoryTalkList(to = 'c398a3961d954af7841f95b43ed6d85b', limit = 20) {
+        async getHistoryTalkList(to = 'c398a3961d954af7841f95b43ed6d85b', limit = 50) {
             this.talkList = []
             this.talkList = await this.nim.msgLog.getHistoryMsgs({
                 scene: 'p2p',//通信方式
