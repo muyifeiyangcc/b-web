@@ -70,7 +70,7 @@
                         </van-space>
                     </div>
                     <van-popup v-model:show="showVideo" overlay-class="bg-#000/40 backdrop-blur-20">
-                        <video :src="videoUrl" autoplay="true" controls="controls" class="w-full object-cover"></video>
+                        <video :src="videoUrl" autoplay="true" controls="controls" class="w100vh object-cover"></video>
                     </van-popup>
                 </div>
                 <!-- 信息 -->

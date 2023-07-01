@@ -45,12 +45,13 @@ const homeStore = useHomeStore()
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
-const yxId = route.query.yxId
-const pushRobot = route.query.pushRobot
-const free = route.query.free
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
-// const options = ref()
+const yxId = route.query.yxId
+const pushRobot = route.query.pushRobot
+//获取通话目标信息
+userStore.getUserDetailData("", yxId)
+const free = userStore.userDetail.videoPrice > 0 ? 0 : 1
 if (pushRobot) {
     var autoExit = setTimeout(() => { router.go(-1) }, homeStore.attachEvent.waitTime * 1000)
 }
@@ -138,8 +139,7 @@ const rejectInvite = async () => {
 }
 
 onMounted(() => {
-    //获取通话目标信息
-    userStore.getUserDetailData("", yxId)
+
 })
 // 获取国家emoji
 watch(userDetail, (newValue, oldValue) => {

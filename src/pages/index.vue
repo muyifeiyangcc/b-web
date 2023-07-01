@@ -23,18 +23,18 @@ const loading = ref(false);
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {
-    homeStore.updateIndexListData(1, '', true)
+    homeStore.updateIndexListData('pull')
     loading.value = false;
   }, 500);
 };
-
+// 无限滚动
 let allowLoad = true
 const loadMore = () => {
   if (allowLoad) {
     allowLoad = false
     homeStore.getIndexListOption.currentPage++
     setTimeout(() => {
-      homeStore.updateIndexListData()
+      homeStore.updateIndexListData('scroll')
       allowLoad = true
     }, 1000);
   }
@@ -81,6 +81,7 @@ onMounted(() => {
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
+
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getGiftList, sendGift } from '~/api/gift'
-import { showSuccessToast } from 'vant';
+import { showSuccessToast, showFailToast } from 'vant';
 export const useGiftStore = defineStore('useGiftStore', {
     state: () => ({
         showGiftView: false,//直播间送礼弹窗
@@ -21,10 +21,10 @@ export const useGiftStore = defineStore('useGiftStore', {
                 yxAccid
             }).then((res) => {
                 if (res) {
-                    showSuccessToast(`送礼成功,余额：${res.diamondNum}`)
+                    showSuccessToast(`Gift successful,balance:${res.diamondNum}`)
                 }
                 else {
-                    showSuccessToast("余额不足")
+                    showFailToast(`Insufficient Balance`)
                 }
             })
         }

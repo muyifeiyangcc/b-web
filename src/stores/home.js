@@ -18,8 +18,7 @@ export const useHomeStore = defineStore('useHomeStore', {
         giftId: '',//索要礼物Id
         talkList: [],//直播间和主播聊天列表
         attachEvent: {},//系统消息事件对象
-        getIndexListOption:
-        {
+        getIndexListOption: {
             "currentPage": 1,
             "onlineStatus": 0,
             "pageSize": 10,
@@ -210,8 +209,9 @@ export const useHomeStore = defineStore('useHomeStore', {
         },
 
         // 更新首页列表
-        async updateIndexListData(title, tagFlag = false) {
-            if (tagFlag) {
+        async updateIndexListData(origin, title) {
+            //判断是点击标签更新
+            if (origin === 'tag') {
                 this.indexTabsChildren.map((item) => {
                     if (item.tagName === title) {
                         this.getIndexListOption.tagId = item.id
@@ -220,6 +220,13 @@ export const useHomeStore = defineStore('useHomeStore', {
                 this.getIndexListOption.currentPage = 1
                 this.indexList = await getIndexList(this.getIndexListOption)
             }
+            //判断是下拉刷新
+            else if (origin === 'pull') {
+                this.getIndexListOption.currentPage = 1
+                this.indexList = []
+                this.indexList = await getIndexList(this.getIndexListOption)
+            }
+            //判断是滚动更新
             else {
                 //获取首页用户列表
                 const result = await getIndexList(this.getIndexListOption)

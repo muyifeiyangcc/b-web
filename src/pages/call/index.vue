@@ -63,7 +63,7 @@
             <div class="absolute bottom-100 left-15 w270 h300 z-99">
                 <div class="h250 overflow-scroll flex flex-col-reverse ">
                     <div class="c-#E2E2E2 text-14 " v-for="item, index in homeStore.talkList" :key="index">
-                        {{ item.user }}:{{ item.content }}
+                        {{ item.user }} : {{ item.content }}
                     </div>
                 </div>
                 <!-- <div class="c-#fff text-12 absolute bottom-0">⚠️&nbsp&nbspViolence, pornography, danger and other contents
@@ -103,7 +103,7 @@
                                 <van-space>
                                     <div class="i-my-icons-diamond text-21" />
                                     <div class="c-#fff text-18 font-bold">{{
-                                        findGift(homeStore.giftId).giftPrice
+                                        indGift(homeStore.giftId).giftPrice
                                     }}</div>
                                     <!-- <div class="c-#fff text-18 font-bold">{{ userStore.mineInfo.diamondNum }}</div> -->
                                 </van-space>
@@ -163,7 +163,7 @@ import NERTC from "nertc-web-sdk/NERTC"
 import { rejectAskGift } from '~/api/gift'
 import { getRobotVideo } from '~/api/match'
 import { heartbeat } from '~/api/wallet'
-import { showSuccessToast } from 'vant';
+import { showFailToast } from 'vant';
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const secondCount = ref(0)//进入直播页面开始计时
 const homeStore = useHomeStore()
@@ -357,7 +357,7 @@ const timeFinish = () => {
 const userHeartBeat = async () => {
     const option = {
         channelId: Date.now(),
-        free,
+        free: Number(free),
         receiverYxAccid: userStore.userDetail.yxAccid,
         remark,
         type
@@ -368,7 +368,7 @@ const userHeartBeat = async () => {
             userStore.getMineInfoData()
         }
         else {
-            showSuccessToast(`余额不足`)
+            showFailToast(`Insufficient Balance`)
             showGetCoinDialog()
         }
     })

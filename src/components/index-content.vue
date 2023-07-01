@@ -6,7 +6,9 @@
                 <div class="">
                     <div class="h181  rounded-12 relative overflow-hidden"
                         @click="router.push({ path: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
+                        <!-- 背景图 -->
                         <van-image :src="item.icon" fit="cover" />
+                        <!-- 在线状态 -->
                         <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/[.06]  absolute top-11 left-10">
                             <van-space :size="2">
                                 <div class="w6 h6 rounded-50% bg-#2BC100" v-if="item.status === 1" />
@@ -17,15 +19,19 @@
                                 <div v-if="item.status === 2">Offline</div>
                             </van-space>
                         </div>
-                        <div
-                            class="text-12 text-#fff font-semibold pl9 pr8 bg-gradient-to-r from-#FF9F00 to-#DE5D5D  rounded-l-10 absolute top-11 right-0">
-                            TOP1
+                        <!-- top等级 -->
+                        <div class="text-12 text-#fff font-semibold px9 py1 rounded-l-10 absolute top-11 right-0"
+                            :class="topColorList[index]" v-if="index < 4">
+                            TOP {{ index + 1 }}
                         </div>
-                        <div
-                            class="text-12 text-#fff font-semibold py6 px8 rounded-13 absolute bottom-5 left-10 bg-gradient-to-r from-#FF8960 to-#FF62A5">
+                        <!-- 评分等级  A、SS、SS-->
+                        <div class="text-12 text-#fff font-semibold text-center py6 w29  rounded-13 absolute bottom-5 left-10"
+                            v-if="['SS', 'S', 'A'].includes(item.anchorLevelName)"
+                            :class="anchorLevelNameColorList[item.anchorLevelName]">
                             {{ item.anchorLevelName }}
                         </div>
                     </div>
+
                     <div class="mt10 flex justify-between items-center">
                         <van-space :size="0">
                             <van-image round width="32" height="32" class="b-2" :src="item.icon" />
@@ -61,23 +67,18 @@ import { useHomeStore } from '~/stores';
 import { getEmoji } from '~/utils'
 const homeStore = useHomeStore()
 const router = useRouter()
-// //邀请通话
-// const invite = async (userId, yxId) => {
-//     try {
-//         const data = await homeStore.nim.signaling.callEx(homeStore.params)
-//         const channelInfo = data.channelInfo
-//         homeStore.inviteData = data
-//         homeStore.channelInfo = channelInfo
-//         console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
-//         router.push({ path: 'waitcall', query: { userId, yxId } })
-//     } catch (error) {
-//         console.warn('创建频道失败，error：', error)
-//         if (error.code == 10405) {
-//             console.warn('频道已存在，请勿重复创建')
-//         }
-//     }
-// }
+const anchorLevelNameColorList = {
+    SS: 'bg-gradient-to-r from-#FF8960 to-#FF62A5',
+    S: 'bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8',
+    A: 'bg-#FFAE60',
+}
 
+const topColorList = [
+    'bg-gradient-to-r from-#FF9F00 to-#DE5D5D',
+    'bg-gradient-to-r from-#97E3DF to-#5DADDE',
+    'bg-gradient-to-r from-#D2A03E to-#B57100',
+    'bg-gradient-to-r from-#989898 to-#3B3B3B'
+]
 onMounted(() => {
 
 })

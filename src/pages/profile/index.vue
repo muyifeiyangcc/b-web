@@ -37,7 +37,11 @@
         <div>
             <div class="c-#fff text-16 font-semibold ml20 mt32 ">Basic info</div>
             <div class="w97 h97 rounded-50% overflow-hidden mt15 mx-auto  relative text-center ">
-                <van-uploader v-model="avatar" multiple:max-count=1 preview-size="97" :after-read="afterRead" />
+                <van-uploader v-model="avatar" multiple:max-count=1 preview-size="97" :after-read="afterRead">
+                    <template #default>
+                        <van-image round width="24rem" height="24rem" :src="setUserInfoOpt.icon" />
+                    </template>
+                </van-uploader>
                 <!-- 删除图片按钮 -->
                 <div class="bg-#fff/40 h20 w-full absolute bottom-0  z-3" @click="avatar = []">
                     <van-icon name="cross" class="text-16 c-#fff" />
@@ -45,10 +49,13 @@
             </div>
         </div>
         <!-- choose avatar -->
-        <div class="mx30 mt20 flex justify-between" @click="console.log(avatar)">
-            <img src="../../assets/avatar_1.jpg" class="w80 h80 rounded-50%">
-            <img src="../../assets/avatar_2.jpg" class="w80 h80 rounded-50%">
-            <img src="../../assets/avatar_3.jpg" class="w80 h80 rounded-50%">
+        <div class="mx30 mt20 flex justify-between">
+            <img src="../../assets/avatar_1.jpg" class="w80 h80 rounded-50%"
+                @click="setUserInfoOpt.icon = 'http://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688191947471.jpg'">
+            <img src="../../assets/avatar_2.jpg" class="w80 h80 rounded-50%"
+                @click="setUserInfoOpt.icon = 'http://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688193197578.jpg'">
+            <img src="../../assets/avatar_3.jpg" class="w80 h80 rounded-50%"
+                @click="setUserInfoOpt.icon = 'http://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688193254177.jpg'">
         </div>
         <!-- name -->
         <div class="mx20 py20 mt20 b-b-1 b-#EFEFEF/5 flex justify-between items-center" @click="showName = true">
@@ -171,6 +178,7 @@
                     option-height="65" class="mt20" v-model="currentDate" />
             </template>
         </van-popup>
+        <van-toast></van-toast>
     </div>
 </template>
 
@@ -178,6 +186,7 @@
 <script  setup>
 import { getMineInfo, setUserInfo } from '~/api/user'
 import { getOssKey } from '~/api/home'
+import { showSuccessToast } from 'vant';
 import OSS from "ali-oss";
 const router = useRouter()
 const showName = ref(false)//修改昵称弹窗
@@ -194,6 +203,7 @@ const fileList = ref([])//背景图上传列表
 const myBirthday = computed(() => currentDate.value[0] + '-' + currentDate.value[1] + '-' + currentDate.value[2])
 const minDate = new Date(1970, 0, 1)//日期选项最小日期
 const maxDate = new Date(2023, 5, 1)//日期选择最大日期
+// const imgObj = ref({})//图片对象
 const setUserInfoOpt = ref({
     birthday: "",//生日
     countryId: "",//国家
@@ -206,6 +216,7 @@ const setUserInfoOpt = ref({
     videos: [],//视频集
     videosDel: []//要删除的视频集
 })
+
 const userStore = useUserStore()
 const mineInfo = computed(() => userStore.mineInfo)
 // 绑定必要数据
@@ -223,8 +234,11 @@ const getData = () => {
     setUserInfoOpt.value.videos = mineInfo.value.picList
 }
 //修改个人信息
-const setMineInfoData = async () => {
-    await setUserInfo(setUserInfoOpt.value)
+const setMineInfoData = () => {
+    setUserInfo(setUserInfoOpt.value).then(res => showSuccessToast({
+        message: 'Save Successful!'
+    })
+    )
 }
 
 
@@ -240,7 +254,7 @@ const uploadImage = async (data) => {
     ossInfo.value = await getOssKey()//获取临时凭证
     // 实例化OSS
     const client = new OSS({
-        // region: ossInfo.reg,
+        region: 'oss-cn-guangzhou',
         accessKeyId: ossInfo.value.AccessKeyId,
         accessKeySecret: ossInfo.value.AccessKeySecret,
         stsToken: ossInfo.value.SecurityToken,
@@ -269,6 +283,7 @@ const uploadImage = async (data) => {
     );
     //返回的图片路径
     console.log(result);
+    setUserInfoOpt.value.icon = result.url
 }
 
 onMounted(() => {

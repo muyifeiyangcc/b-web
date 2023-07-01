@@ -54,13 +54,13 @@ const onClickFatherTab = (name, title) => {
     //切换副标题时应将子标题清零
     tabValue.value = 0
     homeStore.getIndexTabChildrenList(title)//更新二级分类
-    homeStore.updateIndexListData(1, title, true)//更新首页用户信息
+    homeStore.updateIndexListData('tag', title)//更新首页用户信息
     document.documentElement.scrollTop = 0//将页面滚动距离置0
 }
 // 点击二级tab栏触发事件
 const tabClick = (value) => {
     tabValue.value = value
-    homeStore.updateIndexListData(1, homeStore.indexTabsChildren[value].tagName, true)//更新首页用户信息
+    homeStore.updateIndexListData('tag', homeStore.indexTabsChildren[value].tagName)//更新首页用户信息
     document.documentElement.scrollTop = 0//将页面滚动距离置0
 }
 
