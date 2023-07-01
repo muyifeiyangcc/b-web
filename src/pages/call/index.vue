@@ -191,6 +191,7 @@ const pushRobot = route.query.pushRobot//是否来自推送的机器人
 const free = route.query.free//是否来自推送的机器人
 const remark = route.query.remark//拨打类型
 const type = route.query.type//通话类型
+const channelId = Date.now()
 // const channelName = mark === 'calling' ? homeStore.channelInfo.channelId : route.query.channelName
 let channelName = route.query.channelName//通话频道名称，用于加入通话房间
 var heartBeatTimeout
@@ -325,9 +326,8 @@ const changeCamera = async () => {
         i = i + 1
     }
     else { i = 0 }
-    nowCamera.value = allCamera.value[i]
-    console.log(i, allCamera.value.length, allCamera.value[i].deviceId);
-    await localStream.value.switchDevice('video', nowCamera.value.deviceId)
+    nowCamera.value = allCamera.value[i].deviceId
+    await localStream.value.switchDevice('video', nowCamera.value)
 }
 
 //确认赠送主播索要礼物
@@ -356,7 +356,7 @@ const timeFinish = () => {
 //用户心跳    remark拨打类型=>callIn：呼入，callOut：打出  type通话类型=>match：匹配，directCall：直接发起通话
 const userHeartBeat = async () => {
     const option = {
-        channelId: Date.now(),
+        channelId,
         free: Number(free),
         receiverYxAccid: userStore.userDetail.yxAccid,
         remark,

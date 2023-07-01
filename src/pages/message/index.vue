@@ -58,7 +58,7 @@
                     <div class="c-#fff/60 text-12">{{ formatTime(item.updateTime) }}</div>
                     <div>
                       <!-- <van-badge :content="9" max="99" /> -->
-                      <div class="bg-#ED4A47 rounded-50% w18 h18 text-center" v-if="item.unreadMsgs.length > 0">
+                      <div class="bg-#ED4A47 rounded-50% w18 h18 text-center text-12" v-if="item.unreadMsgs.length > 0">
                         {{ item.unreadMsgs.length >= 99 ? 99 : item.unreadMsgs.length }}
                       </div>
                     </div>
@@ -154,7 +154,7 @@ onMounted(() => {
   //获取会话列表
   homeStore.getSessionList()
   //动态计算滚动区高度
-  scrollHeight.value = window.screen.height - myRef.value.offsetHeight
+  scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background-color:#130021')
 })

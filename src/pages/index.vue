@@ -125,6 +125,7 @@ onBeforeUnmount(() => {
       </van-button>
     </div>
     <get-diamonds-chat />
+
   </div>
 </template>
 
