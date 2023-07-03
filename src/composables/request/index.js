@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 // 配置新建一个 axios 实例
 const service = axios.create({
   // 请求前缀
@@ -14,9 +13,10 @@ const service = axios.create({
 
 // 添加请求拦截器
 service.interceptors.request.use((config) => {
+  const homeStore = useHomeStore()
   // 添加token参数
-  config.headers.loginToken = '5296949AA767440399D6BF6D70E43E06';
-  config.headers.appid = '77985415';
+  config.headers.loginToken = homeStore.systemOpt.token || '5296949AA767440399D6BF6D70E43E06';
+  config.headers.appid = homeStore.systemOpt.appId || '77985415';
   return config;
 });
 

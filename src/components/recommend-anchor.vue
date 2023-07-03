@@ -10,8 +10,10 @@
                             :key="index">
                             <img :src="item.icon" class="w-full h-full">
                             <div class="w96 flex justify-between items-center  absolute bottom-7 px7 ">
-                                <img src="../assets/message_b.png" class="w26 h26">
-                                <img src="../assets/video_b.png" class="w26 h26">
+                                <img src="../assets/message_b.png" class="w26 h26"
+                                    @click="router.push({ name: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })">
+                                <img src="../assets/video_b.png" class="w26 h26"
+                                    @click="router.push({ name: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid, free: item.videoPrice > 0 ? 0 : 1 } })">
                             </div>
                         </div>
                     </div>
@@ -23,8 +25,10 @@
                                     @click="getRecommendAnchorData">Refresh</van-button>
                             </div>
                             <van-button
-                                class="w121 h40 rounded-20 text-16 font-semibold c-#fff bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 b-0">Say
-                                Hello</van-button>
+                                class="w121 h40 rounded-20 text-16 font-semibold c-#fff bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 b-0"
+                                @click="sayHello">
+                                Say Hello
+                            </van-button>
                         </van-space>
                     </div>
                 </div>
@@ -36,13 +40,15 @@
 
 <script  setup>
 import { getRecommendAnchor } from '~/api/home'
+const router = useRouter()
+const homeStore = useHomeStore()
 let recommendAnchorList = ref([])
 let show = ref(false)
 
 //获取首页推荐
 const getRecommendAnchorData = async () => {
     const result = await getRecommendAnchor()
-    recommendAnchorList.value = result
+    recommendAnchorList.value = result.slice(0, 3)
 }
 
 const showRecommend = setInterval(() => {
@@ -51,12 +57,29 @@ const showRecommend = setInterval(() => {
     if (show.value) {
         clearInterval(showRecommend)
     }
-}, 20 * 1000);
+}, 10 * 1000);
 
+//发送文本消息
+const sendTextMessage = async (to) => {
+    const msg = await homeStore.nim.msg.sendTextMsg({
+        scene: "p2p",
+        to,
+        body: 'Hi,Can we start a video chat',
+        onSendBefore: function (msg) {
+            console.log('发送了一条消息', msg);
+        }
+    })
+}
 onBeforeUnmount(() => {
     //组件卸载前去掉定时器
     clearInterval(showRecommend)
 })
+const sayHello = () => {
+    recommendAnchorList.value.forEach(item => {
+        sendTextMessage(item.yxAccid)
+    });
+    show.value = false
+}
 </script>
 
 <style scoped></style>

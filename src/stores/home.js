@@ -7,6 +7,11 @@ import { showSuccessToast } from 'vant';
 
 export const useHomeStore = defineStore('useHomeStore', {
     state: () => ({
+        systemOpt: {
+            token: '',
+            appId: '',
+            userId: ''
+        },
         isInit: false,//是否已经初始化
         nim: {},
         client: {},
@@ -71,11 +76,12 @@ export const useHomeStore = defineStore('useHomeStore', {
         //连接im
         async imConnect() {
             const router = useRouter()
+            const userStore = useUserStore()
             // 初始化nim
             const nim = new NIMSDK({
                 appkey: '124f689baed25c488e1330bc42e528af',
-                account: '2a267c8bf750454fa2b402d9dd138301', // 云信账号
-                token: '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
+                account: userStore.mineInfo.yxAccid || '2a267c8bf750454fa2b402d9dd138301', // 云信账号
+                token: userStore.mineInfo.imToken || '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
                 // debugLevel: 'debug',
             })
             const client = NERTC.createClient({ appkey: '124f689baed25c488e1330bc42e528af', debug: true })

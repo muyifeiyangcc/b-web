@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
 const router = useRouter()
+const route = useRoute()
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
@@ -19,9 +20,10 @@ const saveOption =
   "pushToken": "",
   "useSimCard": 1
 }
-// const token = router.query.token
-// const appId = router.query.appId
-// const userId = router.query.userId
+
+homeStore.systemOpt.token = route.query.token
+homeStore.systemOpt.appId = route.query.appId
+homeStore.systemOpt.userId = route.query.userId
 
 const loading = ref(false);
 //下拉刷新
