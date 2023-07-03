@@ -41,6 +41,7 @@
 
 <script  setup>
 import { getEmoji } from '~/utils'
+import { getUserDetail } from '~/api/user'
 // import { getRandomString } from '~/utils'
 const homeStore = useHomeStore()
 const userStore = useUserStore()
@@ -75,7 +76,14 @@ if (fromMatch) {
         router.push({ name: 'call', query: { userId, fromMatch, remark: 'callOut', type: 'match', free } })
     }, 3000);
 }
-
+const getUserDetailData = (userId = "", yxAccid) => {
+    getUserDetail({
+        userId, yxAccid
+    }).then(res => {
+        userStore.userDetail = res
+        invite(userId, yxAccid)
+    })
+}
 //取消邀请
 const ringOff = async () => {
     try {
@@ -135,9 +143,7 @@ const invite = async (userId, yxId) => {
     }
 }
 onMounted(() => {
-    //获取通话目标信息
-    userStore.getUserDetailData(userId, yxId)
-    invite(userId, yxId)
+    getUserDetailData(userId, yxId)
 })
 onBeforeUnmount(() => {
     clearTimeout(waitMatch)

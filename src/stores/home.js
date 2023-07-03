@@ -195,6 +195,36 @@ export const useHomeStore = defineStore('useHomeStore', {
         setInTalkPage(data) {
             this.inTalkPage = data
         },
+        async invite(userId, yxId) {
+            const userStore = useUserStore()
+            if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
+                this.params.toAccid = yxId
+                try {
+                    // const data = await homeStore.nim.signaling.callEx(homeStore.params)
+                    const data = await homeStore.nim.signaling.callEx({
+                        type: 2,
+                        toAccid: yxId,
+                        requestId: '1008611',
+                        uid: userStore.mineInfo.userId,
+                        attachExt: JSON.stringify(option)
+                    })
+                    const channelInfo = data.channelInfo
+                    this.inviteData = data
+                    this.channelInfo = channelInfo
+                    // homeStore.channelInfo.name = cname
+                    console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
+                } catch (error) {
+                    console.warn('创建频道失败，error：', error)
+                    if (error.code == 10405) {
+                        console.warn('频道已存在，请勿重复创建')
+                    }
+                }
+            }
+            else {
+                router.push('/')
+                this.getDiamondsVisible = true
+            }
+        },
         //首页钻石不足弹窗
         showGetDiamonds() {
             this.getDiamondsVisible = !this.getDiamondsVisible

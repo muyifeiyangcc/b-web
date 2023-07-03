@@ -5,17 +5,20 @@
             <van-popup v-model:show="show" class="bg-transparent">
                 <div class="relative text-center">
                     <img src="../assets/hotgirl_bg.png" class="w349 h392">
-                    <div class="absolute top-113 flex justify-between w-full px20">
-                        <div class="bg-blue  w96 h133 rounded-10 overflow-hidden" v-for="item, index in recommendAnchorList"
-                            :key="index">
-                            <img :src="item.icon" class="w-full h-full">
-                            <div class="w96 flex justify-between items-center  absolute bottom-7 px7 ">
-                                <img src="../assets/message_b.png" class="w26 h26"
-                                    @click="router.push({ name: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })">
-                                <img src="../assets/video_b.png" class="w26 h26"
-                                    @click="router.push({ name: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid, free: item.videoPrice > 0 ? 0 : 1 } })">
-                            </div>
-                        </div>
+                    <div class="absolute top-113 w-full px20">
+                        <van-row :gutter="10">
+                            <van-col v-for="item, index in recommendAnchorList" :key="index" :span="8">
+                                <div class="bg-blue w-full h133 rounded-10 relative overflow-hidden flex flex-col-reverse">
+                                    <img :src="item.icon" class="w-full h-full absolute ">
+                                    <div class="flex justify-between items-center px7 relative z-2 bottom-10">
+                                        <img src="../assets/message_b.png" class="w26 h26"
+                                            @click="router.push({ name: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })">
+                                        <img src="../assets/video_b.png" class="w26 h26"
+                                            @click="router.push({ name: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid, free: item.videoPrice > 0 ? 0 : 1 } })">
+                                    </div>
+                                </div>
+                            </van-col>
+                        </van-row>
                     </div>
                     <div class="relative bottom-110">
                         <van-space :size="27">
