@@ -59,6 +59,7 @@ const showRecommend = setInterval(() => {
     }
 }, 20 * 1000);
 
+
 //发送文本消息
 const sendTextMessage = async (to) => {
     const msg = await homeStore.nim.msg.sendTextMsg({
@@ -70,16 +71,18 @@ const sendTextMessage = async (to) => {
         }
     })
 }
-onBeforeUnmount(() => {
-    //组件卸载前去掉定时器
-    clearInterval(showRecommend)
-})
+
 const sayHello = () => {
     recommendAnchorList.value.forEach(item => {
         sendTextMessage(item.yxAccid)
     });
     show.value = false
 }
+
+onBeforeUnmount(() => {
+    //组件卸载前去掉定时器
+    clearInterval(showRecommend)
+})
 </script>
 
 <style scoped></style>

@@ -29,7 +29,7 @@
                                 <div class="text-16 font-semibold">{{ item.nickname }}</div>
                                 <div>
                                     <van-space>
-                                        <div class="i-my-icons-famale text-14" v-if="item.gender === 1" />
+                                        <div class="i-my-icons-famale text-14" v-if="item.gender === 2" />
                                         <div class="i-my-icons-male text-14" v-else />
                                         <div class="text-14">{{ item.age }}</div>
                                     </van-space>

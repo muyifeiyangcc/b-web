@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     PostOmments: typeof import('./components/post-omments.vue')['default']
     README: typeof import('./components/README.md')['default']
     RecommendAnchor: typeof import('./components/recommend-anchor.vue')['default']
+    Record: typeof import('./components/record.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UploadAvatar: typeof import('./components/upload-avatar.vue')['default']

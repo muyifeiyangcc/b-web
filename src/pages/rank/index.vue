@@ -25,20 +25,34 @@
                 <img src="../../assets/ranking-block.png" class=" w321 h176 ">
                 <!-- 第一名 -->
                 <div class="absolute text-center w-full top--100" v-if="type === 'Couple'">
-                    <img src="../../assets/one.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
-                    <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
-                    <van-space :size="0">
-                        <div class="relative right--8">
-                            <van-image round width="14rem" height="14rem" :src="rankingListTop[0].anchorIcon"
-                                class="b-3 b-#FED530" />
+                    <div v-if="rankingListTop.length > 0">
+                        <img src="../../assets/one.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
+                        <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
+                        <van-space :size="0">
+                            <div class="relative right--8">
+                                <van-image round width="14rem" height="14rem" :src="rankingListTop[0].anchorIcon"
+                                    class="b-3 b-#FED530" />
+                            </div>
+                            <div class="relative left--8">
+                                <van-image round width="14rem" height="14rem" :src="rankingListTop[0].userIcon"
+                                    class="b-3 b-#FED530" />
+                            </div>
+                        </van-space>
+                        <div class="text-14 c-#fff font-medium">
+                            {{ rankingListTop[0].anchorNickname }} & {{ rankingListTop[0].userNickname }}
                         </div>
-                        <div class="relative left--8">
-                            <van-image round width="14rem" height="14rem" :src="rankingListTop[0].userIcon"
-                                class="b-3 b-#FED530" />
-                        </div>
-                    </van-space>
-                    <div class="text-14 c-#fff font-medium">
-                        {{ rankingListTop[0].anchorNickname }} & {{ rankingListTop[0].userNickname }}
+                    </div>
+                    <div v-else>
+                        <img src="../../assets/one.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
+                        <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
+                        <van-space :size="0">
+                            <div class="relative right--8">
+                                <van-image round width="14rem" height="14rem" src="" class="b-3 b-#FED530" />
+                            </div>
+                            <div class="relative left--8">
+                                <van-image round width="14rem" height="14rem" src="" class="b-3 b-#FED530" />
+                            </div>
+                        </van-space>
                     </div>
                 </div>
                 <div class="absolute text-center w-full top--115" v-else>
@@ -65,20 +79,34 @@
                 </div>
                 <!-- 第二名 -->
                 <div class="absolute bottom-145 left--20" v-if="type === 'Couple'">
-                    <img src="../../assets/two.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
-                    <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
-                    <van-space :size="0">
-                        <div class="relative right--8">
-                            <van-image round width="14rem" height="14rem" :src="rankingListTop[1].anchorIcon"
-                                class="b-3 b-#E1F8FF" />
+                    <div v-if="rankingListTop.length > 1">
+                        <img src="../../assets/two.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
+                        <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
+                        <van-space :size="0">
+                            <div class="relative right--8">
+                                <van-image round width="14rem" height="14rem" :src="rankingListTop[1].anchorIcon"
+                                    class="b-3 b-#E1F8FF" />
+                            </div>
+                            <div class="relative left--8">
+                                <van-image round width="14rem" height="14rem" :src="rankingListTop[1].userIcon"
+                                    class="b-3 b-#E1F8FF" />
+                            </div>
+                        </van-space>
+                        <div class="text-14 c-#fff font-medium">
+                            {{ rankingListTop[1].anchorNickname }} & {{ rankingListTop[1].userNickname }}
                         </div>
-                        <div class="relative left--8">
-                            <van-image round width="14rem" height="14rem" :src="rankingListTop[1].userIcon"
-                                class="b-3 b-#E1F8FF" />
-                        </div>
-                    </van-space>
-                    <div class="text-14 c-#fff font-medium">
-                        {{ rankingListTop[1].anchorNickname }} & {{ rankingListTop[1].userNickname }}
+                    </div>
+                    <div v-else>
+                        <img src="../../assets/two.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
+                        <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
+                        <van-space :size="0">
+                            <div class="relative right--8">
+                                <van-image round width="14rem" height="14rem" src="" class="b-3 b-#E1F8FF" />
+                            </div>
+                            <div class="relative left--8">
+                                <van-image round width="14rem" height="14rem" src="" class="b-3 b-#E1F8FF" />
+                            </div>
+                        </van-space>
                     </div>
                 </div>
                 <div class="absolute bottom-130 left-10" v-else>
@@ -105,20 +133,34 @@
                 </div>
                 <!-- 第三名 -->
                 <div class="absolute right--20 bottom-105" v-if="type === 'Couple'">
-                    <img src="../../assets/three.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
-                    <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
-                    <van-space :size="0">
-                        <div class="relative right--8">
-                            <van-image round width="14rem" height="14rem" :src="rankingListTop[2].anchorIcon"
-                                class="b-3 b-#FFB784" />
+                    <div v-if="rankingListTop.length > 2">
+                        <img src="../../assets/three.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
+                        <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
+                        <van-space :size="0">
+                            <div class="relative right--8">
+                                <van-image round width="14rem" height="14rem" :src="rankingListTop[2].anchorIcon"
+                                    class="b-3 b-#FFB784" />
+                            </div>
+                            <div class="relative left--8">
+                                <van-image round width="14rem" height="14rem" :src="rankingListTop[2].userIcon"
+                                    class="b-3 b-#FFB784" />
+                            </div>
+                        </van-space>
+                        <div class="text-14 c-#fff font-medium">
+                            {{ rankingListTop[2].anchorNickname }} & {{ rankingListTop[2].userNickname }}
                         </div>
-                        <div class="relative left--8">
-                            <van-image round width="14rem" height="14rem" :src="rankingListTop[2].userIcon"
-                                class="b-3 b-#FFB784" />
-                        </div>
-                    </van-space>
-                    <div class="text-14 c-#fff font-medium">
-                        {{ rankingListTop[2].anchorNickname }} & {{ rankingListTop[2].userNickname }}
+                    </div>
+                    <div v-else>
+                        <img src="../../assets/three.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
+                        <img src="../../assets/love_both.png" class="w34 h31 absolute top-5 left-50% ml--17 z2">
+                        <van-space :size="0">
+                            <div class="relative right--8">
+                                <van-image round width="14rem" height="14rem" src="" class="b-3 b-#FFB784" />
+                            </div>
+                            <div class="relative left--8">
+                                <van-image round width="14rem" height="14rem" src="" class="b-3 b-#FFB784" />
+                            </div>
+                        </van-space>
                     </div>
                 </div>
                 <div class="absolute right-10 bottom-85" v-else>
@@ -229,13 +271,11 @@ const getRankingListData = async (type = "ANCHOR_CHARM") => {
     })
     rankingList.value = result//排行榜数据
     rankingListTop.value = rankingList.value.splice(0, 3)
-    // myValues.value = result.rankingMineVo//个人信息
-    // console.log(rankingList.value, rankingListTop.value);
 }
-onBeforeMount(() => {
-    getRankingListData()
-})
+// onBeforeMount(() => {
+// })
 onMounted(() => {
+    getRankingListData()
 
     //组件挂载完成设置背景色
     document.querySelector('body').setAttribute('style', 'background-color:#130021')

@@ -108,7 +108,6 @@ const ringOff = async () => {
 const invite = async (userId, yxId) => {
     if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
         homeStore.params.toAccid = yxId
-        // console.log(yxId);
         try {
             // const data = await homeStore.nim.signaling.callEx(homeStore.params)
             const data = await homeStore.nim.signaling.callEx({
@@ -118,8 +117,6 @@ const invite = async (userId, yxId) => {
                 uid: userStore.mineInfo.userId,
                 attachExt: JSON.stringify(option)
             })
-            console.log(option);
-
             const channelInfo = data.channelInfo
             homeStore.inviteData = data
             homeStore.channelInfo = channelInfo

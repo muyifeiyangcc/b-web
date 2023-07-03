@@ -148,7 +148,7 @@
                         <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in momentData"
                             :key="index">
                             <!-- 第一行 -->
-                            <div class="flex justify-between">
+                            <div class="flex justify-between items-center">
                                 <div>
                                     <van-space>
                                         <div class="bg-gradient-to-b from-#CC15C7 to-#5109C1 rounded-40 p1">
@@ -169,12 +169,7 @@
                                         </div>
                                     </van-space>
                                 </div>
-                                <div>
-                                    <van-space :size="16">
-                                        <button><img src="../../assets/chat.png" class="w32 h32"></button>
-                                        <button><img src="../../assets/video.png" class="w32 h32"></button>
-                                    </van-space>
-                                </div>
+                                <van-icon name="ellipsis" color="#ccc" :size="20" />
                             </div>
                             <!-- 第二行 -->
                             <div class="text-14 c-#fff mt10">
@@ -215,7 +210,7 @@
                                         </div>
                                     </van-space>
                                 </div>
-                                <van-icon name="ellipsis" color="#ccc" :size="20" />
+
                             </div>
                         </div>
                     </div>

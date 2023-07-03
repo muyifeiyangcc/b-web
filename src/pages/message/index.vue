@@ -1,12 +1,12 @@
 <template>
-  <div mx15>
+  <div class="mx20">
     <div ref="myRef">
       <!-- 聊天页tab栏 -->
       <div class="flex justify-between items-center mb20">
         <van-tabs v-model:active="active" background="transparent" title-active-color="#fff"
           title-inactive-color="rgba(255,255,255,0.6)" line-width="0px" :ellipsis="false">
-          <van-tab title="Message" title-style="font-size:21px"></van-tab>
-          <van-tab title="Call record" title-style="font-size:21px"></van-tab>
+          <van-tab title="Message" name="message" title-style="font-size:21px"></van-tab>
+          <van-tab title="Call record" name="record" title-style="font-size:21px"></van-tab>
         </van-tabs>
         <button @click="showBottom = !showBottom"><img src="../../assets/broom.png" class="w23 h23"></button>
       </div>
@@ -30,7 +30,7 @@
       </div>
     </div>
     <!-- 聊天列表 -->
-    <div class="pb100 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
+    <div class="pb100 overflow-scroll" :style="{ height: scrollHeight + 'px' }" v-if="active === 'message'">
       <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
         <div class="c-#fff pt20 " v-for="item, index in sessionList " :key="index"
           @click="router.push({ path: '/talk', query: { to: item.to, nick: talkUserDataList[index].nick, avatar: talkUserDataList[index].avatar } })">
@@ -70,7 +70,7 @@
         </div>
       </van-pull-refresh>
     </div>
-
+    <record v-else :navHeight="200" :height="navHeight" />
     <!-- 标记已读弹窗 -->
     <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '37%' }" class="bg-#130021">
       <template #default>
@@ -124,9 +124,11 @@ const talkUserDataList = computed(() => homeStore.talkUserDataList)
 const isShow = ref(true)// 弹窗是否显示
 const showBottom = ref(false)//标记已读弹窗
 const showEmpty = ref(false);//确认清空消息列表弹窗
-const active = ref(0)// tab栏选中标识
+const active = ref('')// tab栏选中标识
 const myRef = ref();//tab栏dom实例，用于获取高度
 const scrollHeight = ref(0)//滚动部分高度
+const navHeight = ref(0)
+nextTick(() => navHeight.value = myRef.value.offsetHeight)
 const loading = ref(false);//下拉刷新加载状态
 const homeStore = useHomeStore()//pinia组件
 

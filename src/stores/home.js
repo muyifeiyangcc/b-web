@@ -82,7 +82,7 @@ export const useHomeStore = defineStore('useHomeStore', {
                 appkey: '124f689baed25c488e1330bc42e528af',
                 account: userStore.mineInfo.yxAccid || '2a267c8bf750454fa2b402d9dd138301', // 云信账号
                 token: userStore.mineInfo.imToken || '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
-                // debugLevel: 'debug',
+                debugLevel: 'debug'
             })
             const client = NERTC.createClient({ appkey: '124f689baed25c488e1330bc42e528af', debug: true })
             this.nim = nim

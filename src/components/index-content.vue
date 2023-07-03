@@ -4,7 +4,7 @@
         <van-row gutter="20">
             <van-col span="12" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
                 <div class="">
-                    <div class="h181  rounded-12 relative overflow-hidden"
+                    <div class="h200  rounded-12 relative overflow-hidden"
                         @click="router.push({ path: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
                         <!-- 背景图 -->
                         <van-image :src="item.icon" fit="cover" />
@@ -53,8 +53,7 @@
                                 </van-space>
                             </div>
                         </van-space>
-                        <div class="i-my-icons-video text-24"
-                            @click="router.push({ path: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid } })" />
+                        <div class="i-my-icons-video text-24" @click="callHer(item.userId, item.yxAccid)" />
                     </div>
                 </div>
             </van-col>
@@ -66,6 +65,7 @@
 import { useHomeStore } from '~/stores';
 import { getEmoji } from '~/utils'
 const homeStore = useHomeStore()
+const userStore = useUserStore()
 const router = useRouter()
 const anchorLevelNameColorList = {
     SS: 'bg-gradient-to-r from-#FF8960 to-#FF62A5',
@@ -79,6 +79,11 @@ const topColorList = [
     'bg-gradient-to-r from-#D2A03E to-#B57100',
     'bg-gradient-to-r from-#989898 to-#3B3B3B'
 ]
+
+const callHer = (userId, yxId) => {
+    userStore.getUserDetailData(userId, yxId)
+    router.push({ path: 'waitcall', query: { userId, yxId } })
+}
 onMounted(() => {
 
 })
