@@ -57,7 +57,7 @@ const showRecommend = setInterval(() => {
     if (show.value) {
         clearInterval(showRecommend)
     }
-}, 10 * 1000);
+}, 20 * 1000);
 
 //发送文本消息
 const sendTextMessage = async (to) => {

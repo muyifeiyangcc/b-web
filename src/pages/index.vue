@@ -102,7 +102,9 @@ onBeforeUnmount(() => {
   <div ref="scrollDom">
     <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
       <div>
-        <index-tag />
+        <keep-alive>
+          <index-tag />
+        </keep-alive>
         <div class="px15">
           <index-content />
         </div>

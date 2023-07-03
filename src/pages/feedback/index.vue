@@ -56,16 +56,19 @@
         <!-- 提交按钮 -->
         <div class="text-center  mt40">
             <van-button
-                class="c-#fff text-16 mx-auto w200 py10 b-0 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8  rounded-23">
+                class="c-#fff text-16 mx-auto w200 py10 b-0 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8  rounded-23"
+                @click="feedBack">
                 Submit
             </van-button>
         </div>
-
+        <van-toast></van-toast>
     </div>
 </template>
 
 
 <script  setup>
+import { getFeedback } from '~/api/user'
+import { showSuccessToast } from 'vant';
 const router = useRouter()
 const checked = ref('')
 const message = ref('')
@@ -79,6 +82,15 @@ const afterRead = (file) => {
 const setValue = (value) => {
     radioValue.value = value
     console.log(fileList.value);
+}
+
+const feedBack = () => {
+    getFeedback({
+        email: email.value,
+        feedbackType: radioValue.value,
+        pics: [],
+        suggestion: message.value
+    }).then(res => showSuccessToast('feedback successful!'))
 }
 onMounted(() => {
     //组件挂载完成设置背景色
@@ -94,7 +106,6 @@ onBeforeUnmount(() => {
 .active {
     background: linear-gradient(232deg, #D016C8 0%, #7F04BA 47%, #4D09C1 100%);
 }
-
 
 
 .van-field {

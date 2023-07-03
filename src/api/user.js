@@ -17,3 +17,5 @@ export const getMineInfo = () => request.post('/api/user/getUserInfo', {})
 export const setUserInfo = (data) => request.post('/api/user/updateUserInfo', data)
 //查看用户详情
 export const getUserDetail = (data) => request.post('/api/index/getUserDetail', data)
+//反馈
+export const getFeedback = (data) => request.post('/api/feedback/save', data)
