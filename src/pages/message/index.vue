@@ -148,6 +148,7 @@ const sureEmpty = () => {
 const allRead = () => {
   homeStore.resetAllUnread()
   showBottom.value = false
+  homeStore.unReadMsgCount = 0
 }
 
 onMounted(() => {

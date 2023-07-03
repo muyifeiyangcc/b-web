@@ -74,10 +74,8 @@ export const useHomeStore = defineStore('useHomeStore', {
             // 初始化nim
             const nim = new NIMSDK({
                 appkey: '124f689baed25c488e1330bc42e528af',
-                // account: '1ef27c9ebb064b66989b523c0d108c37', // 云信账号
-                // token: '4fc8f80b57f0a9afd83b86490b11fb9b' ,// 云信密码
-                account: "225f921a42e347019b55cd633b7754a7", // 云信账号
-                token: "7a30b992c1cde7759f499db202a20f7b", // 云信密码
+                account: '2a267c8bf750454fa2b402d9dd138301', // 云信账号
+                token: '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
                 // debugLevel: 'debug',
             })
             const client = NERTC.createClient({ appkey: '124f689baed25c488e1330bc42e528af', debug: true })
@@ -272,8 +270,9 @@ export const useHomeStore = defineStore('useHomeStore', {
             })
         },
         // 清空全部未读消息
-        async resetAllUnread() {
-            await this.nim.session.resetAllSessionsUnreadCount()
+        resetAllUnread() {
+            this.nim.session.resetAllSessionsUnreadCount()
+
         },
         //清空会话列表
         async deleteAllSessions() {

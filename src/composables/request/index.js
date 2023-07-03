@@ -15,7 +15,7 @@ const service = axios.create({
 // 添加请求拦截器
 service.interceptors.request.use((config) => {
   // 添加token参数
-  config.headers.loginToken = '587B8BA94BB74B499EADE5019B792745';
+  config.headers.loginToken = '5296949AA767440399D6BF6D70E43E06';
   config.headers.appid = '77985415';
   return config;
 });

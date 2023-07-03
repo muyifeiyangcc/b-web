@@ -19,6 +19,10 @@ const saveOption =
   "pushToken": "",
   "useSimCard": 1
 }
+// const token = router.query.token
+// const appId = router.query.appId
+// const userId = router.query.userId
+
 const loading = ref(false);
 //下拉刷新
 const onRefresh = () => {
@@ -125,7 +129,7 @@ onBeforeUnmount(() => {
       </van-button>
     </div>
     <get-diamonds-chat />
-
+    <recommend-anchor />
   </div>
 </template>
 

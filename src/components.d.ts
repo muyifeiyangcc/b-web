@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     Gift: typeof import('./components/gift.vue')['default']
     GivePresent: typeof import('./components/give-present.vue')['default']
     IndexContent: typeof import('./components/index-content.vue')['default']
+    IndexRecommend: typeof import('./components/index-recommend.vue')['default']
     IndexTag: typeof import('./components/index-tag.vue')['default']
     PostMoments: typeof import('./components/post-moments.vue')['default']
     PostOmments: typeof import('./components/post-omments.vue')['default']
