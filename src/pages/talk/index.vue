@@ -16,7 +16,7 @@
         </div>
         <!-- 聊天区 -->
         <div class="flex flex-col flex-col-reverse mx15 pb20 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
-            <div v-for=" item, index in talkList " class=" c-#fff text-16 font-medium mt44 " :key="index">
+            <div v-for=" item, index in talkList" class=" c-#fff text-16 font-medium mt44 " :key="index">
                 <!-- 时间，待开发 -->
                 <!-- <div>time</div> -->
                 <!-- 左侧气泡---对方 -->
@@ -42,7 +42,7 @@
             </div>
         </div>
         <!-- 输入区 -->
-        <div ref="reference" class="mx15 py20  fixed bottom-0">
+        <div ref="reference" class="mx15 py20 bg-#130021">
             <van-space :size="10">
                 <div class="w295">
                     <van-cell-group inset>

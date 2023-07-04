@@ -59,6 +59,7 @@ const getRechargeListData = async () => {
 }
 const recharge = async (batchNo) => {
     const result = await window.Recharge.postMessage(batchNo)
+    alert(result)
     console.log(result);
 }
 onMounted(() => {
