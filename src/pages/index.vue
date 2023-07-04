@@ -1,6 +1,4 @@
 <script setup >
-import { ref, onMounted } from 'vue'
-import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
 import { getMineInfo } from '~/api/user'
 // import { showSuccessToast, showFailToast } from 'vant';
@@ -22,6 +20,7 @@ const saveOption =
   "pushToken": "",
   "useSimCard": 1
 }
+
 //需传入token等参数
 if (route.query.token && route.query.appId) {
   localStorage.setItem('token', route.query.token)
@@ -61,7 +60,7 @@ const scrollHandle = () => {
   }
 }
 
-//只需要执行一次的初始化
+//初始化
 const init = () => {
   // //获取我的信息
   getMineInfo().then((res) => {

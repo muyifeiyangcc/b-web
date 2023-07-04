@@ -80,8 +80,8 @@ export const useHomeStore = defineStore('useHomeStore', {
             // 初始化nim
             const nim = new NIMSDK({
                 appkey: '124f689baed25c488e1330bc42e528af',
-                account: localStorage.getItem('yxAccid'), // 云信账号
-                token: localStorage.getItem('imToken'), // 云信密码
+                account: localStorage.getItem('yxAccid') || '2a267c8bf750454fa2b402d9dd138301', // 云信账号
+                token: localStorage.getItem('imToken') || '8221cfa0ec745ba5a6be6d5941b58185', // 云信密码
                 // account: '2a267c8bf750454fa2b402d9dd138301', // 云信账号
                 // token: '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
                 // debugLevel: 'debug'
@@ -169,7 +169,7 @@ export const useHomeStore = defineStore('useHomeStore', {
 
             if (nim.status === 'unconnected') {
                 nim.connect()
-                // .then(() => this.getSessionList())
+                    .then(() => this.getSessionList())//为了已进入能够显示未读角标
             }
         },
         //发送系统消息
