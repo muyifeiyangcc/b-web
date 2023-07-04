@@ -50,6 +50,7 @@
 
 <script  setup>
 import { getRechargeList } from '~/api/wallet'
+import { showSuccessToast } from 'vant';
 const router = useRouter()
 const rechargeList = ref([])
 const userStore = useUserStore()
@@ -59,7 +60,7 @@ const getRechargeListData = async () => {
 }
 const recharge = async (batchNo) => {
     const result = await window.Recharge.postMessage(batchNo)
-    alert(result)
+    showSuccessToast(result)
     console.log(result);
 }
 onMounted(() => {
