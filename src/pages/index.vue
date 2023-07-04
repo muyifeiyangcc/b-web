@@ -56,12 +56,7 @@ const scrollHandle = () => {
     loadMore()
   }
 }
-if (route.query.test) {
-  console.log('收到test消息');
-}
-else {
-  console.log('未收到test');
-}
+
 //只需要执行一次的初始化
 const init = () => {
   if (!homeStore.isInit) {
