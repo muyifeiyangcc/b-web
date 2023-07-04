@@ -108,12 +108,14 @@ export const useHomeStore = defineStore('useHomeStore', {
             })
             // 监听收到邀请
             nim.signaling.on('signalingInvite', (event) => {
+                console.log(this.router);
                 this.acceptData = event
                 console.log('收到邀请', event)
                 this.router.push({ name: 'waitconnect', query: { yxId: event.fromAccid } })
             })
             //监听对方已取消
-            nim.signaling.on('signalingCancelInvite', function (event) {
+            nim.signaling.on('signalingCancelInvite', (event) => {
+                console.log(this.router);
                 console.log('对方已取消', event)
                 this.router.go(-1)
             })

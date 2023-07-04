@@ -302,7 +302,7 @@ const initLocalStream = async function () {
             localStream.value.play(localVideoContent.value);
             // 设置本地视频画布
             localStream.value.setLocalRenderMode({
-                width: 130,
+                width: 150,
                 height: localVideoContent.value.clientHeight,
                 cut: true,
             });
