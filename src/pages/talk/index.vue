@@ -42,7 +42,7 @@
             </div>
         </div>
         <!-- 输入区 -->
-        <div ref="reference" class="mx15 py20">
+        <div ref="reference" class="mx15 py20  fixed bottom-0">
             <van-space :size="10">
                 <div class="w295">
                     <van-cell-group inset>

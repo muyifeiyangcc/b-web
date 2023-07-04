@@ -127,8 +127,6 @@
     </div>
   </div>
 </template>
-
-
 <script setup>
 const checked0 = ref(true);
 const checked1 = ref(true);
@@ -146,6 +144,7 @@ onBeforeUnmount(() => {
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')
 })
+//退出登录
 const logOut = async () => {
   const result = await window.Recharge.postMessage('test')
   console.log(result);
