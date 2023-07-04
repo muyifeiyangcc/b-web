@@ -328,6 +328,13 @@ const changeCamera = async () => {
     else { i = 0 }
     nowCamera.value = allCamera.value[i].deviceId
     await localStream.value.switchDevice('video', nowCamera.value)
+    localStream.value.play(localVideoContent.value);
+    // 设置本地视频画布
+    localStream.value.setLocalRenderMode({
+        width: 150,
+        height: localVideoContent.value.clientHeight,
+        cut: true,
+    });
 }
 
 //确认赠送主播索要礼物
