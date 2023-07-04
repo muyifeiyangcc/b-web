@@ -44,6 +44,7 @@
                 </van-space>
             </div>
         </div>
+        <van-toast></van-toast>
     </div>
 </template>
 
@@ -56,7 +57,7 @@ const rechargeList = ref([])
 const userStore = useUserStore()
 const getRechargeListData = async () => {
     rechargeList.value = await getRechargeList()
-    console.log(rechargeList.value);
+    console.log(rechargeList.value)
 }
 const recharge = async (batchNo) => {
     const result = await window.Recharge.postMessage(batchNo)
