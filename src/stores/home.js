@@ -74,14 +74,14 @@ export const useHomeStore = defineStore('useHomeStore', {
     //   },
     actions: {
         //连接im
-        async imConnect(account, token) {
+        async imConnect() {
             const router = useRouter()
             const userStore = useUserStore()
             // 初始化nim
             const nim = new NIMSDK({
                 appkey: '124f689baed25c488e1330bc42e528af',
-                account: account || userStore.mineInfo.yxAccid, // 云信账号
-                token: token || userStore.mineInfo.imToken, // 云信密码
+                account: localStorage.getItem('yxAccid'), // 云信账号
+                token: localStorage.getItem('imToken'), // 云信密码
                 // account: '2a267c8bf750454fa2b402d9dd138301', // 云信账号
                 // token: '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
                 // debugLevel: 'debug'

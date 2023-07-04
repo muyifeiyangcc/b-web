@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
 import { getMineInfo } from '~/api/user'
+// import { showSuccessToast, showFailToast } from 'vant';
 const router = useRouter()
 const route = useRoute()
 const homeStore = useHomeStore()
@@ -21,8 +22,11 @@ const saveOption =
   "pushToken": "",
   "useSimCard": 1
 }
-
-
+//需传入token等参数
+if (route.query.token && route.query.appId) {
+  localStorage.setItem('token', route.query.token)
+  localStorage.setItem('appId', route.query.appId)
+}
 
 const loading = ref(false);
 //下拉刷新
@@ -44,7 +48,7 @@ const loadMore = () => {
     }, 1000);
   }
 }
-
+//判断滚动距离触发更新
 const scrollDom = ref()
 const scrollHandle = () => {
   const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
@@ -59,35 +63,29 @@ const scrollHandle = () => {
 
 //只需要执行一次的初始化
 const init = () => {
-  if (!homeStore.isInit) {
-    homeStore.systemOpt = {
-      token: route.query.token,
-      appId: route.query.appId,
-      userId: route.query.userId,
-    }
-
-    getMineInfo().then((res) => {
-      userStore.mineInfo = res
-      //初始化im
-      homeStore.imConnect(res.yxAccid, res.imToken)
-    })
-    // //获取我的信息
-    // userStore.getMineInfoData()
-    //获取首页tab列表
-    homeStore.getIndexFatherTabList()
-    //获取首页用户列表
-    homeStore.updateIndexListData()
-    //获取国家列表
-    userStore.getCountryListData()
-    //获取礼物列表
-    giftStore.getGiftListData()
-    //获取朋友圈列表
-    momentsStore.getFriendsCircleList()
-    //保存设备信息
-    setSave(saveOption)
-    homeStore.isInit = true
-  }
+  // //获取我的信息
+  getMineInfo().then((res) => {
+    userStore.mineInfo = res
+    localStorage.setItem('yxAccid', res.yxAccid)
+    localStorage.setItem('imToken', res.imToken)
+    //初始化im
+    homeStore.imConnect()
+  })
+  //获取首页tab列表
+  homeStore.getIndexFatherTabList()
+  //获取首页用户列表
+  homeStore.updateIndexListData()
+  //获取国家列表
+  userStore.getCountryListData()
+  //获取礼物列表
+  giftStore.getGiftListData()
+  //获取朋友圈列表
+  momentsStore.getFriendsCircleList()
+  //保存设备信息
+  setSave(saveOption)
+  homeStore.isInit = true
 }
+
 onMounted(() => {
   init()
   //组件挂载时，添加scroll监听
