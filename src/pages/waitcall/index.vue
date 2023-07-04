@@ -20,7 +20,7 @@
                 </div>
             </van-space>
             <!-- 挂断按钮 -->
-            <div class="px80 py9 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-23 mx40 mt160 "
+            <div class="w295 py9 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 rounded-23 mx-auto mt160 text-center"
                 @click="ringOff" v-if="fromMatch">
                 <van-space :size="3" align="center">
                     <img src="../../assets/phone.png" class="w28 h28">
