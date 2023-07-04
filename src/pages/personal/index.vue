@@ -120,7 +120,8 @@
         </div>
       </div>
 
-      <div class="mt40 mx-auto w280 py15 bg-#AFA8FF/10 rounded-28 c-#fff text-14 font-semibold text-center">Log out</div>
+      <div class="mt40 mx-auto w280 py15 bg-#AFA8FF/10 rounded-28 c-#fff text-14 font-semibold text-center"
+        @click="logOut">Log out</div>
 
       <div class="c-#fff/40 font-medium text-12 mt16 text-center">Version 1.0.0</div>
     </div>
@@ -145,6 +146,10 @@ onBeforeUnmount(() => {
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')
 })
+const logOut = async () => {
+  const result = await window.Recharge.postMessage('test')
+  console.log(result);
+}
 </script>
 
 <style scoped></style>

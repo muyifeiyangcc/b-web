@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import NIMSDK from 'nim-web-sdk-ng/dist/NIM_BROWSER_SDK'
 import NERTC from "nertc-web-sdk/NERTC"
 import { getIndexTab, getIndexList } from '~/api/home'
+import { showSuccessToast } from 'vant'
 import { getStartMatchRobot } from '~/api/match'
-import { showSuccessToast } from 'vant';
 export const useHomeStore = defineStore('useHomeStore', {
     state: () => ({
         router: {},

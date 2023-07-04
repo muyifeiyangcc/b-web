@@ -37,7 +37,8 @@
                     <div class="i-my-icons-diamond w40 h40" />
                     <div class="c-#fff text-14 font-semibold">{{ item.diamondNum }}</div>
                     <van-button
-                        class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 w89 h29 b-0 rounded-15 c-#fff text-14 font-semibold absolute left-50% ml--45 bottom--15">
+                        class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 w89 h29 b-0 rounded-15 c-#fff text-14 font-semibold absolute left-50% ml--45 bottom--15"
+                        @click="recharge(item.batchNo)">
                         ${{ item.price }}
                     </van-button>
                 </van-space>
@@ -55,6 +56,10 @@ const userStore = useUserStore()
 const getRechargeListData = async () => {
     rechargeList.value = await getRechargeList()
     console.log(rechargeList.value);
+}
+const recharge = async (batchNo) => {
+    const result = await window.Recharge.postMessage(batchNo)
+    console.log(result);
 }
 onMounted(() => {
     getRechargeListData()
