@@ -138,6 +138,7 @@ onBeforeUnmount(() => {
     </div>
     <get-diamonds-chat />
     <recommend-anchor />
+    <recharge />
   </div>
 </template>
 

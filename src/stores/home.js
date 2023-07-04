@@ -18,7 +18,8 @@ export const useHomeStore = defineStore('useHomeStore', {
         indexTabsFather: {},//一级分类
         indexTabsChildren: [],//二级分类
         indexList: [],//首页用户列表
-        getDiamondsVisible: false,//控制钻石不足弹窗显示
+        getDiamondsVisible: false,//控制首页钻石不足弹窗显示
+        rechargeVisible: false,//首页限时特惠充值弹窗
         requestGift: false,//直播间索要礼物弹窗
         giftId: '',//索要礼物Id
         talkList: [],//直播间和主播聊天列表

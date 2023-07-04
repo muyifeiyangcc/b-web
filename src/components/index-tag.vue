@@ -10,7 +10,8 @@
 
             <div class="mr9">
                 <van-space>
-                    <button><img src="../assets/Specialrecharge.png" class="w30 h30"></button>
+                    <button><img src="../assets/Specialrecharge.png" class="w30 h30"
+                            @click="homeStore.rechargeVisible = true"></button>
                     <button><img src="../assets/ranking.png" class="w30 h30" @click="router.push('/rank')"></button>
                 </van-space>
             </div>
