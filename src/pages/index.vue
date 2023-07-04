@@ -20,7 +20,6 @@ const saveOption =
   "pushToken": "",
   "useSimCard": 1
 }
-
 //需传入token等参数
 if (route.query.token && route.query.appId) {
   localStorage.setItem('token', route.query.token)
@@ -62,6 +61,7 @@ const scrollHandle = () => {
 
 //初始化
 const init = () => {
+  homeStore.router = router
   // //获取我的信息
   getMineInfo().then((res) => {
     userStore.mineInfo = res

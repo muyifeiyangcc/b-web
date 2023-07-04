@@ -4,9 +4,9 @@ import NERTC from "nertc-web-sdk/NERTC"
 import { getIndexTab, getIndexList } from '~/api/home'
 import { getStartMatchRobot } from '~/api/match'
 import { showSuccessToast } from 'vant';
-
 export const useHomeStore = defineStore('useHomeStore', {
     state: () => ({
+        router: {},
         systemOpt: {
             token: '',
             appId: '',
@@ -75,7 +75,8 @@ export const useHomeStore = defineStore('useHomeStore', {
     actions: {
         //连接im
         async imConnect() {
-            const router = useRouter()
+            console.log(this.router);
+            // const router = useRouter()
             const userStore = useUserStore()
             // 初始化nim
             const nim = new NIMSDK({
@@ -89,6 +90,7 @@ export const useHomeStore = defineStore('useHomeStore', {
             const client = NERTC.createClient({ appkey: '124f689baed25c488e1330bc42e528af', debug: true })
             this.nim = nim
             this.client = client
+
             //监听收到新消息
             nim.on('msg', async (res) => {
                 console.log('收到新消息', res);
@@ -102,28 +104,28 @@ export const useHomeStore = defineStore('useHomeStore', {
                     //不在聊天页面则刷新会话列表
                     this.getSessionList()
                 }
-            });
+            })
             // 监听收到邀请
             nim.signaling.on('signalingInvite', (event) => {
                 this.acceptData = event
                 console.log('收到邀请', event)
-                router.push({ name: 'waitconnect', query: { yxId: event.fromAccid } })
+                this.router.push({ name: 'waitconnect', query: { yxId: event.fromAccid } })
             })
             //监听对方已取消
             nim.signaling.on('signalingCancelInvite', function (event) {
                 console.log('对方已取消', event)
-                router.go(-1)
+                this.router.go(-1)
             })
             //对方已加入
             nim.signaling.on('signalingJoin', (event) => {
                 console.log('对方已加入', event)
                 const userStore = useUserStore()
-                router.push({ name: 'call', query: { channelName: JSON.parse(event.metaData.ext).channelName, remark: 'callOut', type: 'directCall', free: userStore.userDetail.videoPrice > 0 ? 0 : 1 } })
+                this.router.push({ name: 'call', query: { channelName: JSON.parse(event.metaData.ext).channelName, remark: 'callOut', type: 'directCall', free: userStore.userDetail.videoPrice > 0 ? 0 : 1 } })
             })
             //监听对方已拒绝
             nim.signaling.on('signalingReject', (event) => {
                 console.log('对方已拒绝', event)
-                router.go(-1)
+                this.router.go(-1)
             })
             //系统消息
             nim.on('sysMsg', async (event) => {
@@ -148,7 +150,7 @@ export const useHomeStore = defineStore('useHomeStore', {
                                 hitRecordId: this.attachEvent.hitRecordId,
                             })
                             console.log(result);
-                            router.push({ name: 'waitconnect', query: { userId: result.userId, yxId: result.yxAccid, pushRobot: true, free: result.free } })
+                            this.router.push({ name: 'waitconnect', query: { userId: result.userId, yxId: result.yxAccid, pushRobot: true, free: result.free } })
                         }
                     }
                     if (attachType === 6) {
@@ -166,10 +168,8 @@ export const useHomeStore = defineStore('useHomeStore', {
                 }
                 console.log("收到系统消息", event)
             })
-
             if (nim.status === 'unconnected') {
-                nim.connect()
-                    .then(() => this.getSessionList())//为了已进入能够显示未读角标
+                nim.connect().then(() => this.getSessionList())//为了一进入能够显示未读角标
             }
         },
         //发送系统消息
@@ -198,36 +198,37 @@ export const useHomeStore = defineStore('useHomeStore', {
         setInTalkPage(data) {
             this.inTalkPage = data
         },
-        async invite(userId, yxId) {
-            const userStore = useUserStore()
-            if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
-                this.params.toAccid = yxId
-                try {
-                    // const data = await homeStore.nim.signaling.callEx(homeStore.params)
-                    const data = await homeStore.nim.signaling.callEx({
-                        type: 2,
-                        toAccid: yxId,
-                        requestId: '1008611',
-                        uid: userStore.mineInfo.userId,
-                        attachExt: JSON.stringify(option)
-                    })
-                    const channelInfo = data.channelInfo
-                    this.inviteData = data
-                    this.channelInfo = channelInfo
-                    // homeStore.channelInfo.name = cname
-                    console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
-                } catch (error) {
-                    console.warn('创建频道失败，error：', error)
-                    if (error.code == 10405) {
-                        console.warn('频道已存在，请勿重复创建')
-                    }
-                }
-            }
-            else {
-                router.push('/')
-                this.getDiamondsVisible = true
-            }
-        },
+        // async invite(userId, yxId) {
+        //     const userStore = useUserStore()
+        //     if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
+        //         this.params.toAccid = yxId
+        //         try {
+        //             // const data = await homeStore.nim.signaling.callEx(homeStore.params)
+        //             const data = await homeStore.nim.signaling.callEx({
+        //                 type: 2,
+        //                 toAccid: yxId,
+        //                 requestId: '1008611',
+        //                 uid: userStore.mineInfo.userId,
+        //                 attachExt: JSON.stringify(option)
+        //             })
+        //             const channelInfo = data.channelInfo
+        //             this.inviteData = data
+        //             this.channelInfo = channelInfo
+        //             // homeStore.channelInfo.name = cname
+        //             console.warn('创建频道成功，data：', data, 'channelId 为', channelInfo.channelId, 'name 为', channelInfo.name)
+        //         } catch (error) {
+        //             console.warn('创建频道失败，error：', error)
+        //             if (error.code == 10405) {
+        //                 console.warn('频道已存在，请勿重复创建')
+        //             }
+        //         }
+        //     }
+        //     else {
+        //         router.push('/')
+        //         this.getDiamondsVisible = true
+        //     }
+        // },
+
         //首页钻石不足弹窗
         showGetDiamonds() {
             this.getDiamondsVisible = !this.getDiamondsVisible
@@ -246,7 +247,6 @@ export const useHomeStore = defineStore('useHomeStore', {
                 }
             })
         },
-
         // 更新首页列表
         async updateIndexListData(origin, title) {
             //判断是点击标签更新
@@ -272,7 +272,6 @@ export const useHomeStore = defineStore('useHomeStore', {
                 this.indexList = [...this.indexList, ...result]
             }
         },
-
         //获取会话记录
         async getSessionList() {
             const result = await this.nim.session.getSessions({
@@ -311,7 +310,6 @@ export const useHomeStore = defineStore('useHomeStore', {
         // 清空全部未读消息
         resetAllUnread() {
             this.nim.session.resetAllSessionsUnreadCount()
-
         },
         //清空会话列表
         async deleteAllSessions() {

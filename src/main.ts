@@ -10,7 +10,6 @@ import './styles/main.css'
 import 'uno.css'
 // import mitt from 'mitt'
 const routes = setupLayouts(generatedRoutes)
-
 export const createApp = ViteSSG(
   App,
   { routes, base: import.meta.env.BASE_URL },
