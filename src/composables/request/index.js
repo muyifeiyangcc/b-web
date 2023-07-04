@@ -15,8 +15,10 @@ const service = axios.create({
 service.interceptors.request.use((config) => {
   const homeStore = useHomeStore()
   // 添加token参数
-  config.headers.loginToken = homeStore.systemOpt.token || '5296949AA767440399D6BF6D70E43E06';
-  config.headers.appid = homeStore.systemOpt.appId || '77985415';
+  config.headers.loginToken = homeStore.systemOpt.token
+  config.headers.appid = homeStore.systemOpt.appId
+  // config.headers.loginToken = '5296949AA767440399D6BF6D70E43E06';
+  // config.headers.appid = '77985415';
   return config;
 });
 

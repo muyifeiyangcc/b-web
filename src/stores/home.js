@@ -74,15 +74,17 @@ export const useHomeStore = defineStore('useHomeStore', {
     //   },
     actions: {
         //连接im
-        async imConnect() {
+        async imConnect(account, token) {
             const router = useRouter()
             const userStore = useUserStore()
             // 初始化nim
             const nim = new NIMSDK({
                 appkey: '124f689baed25c488e1330bc42e528af',
-                account: userStore.mineInfo.yxAccid || '2a267c8bf750454fa2b402d9dd138301', // 云信账号
-                token: userStore.mineInfo.imToken || '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
-                debugLevel: 'debug'
+                account: account || userStore.mineInfo.yxAccid, // 云信账号
+                token: token || userStore.mineInfo.imToken, // 云信密码
+                // account: '2a267c8bf750454fa2b402d9dd138301', // 云信账号
+                // token: '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
+                // debugLevel: 'debug'
             })
             const client = NERTC.createClient({ appkey: '124f689baed25c488e1330bc42e528af', debug: true })
             this.nim = nim
@@ -166,7 +168,8 @@ export const useHomeStore = defineStore('useHomeStore', {
             })
 
             if (nim.status === 'unconnected') {
-                nim.connect().then(() => this.getSessionList())
+                nim.connect()
+                // .then(() => this.getSessionList())
             }
         },
         //发送系统消息

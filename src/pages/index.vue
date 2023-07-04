@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useHomeStore } from '~/stores';
 import { setSave } from '~/api/home'
+import { getMineInfo } from '~/api/user'
 const router = useRouter()
 const route = useRoute()
 const homeStore = useHomeStore()
@@ -21,9 +22,7 @@ const saveOption =
   "useSimCard": 1
 }
 
-homeStore.systemOpt.token = route.query.token
-homeStore.systemOpt.appId = route.query.appId
-homeStore.systemOpt.userId = route.query.userId
+
 
 const loading = ref(false);
 //下拉刷新
@@ -57,24 +56,38 @@ const scrollHandle = () => {
     loadMore()
   }
 }
-
+if (route.query.test) {
+  console.log('收到test消息');
+}
+else {
+  console.log('未收到test');
+}
 //只需要执行一次的初始化
 const init = () => {
   if (!homeStore.isInit) {
-    //初始化im
-    homeStore.imConnect()
-    //获取国家列表
-    userStore.getCountryListData()
+    homeStore.systemOpt = {
+      token: route.query.token,
+      appId: route.query.appId,
+      userId: route.query.userId,
+    }
+
+    getMineInfo().then((res) => {
+      userStore.mineInfo = res
+      //初始化im
+      homeStore.imConnect(res.yxAccid, res.imToken)
+    })
+    // //获取我的信息
+    // userStore.getMineInfoData()
     //获取首页tab列表
     homeStore.getIndexFatherTabList()
     //获取首页用户列表
     homeStore.updateIndexListData()
+    //获取国家列表
+    userStore.getCountryListData()
     //获取礼物列表
     giftStore.getGiftListData()
     //获取朋友圈列表
     momentsStore.getFriendsCircleList()
-    //获取我的信息
-    userStore.getMineInfoData()
     //保存设备信息
     setSave(saveOption)
     homeStore.isInit = true
