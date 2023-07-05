@@ -62,7 +62,8 @@
             <!-- 聊天区域 -->
             <div class="absolute bottom-100 left-15 w270 h300 z-99">
                 <div class="h250 overflow-scroll flex flex-col-reverse ">
-                    <div class="c-#E2E2E2 text-14 " v-for="item, index in homeStore.talkList" :key="index">
+                    <div class=" text-14 " v-for="item, index in homeStore.talkList" :key="index"
+                        :class="item.user === 'her' ? 'c-#eda60d' : 'c-#fff'">
                         {{ item.user }} : {{ item.content }}
                     </div>
                 </div>
@@ -71,7 +72,7 @@
                 </div> -->
             </div>
             <!-- 聊天输入框 -->
-            <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent absolute bottom-38 w-full z-99">
+            <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent  w-full z-99" ref="chat">
                 <van-row>
                     <van-col :span="20">
                         <div class="">
@@ -196,7 +197,7 @@ const channelId = Date.now()
 let channelName = route.query.channelName//通话频道名称，用于加入通话房间
 var heartBeatTimeout
 var freeTimeout
-
+const chat = ref()
 if (fromMatch || pushRobot) {
     channelName = 'robot'
     getRobotVideoList()
@@ -430,8 +431,12 @@ watch(secondCount, () => {
         }
     }
 })
-
+const scrollHandle = () => {
+    console.log(111111111111111);
+    chat.value.classList.add('bottom-38')
+}
 onMounted(() => {
+    window.addEventListener('resize', scrollHandle)
     userHeartBeat()
     join()
 })

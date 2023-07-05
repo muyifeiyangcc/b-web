@@ -15,6 +15,8 @@ export const useHomeStore = defineStore('useHomeStore', {
         isInit: false,//是否已经初始化
         nim: {},
         client: {},
+        fatherTabActive: 0,
+        sonTabActive: 0,
         indexTabsFather: {},//一级分类
         indexTabsChildren: [],//二级分类
         indexList: [],//首页用户列表
