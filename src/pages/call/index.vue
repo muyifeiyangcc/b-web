@@ -2,7 +2,7 @@
     <div>
         <div class="relative  max-w-450  relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
-            <video class="w-full h-full object-cover" :src="robotVideoList" loop autoplay="true" playsinline
+            <video class="w-full h-full object-cover" :src="robotVideoList" loop muted autoplay="true"
                 v-if="fromMatch || pushRobot"></video>
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
