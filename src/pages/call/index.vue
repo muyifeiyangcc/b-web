@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="relative  max-w-450 relative  overflow-hidden" ref="remoteVideoContent"
+        <div class="relative  max-w-450  relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
             <video class="w-full h-full object-cover" :src="robotVideoList" loop autoplay
                 v-if="fromMatch || pushRobot"></video>
@@ -324,6 +324,7 @@ const finishCall = function () {
 //切换摄像头
 let i = 0
 const changeCamera = async () => {
+    showFailToast(nowCamera.value)
     if (i < allCamera.value.length - 1) {
         i = i + 1
     }

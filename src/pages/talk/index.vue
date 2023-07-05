@@ -128,12 +128,11 @@ const setBlockUser = async () => {
     }).then(() => showBottom.value = false)
 
 }
+const scrollHandle = () => {
+    scrollHeight.value = window.innerHeight - myRef.value.offsetHeight - reference.value.offsetHeight
+}
 onMounted(() => {
-    window.addEventListener('resize', () => {
-        document.documentElement.scrollTop = 1000
-        console.log(document.documentElement.scrollTop);
-        // document.documentElement.scrollIntoViewIfNeeded()
-    })
+    window.addEventListener('resize', scrollHandle)
 
     //标记进入聊天页面
     homeStore.setInTalkPage(true)
@@ -147,6 +146,7 @@ onMounted(() => {
     document.querySelector('body').setAttribute('style', 'background-color:#130021')
 })
 onBeforeUnmount(() => {
+    window.removeEventListener('resize', scrollHandle)
     homeStore.setInTalkPage(false)
     //组件卸载前去掉背景色
     document.querySelector('body').removeAttribute('style')
