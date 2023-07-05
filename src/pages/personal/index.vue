@@ -145,9 +145,8 @@ onBeforeUnmount(() => {
   document.querySelector('body').removeAttribute('style')
 })
 //退出登录
-const logOut = async () => {
-  const result = await window.Recharge.postMessage('test')
-  console.log(result);
+const logOut = () => {
+  window.Close.postMessage('xxx')
 }
 </script>
 
