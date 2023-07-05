@@ -103,7 +103,7 @@
                                 <van-space>
                                     <div class="i-my-icons-diamond text-21" />
                                     <div class="c-#fff text-18 font-bold">{{
-                                        indGift(homeStore.giftId).giftPrice
+                                        findGift(homeStore.giftId).giftPrice
                                     }}</div>
                                     <!-- <div class="c-#fff text-18 font-bold">{{ userStore.mineInfo.diamondNum }}</div> -->
                                 </van-space>
@@ -287,9 +287,11 @@ const initLocalStream = async function () {
         const microphones = await NERTC.getMicrophones();//获取可用的麦克风设备
         const cameras = await NERTC.getCameras();//获取可用的视频输入设备
         console.log(cameras);
-        allCamera.value = cameras
-        nowCamera.value = cameras[0]
-        localStream.value = NERTC.createStream({ uid, audio: true, video: true, cameraId: nowCamera.value.deviceId, client: homeStore.client });
+        cameras.forEach(item => {
+            allCamera.value.push(item.deviceId)
+        });
+        nowCamera.value = allCamera.value[0]
+        localStream.value = NERTC.createStream({ uid, audio: true, video: true, cameraId: nowCamera.value, client: homeStore.client });
         //设置视频推流属性
         localStream.value.setVideoProfile({
             resolution: NERTC.VIDEO_QUALITY_1080p,//分辨率
@@ -326,9 +328,8 @@ const changeCamera = async () => {
         i = i + 1
     }
     else { i = 0 }
-    nowCamera.value = allCamera.value[i].deviceId
+    nowCamera.value = allCamera.value[i]
     await localStream.value.switchDevice('video', nowCamera.value)
-
 }
 
 //确认赠送主播索要礼物
@@ -401,6 +402,7 @@ var interval = setInterval(() => {
 watch(secondCount, () => {
     // 是机器人
     if (pushRobot) {
+        console.log('push', pushRobot);
         //免费机器人
         if (free === 1) {
             if (secondCount.value === 1) {

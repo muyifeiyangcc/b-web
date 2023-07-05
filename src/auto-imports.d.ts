@@ -355,7 +355,6 @@ declare module 'vue' {
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly moments: UnwrapRef<typeof import('./stores/moments.js')['default']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
-    readonly nim: UnwrapRef<typeof import('./composables/main')['nim']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>
@@ -651,7 +650,6 @@ declare module '@vue/runtime-core' {
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly moments: UnwrapRef<typeof import('./stores/moments.js')['default']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
-    readonly nim: UnwrapRef<typeof import('./composables/main')['nim']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>
