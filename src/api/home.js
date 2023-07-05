@@ -10,5 +10,5 @@ export const getRankingList = (data) => request.post('/api/ranking/userRank', da
 //获取推荐主播
 export const getRecommendAnchor = () => request.post('/api/index/recommendAnchor')
 //获取oss key
-export const getOssKey = () => request.post('/sts/getkey')
+export const getOssKey = () => request.get('/sts/getkey')
 
