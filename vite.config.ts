@@ -175,10 +175,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      '/sts': {
-        // target: 'https://test.xxchat.chat',
-        target: 'http://8.134.216.253:8000',
-      },
+      // '/sts': {
+      //   // target: 'https://test.xxchat.chat',
+      //   target: 'http://8.134.216.253:8000',
+      // },
     },
   },
 })
