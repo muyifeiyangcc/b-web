@@ -7,6 +7,7 @@ import { getStartMatchRobot } from '~/api/match'
 export const useHomeStore = defineStore('useHomeStore', {
     state: () => ({
         router: {},
+        topHeight: 'pt20',//全局调整tabbar高度
         systemOpt: {
             token: '',
             appId: '',

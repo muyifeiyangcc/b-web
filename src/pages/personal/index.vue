@@ -1,7 +1,7 @@
 <template>
   <div class="">
 
-    <div class="mt30 mx25">
+    <div class="mt30 mx25" :class="homeStore.topHeight">
       <div class="flex justify-between items-center" @click="router.push('/profile')">
         <div>
           <van-space :size="16">
@@ -134,7 +134,7 @@ const checked2 = ref(false);
 const router = useRouter()
 const userStore = useUserStore()
 const mineInfo = computed(() => userStore.mineInfo)
-
+const homeStore = useHomeStore()
 onMounted(() => {
   userStore.getMineInfoData()
   //组件挂载完成设置背景色

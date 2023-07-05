@@ -189,6 +189,7 @@ import { getOssKey } from '~/api/home'
 import { showSuccessToast } from 'vant';
 import OSS from "ali-oss";
 const router = useRouter()
+const homeStore = useHomeStore()
 const showName = ref(false)//修改昵称弹窗
 const showGender = ref(false)//选择性别弹窗
 const showCountry = ref(false)//选择国家弹窗

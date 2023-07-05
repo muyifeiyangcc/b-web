@@ -1,7 +1,7 @@
 <template>
   <div class="px15 ">
     <!-- 页首 -->
-    <div ref="myRef" class="flex justify-between py25">
+    <div ref="myRef" class="flex justify-between pb25" :class="homeStore.topHeight">
       <div class="c-white text-21 font-bold">Moments</div>
       <!-- <img src="../../assets/publish.png" class=" w35 h35"> -->
     </div>
@@ -144,6 +144,7 @@ import { getFriendsCircle, like } from "~/api/moments";
 import { useMomentsStore } from '~/stores/moments'
 import { getMomentsTime } from '~/utils'
 import dayjs from 'dayjs'
+const homeStore = useHomeStore()
 const myRef = ref();//tab栏实例
 const field = ref()//输入框实例
 const scrollHeight = ref(0)//滚动区域高度
