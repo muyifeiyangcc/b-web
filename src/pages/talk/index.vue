@@ -118,6 +118,7 @@ const sendTextMessage = async () => {
     const msg = await homeStore.nim.msg.sendTextMsg(sendTextMsgOption.value)
     sendTextMsgOption.value.body = ''
     homeStore.talkList.unshift(msg)
+    talk.value.scrollTop = 0
 }
 // 拉黑
 const setBlockUser = async () => {
