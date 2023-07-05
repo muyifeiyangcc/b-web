@@ -15,7 +15,8 @@
             </van-nav-bar>
         </div>
         <!-- 聊天区 -->
-        <div class="flex flex-col flex-col-reverse mx15 pb20 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
+        <div class="flex flex-col flex-col-reverse mx15 pb20 overflow-scroll" :style="{ height: scrollHeight + 'px' }"
+            ref="talk">
             <div v-for=" item, index in talkList" class=" c-#fff text-16 font-medium mt44 " :key="index">
                 <!-- 时间，待开发 -->
                 <!-- <div>time</div> -->
@@ -42,12 +43,12 @@
             </div>
         </div>
         <!-- 输入区 -->
-        <div ref="reference" class="mx15 py20 bg-#130021">
+        <div ref="reference" class="mx15 py20 bg-#130021 relative bottom-0">
             <van-space :size="10">
                 <div class="w295">
                     <van-cell-group inset>
                         <van-field v-model="sendTextMsgOption.body" placeholder="Type a message..."
-                            @keydown.enter="sendTextMessage">
+                            @keydown.enter="sendTextMessage" @focus="test">
                             <template #button>
                                 <img src="../../assets/emojbtn.png" class="w24 h24">
                             </template>
@@ -110,6 +111,11 @@ const sendTextMsgOption = ref({
         console.log('发送了一条消息', msg);
     }
 })
+const talk = ref()
+const test = () => {
+    console.log(talk.value.scrollTop);
+    talk.value.scrollTop = 0
+}
 //发送文本消息
 const sendTextMessage = async () => {
     const msg = await homeStore.nim.msg.sendTextMsg(sendTextMsgOption.value)
