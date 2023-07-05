@@ -82,7 +82,7 @@ const init = () => {
     //获取朋友圈列表
     momentsStore.getFriendsCircleList()
     //保存设备信息
-    // setSave(saveOption)
+    setSave(saveOption)
     homeStore.isInit = true
   }
 }

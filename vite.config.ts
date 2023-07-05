@@ -177,9 +177,8 @@ export default defineConfig({
       },
       '/sts': {
         // target: 'https://test.xxchat.chat/sts',
-        target: 'http://8.134.216.253:8000/sts',
-         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/sts/, ""),
+        target: 'http://8.134.216.253:8000',
+        changeOrigin: true,
       },
     },
   },
