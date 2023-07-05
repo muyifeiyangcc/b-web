@@ -62,8 +62,14 @@ const scrollHandle = () => {
 //初始化
 const init = () => {
   if (!homeStore.isInit) {
-
     homeStore.router = router
+
+    //获取首页tab列表
+    homeStore.getIndexFatherTabList()
+    //获取首页用户列表
+    homeStore.updateIndexListData()
+    //获取国家列表
+    userStore.getCountryListData()
     // //获取我的信息
     getMineInfo().then((res) => {
       userStore.mineInfo = res
@@ -72,12 +78,6 @@ const init = () => {
       //初始化im
       homeStore.imConnect()
     })
-    //获取首页tab列表
-    homeStore.getIndexFatherTabList()
-    //获取首页用户列表
-    homeStore.updateIndexListData()
-    //获取国家列表
-    userStore.getCountryListData()
     //获取礼物列表
     giftStore.getGiftListData()
     //获取朋友圈列表
