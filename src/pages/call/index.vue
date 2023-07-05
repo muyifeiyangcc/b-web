@@ -72,7 +72,7 @@
                 </div> -->
             </div>
             <!-- 聊天输入框 -->
-            <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent  w-full z-99" ref="chat">
+            <div class="pl16 pt6 pb3 b-t-1 b-#EBEBEB/10 bg-transparent absolute bottom-38 w-full z-99" ref="chat">
                 <van-row>
                     <van-col :span="20">
                         <div class="">
@@ -432,8 +432,7 @@ watch(secondCount, () => {
     }
 })
 const scrollHandle = () => {
-    console.log(111111111111111);
-    chat.value.classList.add('bottom-38')
+
 }
 onMounted(() => {
     window.addEventListener('resize', scrollHandle)
