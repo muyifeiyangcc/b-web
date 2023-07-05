@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
 })
 //退出登录
 const logOut = () => {
-  window.Close.postMessage('xxx')
+  window.flutter_inappwebview.callHandler('close', 'xxxx');
 }
 </script>
 

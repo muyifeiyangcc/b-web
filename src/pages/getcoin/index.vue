@@ -61,7 +61,7 @@ const getRechargeListData = async () => {
 }
 //充值
 const recharge = (batchNo) => {
-    window.Recharge.postMessage(batchNo)
+    window.flutter_inappwebview.callHandler('recharge', batchNo);
 }
 onMounted(() => {
     getRechargeListData()
