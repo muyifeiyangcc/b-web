@@ -159,16 +159,17 @@ export const useHomeStore = defineStore('useHomeStore', {
                         }
                     }
                     if (attachType === 6) {
-                        showSuccessToast(`充值成功`)
+                        showSuccessToast(`recharge successful!`)
+                        userStore.getMineInfoData()
                     }
                     if (attachType === 19) {
-                        showSuccessToast('需要上传日志')
+                        // showSuccessToast('需要上传日志')
                     }
                     if (attachType === 22) {
-                        showSuccessToast('关注的主播上线提醒')
+                        // showSuccessToast('关注的主播上线提醒')
                     }
                     if (attachType === 25) {
-                        showSuccessToast('开启鉴黄弹窗')
+                        // showSuccessToast('开启鉴黄弹窗')
                     }
                 }
                 console.log("收到系统消息", event)

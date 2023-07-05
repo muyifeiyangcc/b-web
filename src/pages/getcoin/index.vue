@@ -60,10 +60,8 @@ const getRechargeListData = async () => {
     console.log(rechargeList.value)
 }
 //充值
-const recharge = async (batchNo) => {
-    const result = await window.Recharge.postMessage(batchNo)
-    userStore.getMineInfoData()
-    console.log(result);
+const recharge = (batchNo) => {
+    window.Recharge.postMessage(batchNo)
 }
 onMounted(() => {
     getRechargeListData()
