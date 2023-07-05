@@ -115,6 +115,7 @@ const talk = ref()
 const test = () => {
     console.log(talk.value.scrollTop);
     talk.value.scrollTop = 0
+    document.documentElement.scrollIntoView()
 }
 //发送文本消息
 const sendTextMessage = async () => {
