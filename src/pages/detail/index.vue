@@ -191,8 +191,8 @@
                                 </div>
                             </div>
                             <!-- 第五行 -->
-                            <div class="flex justify-between pt16">
-                                <div class="">
+                            <div class="flex justify-between pt16 ">
+                                <div class="text-12">
                                     <van-space :size="52">
                                         <div>
                                             <van-space>
