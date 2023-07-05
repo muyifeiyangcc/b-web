@@ -51,11 +51,11 @@
         <!-- choose avatar -->
         <div class="mx30 mt20 flex justify-between">
             <img src="../../assets/avatar_1.jpg" class="w80 h80 rounded-50%"
-                @click="setUserInfoOpt.icon = 'http://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688191947471.jpg'">
+                @click="setUserInfoOpt.icon = 'https://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688191947471.jpg'">
             <img src="../../assets/avatar_2.jpg" class="w80 h80 rounded-50%"
-                @click="setUserInfoOpt.icon = 'http://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688193197578.jpg'">
+                @click="setUserInfoOpt.icon = 'https://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688193197578.jpg'">
             <img src="../../assets/avatar_3.jpg" class="w80 h80 rounded-50%"
-                @click="setUserInfoOpt.icon = 'http://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688193254177.jpg'">
+                @click="setUserInfoOpt.icon = 'https://app-bucket-test.oss-cn-guangzhou.aliyuncs.com/1688193254177.jpg'">
         </div>
         <!-- name -->
         <div class="mx20 py20 mt20 b-b-1 b-#EFEFEF/5 flex justify-between items-center" @click="showName = true">
