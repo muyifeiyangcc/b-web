@@ -63,7 +63,6 @@ const scrollHandle = () => {
 const init = () => {
   if (!homeStore.isInit) {
     homeStore.router = router
-
     //获取首页tab列表
     homeStore.getIndexFatherTabList()
     //获取首页用户列表
@@ -83,7 +82,7 @@ const init = () => {
     //获取朋友圈列表
     momentsStore.getFriendsCircleList()
     //保存设备信息
-    setSave(saveOption)
+    // setSave(saveOption)
     homeStore.isInit = true
   }
 }

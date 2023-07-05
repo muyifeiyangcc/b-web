@@ -2,7 +2,7 @@
     <div>
         <div class="relative  max-w-450  relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
-            <video class="w-full h-full object-cover" :src="robotVideoList" loop autoplay="true" muted
+            <video class="w-full h-full object-cover" :src="robotVideoList" loop autoplay="true" playsinline
                 v-if="fromMatch || pushRobot"></video>
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
@@ -325,7 +325,6 @@ const finishCall = function () {
 //切换摄像头
 let i = 0
 const changeCamera = async () => {
-    showFailToast(nowCamera.value)
     if (i < allCamera.value.length - 1) {
         i = i + 1
     }
