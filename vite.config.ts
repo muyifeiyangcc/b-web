@@ -171,7 +171,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: 'https://test.xxchat.chat/api',
-        target: 'http://8.134.216.253:8000/api',
+        target: 'http://8.134.216.253:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
