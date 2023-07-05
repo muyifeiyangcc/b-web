@@ -43,12 +43,12 @@
             </div>
         </div>
         <!-- 输入区 -->
-        <div ref="reference" class="mx15 py20 bg-#130021 relative bottom-0">
+        <div ref="reference" class="mx15 py20 bg-#130021">
             <van-space :size="10">
                 <div class="w295">
                     <van-cell-group inset>
                         <van-field v-model="sendTextMsgOption.body" placeholder="Type a message..."
-                            @keydown.enter="sendTextMessage" @focus="test">
+                            @keydown.enter="sendTextMessage">
                             <template #button>
                                 <img src="../../assets/emojbtn.png" class="w24 h24">
                             </template>
@@ -112,11 +112,7 @@ const sendTextMsgOption = ref({
     }
 })
 const talk = ref()
-const test = () => {
-    console.log(talk.value.scrollTop);
-    talk.value.scrollTop = 0
-    document.documentElement.scrollIntoView()
-}
+
 //发送文本消息
 const sendTextMessage = async () => {
     const msg = await homeStore.nim.msg.sendTextMsg(sendTextMsgOption.value)
@@ -133,6 +129,12 @@ const setBlockUser = async () => {
 
 }
 onMounted(() => {
+    window.addEventListener('resize', () => {
+        document.documentElement.scrollTop = 1000
+        console.log(document.documentElement.scrollTop);
+        // document.documentElement.scrollIntoViewIfNeeded()
+    })
+
     //标记进入聊天页面
     homeStore.setInTalkPage(true)
     //获取聊天历史记录
