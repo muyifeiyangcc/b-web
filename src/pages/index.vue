@@ -63,6 +63,8 @@ const scrollHandle = () => {
 const init = () => {
   if (!homeStore.isInit) {
     homeStore.router = router
+    //保存设备信息
+    setSave(saveOption)
     //获取首页tab列表
     homeStore.getIndexFatherTabList()
     //获取首页用户列表
@@ -81,8 +83,6 @@ const init = () => {
     giftStore.getGiftListData()
     //获取朋友圈列表
     momentsStore.getFriendsCircleList()
-    //保存设备信息
-    setSave(saveOption)
     homeStore.isInit = true
   }
 }
