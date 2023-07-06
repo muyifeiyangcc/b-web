@@ -7,7 +7,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://8.134.216.253:8000/:splat"
+  to = "https://api.xxchat.chat/:splat"
   status = 200
 
 [[headers]]
