@@ -2,8 +2,9 @@
     <div>
         <div class="relative  max-w-450  relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
-            <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" autoplay="autoplay"
-                muted="muted" v-if="fromMatch || pushRobot"></video>
+            <!-- <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" autoplay="autoplay"
+                muted="muted" v-if="fromMatch || pushRobot"></video> -->
+            <video :src="robotVideoList" autoplay playsinline muted class="w100vh object-cover"></video>
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
             <div ref="localVideoContent"
