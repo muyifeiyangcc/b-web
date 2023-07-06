@@ -60,10 +60,10 @@
                             </div>
                             <!-- 关注/取关按钮 -->
                             <div>
-                                <button @click="userStore.followUser(2, item.userId); getFriendsList()"
+                                <button @click="userStore.followOrNo(2, item.userId); getFriendsList()"
                                     v-if="tabValue === 1 || 3"
                                     class="px12 py8 rounded-20 c-#C513C6 font-semibold text-14 bg-gradient-to-r from-#D0B2FF/10 to-#BEB4FF/10">Unfollow</button>
-                                <button @click="userStore.followUser(1, item.userId); getFriendsList()" v-else
+                                <button @click="userStore.followOrNo(1, item.userId); getFriendsList()" v-else
                                     class="px12 py8 rounded-20 c-#C513C6 font-semibold text-14 bg-gradient-to-r from-#D0B2FF/10 to-#BEB4FF/10">Follow</button>
                             </div>
                         </div>

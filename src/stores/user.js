@@ -30,18 +30,19 @@ export const useUserStore = defineStore('useUserStore', {
             this.videoList = this.userDetail.picList.filter((item) => item.mediaType === 2)
         },
         // 关注/取关
-        followOrNo() {
-            const type = this.userDetail.followed === true ? 2 : 1
+        followOrNo(type = this.userDetail.followed === true ? 2 : 1, id = this.userDetail.userId) {
             getFollowUser({
                 "followType": type,
-                "followUserId": this.userDetail.userId
+                "followUserId": id
             }).then(() => {
-                this.userDetail.followed = !this.userDetail.followed
-                if (type === 1) {
-                    showToast('Follow Success')
-                }
-                else {
-                    showToast('Cancel Follow Successfully')
+                if (this.userDetail) {
+                    this.userDetail.followed = !this.userDetail.followed
+                    if (type === 1) {
+                        showToast('Follow Success')
+                    }
+                    else {
+                        showToast('Cancel Follow Successfully')
+                    }
                 }
             })
         },

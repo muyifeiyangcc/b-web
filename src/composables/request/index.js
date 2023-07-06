@@ -17,8 +17,6 @@ service.interceptors.request.use((config) => {
   // 添加token参数
   config.headers.loginToken = localStorage.getItem('token') || '5296949AA767440399D6BF6D70E43E06'
   config.headers.appid = localStorage.getItem('appId') || '77985415'
-  // config.headers.loginToken = '5296949AA767440399D6BF6D70E43E06';
-  // config.headers.appid = '77985415';
   return config;
 });
 

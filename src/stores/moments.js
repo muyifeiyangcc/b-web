@@ -6,12 +6,21 @@ export const useMomentsStore = defineStore('useMomentsStore', {
     }),
     actions: {
         //获取朋友圈内容
-        async getFriendsCircleList(id = "") {
-            const result = await getFriendsCircle({
-                "currentPage": 1,
-                "keyword": id,
-                "pageSize": 50
-            })
+        async getFriendsCircleList(obj = { currentPage: 1, id: "", origin: '' }) {
+            let result = ''
+            if (obj.origin === 'pull') {
+                this.friendsCircleList = []
+                result = await getFriendsCircle({
+                    "currentPage": 1,
+                    "pageSize": 4
+                })
+            }
+            if (obj.origin === 'scroll') {
+                result = await getFriendsCircle({
+                    "currentPage": obj.currentPage,
+                    "pageSize": 4
+                })
+            }
             // 获取评论数据，添加在朋友圈数据中
             result.forEach(async (item) => {
                 const result = await getMoments({
@@ -21,9 +30,8 @@ export const useMomentsStore = defineStore('useMomentsStore', {
                 })
                 item.comment = result.reverse()
             });
-            this.friendsCircleList = result
-            console.log(id, this.friendsCircleList);
-
+            this.friendsCircleList = [...this.friendsCircleList, ...result]
+            console.log(this.friendsCircleList);
         }
     }
 })

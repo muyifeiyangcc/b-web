@@ -7,7 +7,7 @@
     </div>
 
     <!-- 朋友圈内容 -->
-    <div class="overflow-scroll pb60 " :style="{ height: scrollHeight + 'px' }">
+    <div class="overflow-scroll pb120 " :style="{ height: scrollHeight + 'px' }" ref="scrollDom">
       <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
         loosing-text="Release to refresh" success-text="Refresh successful" z-2>
         <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in data" :key="index">
@@ -56,11 +56,14 @@
             </van-space>
           </div>
           <!-- 第四行(图片) -->
-          <div class="flex justify-between mt13">
-            <div v-for="item, index in item.imgUrls" :key="index" class="rounded-4 overflow-hidden text-0">
-              <van-image width="88" height="88" :src="item" :key="index" v-if="index < 3" fit="cover"
-                @click="showImg(item)" />
-            </div>
+          <div class="mt13">
+            <van-row :gutter="20">
+              <van-col v-for="item, index in item.imgUrls" :key="index" :span="8">
+                <div class="rounded-4 overflow-hidden text-0 h88">
+                  <van-image :src="item" :key="index" v-if="index < 3" fit="cover" @click="showImg(item)" />
+                </div>
+              </van-col>
+            </van-row>
           </div>
           <!-- 第五行 -->
           <div class="flex justify-between pt16">
@@ -159,12 +162,40 @@ const data = computed(() => momentsStore.friendsCircleList)
 const router = useRouter()
 //下拉刷新
 const onRefresh = () => {
+  momentsStore.friendsCircleList = []
   setTimeout(() => {
     //获取朋友圈列表
-    momentsStore.getFriendsCircleList()
+    momentsStore.getFriendsCircleList({ origin: 'pull' })
     loading.value = false;
   }, 1000);
 };
+// 无限滚动
+let allowLoad = true
+let currentPage = 1
+const loadMore = () => {
+  if (allowLoad) {
+    allowLoad = false
+    currentPage++
+    setTimeout(() => {
+      momentsStore.getFriendsCircleList({ currentPage, origin: 'scroll' })
+      allowLoad = true
+    }, 1000);
+  }
+}
+
+//判断滚动距离触发更新
+const scrollDom = ref()
+const scrollHandle = () => {
+  const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
+  const clientHeight = document.body.clientHeight//计算视口高度
+  const scrollTop = scrollDom.value.scrollTop //计算滚动的距离
+  const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
+  //当快滑动到底部的时候
+  if (distance < 30) {
+    loadMore()
+  }
+}
+
 // 图片预览
 const showImg = (imgList) => {
   showImagePreview([imgList]);
@@ -212,14 +243,20 @@ const postComment = async () => {
 }
 
 onMounted(() => {
+
   //动态计算滚动区高度
   scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background-color:#130021')
+  //组件挂载时，添加scroll监听
+  scrollDom.value.addEventListener("scroll", scrollHandle);
 })
 onBeforeUnmount(() => {
+
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')
+  //组件卸载前解绑事件
+  window.removeEventListener("scroll", scrollHandle);
 })
 </script>
 

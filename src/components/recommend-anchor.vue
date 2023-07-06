@@ -8,7 +8,7 @@
                     <div class="absolute top-113 w-full px20">
                         <van-row :gutter="10">
                             <van-col v-for="item, index in recommendAnchorList" :key="index" :span="8">
-                                <div class="bg-blue w-full h133 rounded-10 relative overflow-hidden flex flex-col-reverse">
+                                <div class=" w-full h133 rounded-10 relative overflow-hidden flex flex-col-reverse">
                                     <img :src="item.icon" class="w-full h-full absolute ">
                                     <div class="flex justify-between items-center px7 relative z-2 bottom-10">
                                         <img src="../assets/message_b.png" class="w26 h26"

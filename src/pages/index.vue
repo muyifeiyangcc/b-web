@@ -71,6 +71,8 @@ const init = () => {
     homeStore.updateIndexListData()
     //获取国家列表
     userStore.getCountryListData()
+    //获取朋友圈列表
+    momentsStore.getFriendsCircleList({ origin: 'pull' })
     // //获取我的信息
     getMineInfo().then((res) => {
       userStore.mineInfo = res
@@ -81,8 +83,7 @@ const init = () => {
     })
     //获取礼物列表
     giftStore.getGiftListData()
-    //获取朋友圈列表
-    momentsStore.getFriendsCircleList()
+
     // })
     homeStore.isInit = true
   }

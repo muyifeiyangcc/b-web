@@ -147,8 +147,8 @@ export const useHomeStore = defineStore('useHomeStore', {
                         this.talkList.unshift({ user: 'her', content: this.attachEvent.content })
                     }
                     if (attachType === 29) {
-                        console.log('机器人邀请通话');
-                        const routerName = router.currentRoute.value.name
+                        console.log('机器人邀请通话', this.router.currentRoute);
+                        const routerName = this.router.currentRoute.name
                         if (routerName !== 'call' && routerName !== 'waitconnect' && routerName !== 'waitcall' && routerName !== 'match') {
                             const result = await getStartMatchRobot({
                                 gender: 2,
