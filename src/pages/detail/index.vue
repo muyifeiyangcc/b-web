@@ -247,7 +247,7 @@
                                 @click="router.push({ path: 'talk', query: { to: yxAccid, nick: userStore.userDetail.nickname, avatar: userStore.userDetail.icon } })">
                         </div>
                         <!-- 关注/取关 -->
-                        <div class="bg-#fff/10 rounded-23 py12 px18" @click="followOrNo">
+                        <div class="bg-#fff/10 rounded-23 py12 px18" @click="userStore.followOrNo">
                             <van-icon name="like" color="#FB3A54" :size="18" v-if="userStore.userDetail.followed" />
                             <van-icon name="like-o" color="#fff" :size="18" v-else />
                         </div>
@@ -298,11 +298,11 @@ const showImg = (imgList) => {
     showImagePreview([imgList]);
 }
 // 关注/取关
-const followOrNo = () => {
-    const type = userStore.userDetail.followed === true ? 2 : 1
-    userStore.followUser(type, userStore.userDetail.userId)
-    userStore.userDetail.followed = !userStore.userDetail.followed
-}
+// const followOrNo = () => {
+//     const type = userStore.userDetail.followed === true ? 2 : 1
+//     userStore.followUser(type, userStore.userDetail.userId)
+//     userStore.userDetail.followed = !userStore.userDetail.followed
+// }
 const showVideo = ref(false)
 let videoUrl = ref('')
 const startVideo = (url) => {
@@ -320,6 +320,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
     //组件卸载前去掉背景色
     document.querySelector('body').removeAttribute('style')
+    userStore.userDetail = {}
 })
 </script>
 

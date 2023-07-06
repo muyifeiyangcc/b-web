@@ -8,7 +8,8 @@
 
     <!-- 朋友圈内容 -->
     <div class="overflow-scroll pb60 " :style="{ height: scrollHeight + 'px' }">
-      <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功" z-2>
+      <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
+        loosing-text="Release to refresh" success-text="Refresh successful" z-2>
         <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in data" :key="index">
           <!-- 第一行 -->
           <div class="flex justify-between">

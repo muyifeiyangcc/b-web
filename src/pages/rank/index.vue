@@ -55,7 +55,7 @@
                         </van-space>
                     </div>
                 </div>
-                <div class="absolute text-center w-full top--115" v-else>
+                <div class="absolute text-center w-full top--100" v-else>
                     <img src="../../assets/one.png" class="w30 h25 absolute top--15 left-50% ml--15 z2">
                     <van-space direction="vertical" align="center" :size="0" v-if="rankingListTop.length >= 1">
                         <div>

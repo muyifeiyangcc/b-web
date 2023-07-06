@@ -4,6 +4,7 @@ import NERTC from "nertc-web-sdk/NERTC"
 import { getIndexTab, getIndexList } from '~/api/home'
 import { showSuccessToast } from 'vant'
 import { getStartMatchRobot } from '~/api/match'
+import setting from '~/config'
 export const useHomeStore = defineStore('useHomeStore', {
     state: () => ({
         router: {},
@@ -84,14 +85,12 @@ export const useHomeStore = defineStore('useHomeStore', {
             const userStore = useUserStore()
             // 初始化nim
             const nim = new NIMSDK({
-                appkey: '124f689baed25c488e1330bc42e528af',
+                appkey: setting.appkey,
                 account: localStorage.getItem('yxAccid') || '2a267c8bf750454fa2b402d9dd138301', // 云信账号
                 token: localStorage.getItem('imToken') || '8221cfa0ec745ba5a6be6d5941b58185', // 云信密码
-                // account: '2a267c8bf750454fa2b402d9dd138301', // 云信账号
-                // token: '8221cfa0ec745ba5a6be6d5941b58185',// 云信密码
                 // debugLevel: 'debug'
             })
-            const client = NERTC.createClient({ appkey: '124f689baed25c488e1330bc42e528af', debug: true })
+            const client = NERTC.createClient({ appkey: setting.appkey, debug: true })
             this.nim = nim
             this.client = client
 

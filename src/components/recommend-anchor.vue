@@ -40,7 +40,6 @@
     </div>
 </template>
 
-
 <script  setup>
 import { getRecommendAnchor } from '~/api/home'
 const router = useRouter()
@@ -49,17 +48,18 @@ let recommendAnchorList = ref([])
 let show = ref(false)
 
 //获取首页推荐
-const getRecommendAnchorData = async () => {
-    const result = await getRecommendAnchor()
-    recommendAnchorList.value = result.slice(0, 3)
+const getRecommendAnchorData = () => {
+    getRecommendAnchor().then((res) => {
+        recommendAnchorList.value = res.slice(0, 3)
+        show.value = true
+    })
 }
 
 const showRecommend = setInterval(() => {
-    getRecommendAnchorData()
-    show.value = true
     if (show.value) {
-        clearInterval(showRecommend)
+        return
     }
+    getRecommendAnchorData()
 }, 20 * 1000);
 
 
@@ -81,11 +81,13 @@ const sayHello = () => {
     });
     show.value = false
 }
-
-onBeforeUnmount(() => {
-    //组件卸载前去掉定时器
-    clearInterval(showRecommend)
-})
+onMounted(() => {
+    getRecommendAnchorData()
+}),
+    onBeforeUnmount(() => {
+        //组件卸载前去掉定时器
+        clearInterval(showRecommend)
+    })
 </script>
 
 <style scoped></style>
