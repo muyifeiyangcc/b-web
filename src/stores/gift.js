@@ -13,8 +13,9 @@ export const useGiftStore = defineStore('useGiftStore', {
             console.warn('liftList:', this.giftList);
         },
         //送礼
-        async postGift(giftId, num, scene, yxAccid) {
-            await sendGift({
+        postGift(giftId, num, scene, yxAccid) {
+            const userStore = useUserStore()
+            sendGift({
                 giftId,
                 num,
                 scene,
@@ -22,6 +23,8 @@ export const useGiftStore = defineStore('useGiftStore', {
             }).then((res) => {
                 if (res) {
                     showSuccessToast(`Gift successful,balance:${res.diamondNum}`)
+                    userStore.getMineInfoData()
+                    userStore.mineInfo.diamondNum = res.diamondNum
                 }
                 else {
                     showFailToast(`Insufficient Balance`)

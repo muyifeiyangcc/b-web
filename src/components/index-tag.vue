@@ -1,5 +1,5 @@
 <template>
-    <div class="pb15 fixed z-3 top-0 bg-#23023C w-full" :class="homeStore.topHeight">
+    <div class="pb15 fixed z-3 top-0 bg-#200137 w-full" :class="homeStore.topHeight">
         <div class="flex justify-between items-center">
             <van-tabs class="tabs_1 Tabs" background="transparent" title-active-color="#BE12C5" line-width="0px"
                 :ellipsis="false" v-model:active="homeStore.fatherTabActive" @change="onClickFatherTab">
@@ -7,7 +7,6 @@
                     class="important:c-#fff">
                 </van-tab>
             </van-tabs>
-
             <div class="mr9">
                 <van-space>
                     <button><img src="../assets/Specialrecharge.png" class="w30 h30"
@@ -16,7 +15,6 @@
                 </van-space>
             </div>
         </div>
-
         <!-- <div
             class="pt16 pb12 px15 rounded-17 mx15 mt20 flex justify-between items-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8">
             <div>

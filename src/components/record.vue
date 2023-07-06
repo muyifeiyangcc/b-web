@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="overflow-scroll h-full" :style="{ height: scrollHeight + 'px' }">
-            <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
+            <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh"
+                loading-text="loading..." loosing-text="Release to refresh" success-text="Refresh successful">
                 <div class="flex justify-between items-center py20 b-#1F0D2C b-b-1" v-for="item, index in recordList">
                     <div>
                         <van-space :size="12">

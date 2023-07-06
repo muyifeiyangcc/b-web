@@ -9,7 +9,7 @@
                         Limited Time Special Offer
                     </div>
                     <div class="text-36 c-#fff font-black mt10">
-                        00 : 00 : 05
+                        00 : 00 : 00
                     </div>
                     <div class="mt13">
                         <van-space :size="23">

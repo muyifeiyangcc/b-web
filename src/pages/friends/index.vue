@@ -12,7 +12,7 @@
             </van-nav-bar>
         </div>
         <!-- 中部tab栏 -->
-        <div class="pt56">
+        <div class="pt86">
             <div class="mx22  bg-#1B0D2C text-center align-middle rounded-23">
                 <van-row>
                     <van-col span="8">

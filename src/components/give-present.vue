@@ -55,7 +55,7 @@ const giftStore = useGiftStore()
 const giftId = ref(null)
 const sendGift = () => {
     giftStore.postGift(giftId.value, 1, 'VIDEO', userStore.userDetail.yxAccid)
-    nextTick(() => userStore.getMineInfoData())
+
 }
 </script>
 
