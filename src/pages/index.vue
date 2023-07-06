@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="scrollDom">
+  <div ref="scrollDom" :class="homeStore.topHeight">
     <van-pull-refresh v-model="loading" @refresh="onRefresh" success-text="刷新成功">
       <div>
         <keep-alive>

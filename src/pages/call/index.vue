@@ -2,7 +2,7 @@
     <div>
         <div class="relative  max-w-450  relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
-            <video class="w-full h-full object-cover" :src="robotVideoList" muted autoplay playsinline
+            <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" muted playsinline
                 v-if="fromMatch || pushRobot"></video>
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
@@ -199,7 +199,7 @@ var heartBeatTimeout
 var freeTimeout
 const chat = ref()
 if (fromMatch || pushRobot) {
-    channelName = 'robot'
+    channelName = Date.now()
     getRobotVideoList()
 }
 // callTime: 通话时长(如果是免费的, 这个时间一到就挂电话)
@@ -270,8 +270,7 @@ homeStore.client.on("stream-removed", (evt) => {
 });
 
 //加入通话房间
-const join = async () => {
-    // console.log(channelName, homeStore.channelInfo.name, channelName === homeStore.channelInfo.name ? '拨打' : '接听');
+const joinCall = async () => {
     await homeStore.client.join({
         channelName,
         uid,
@@ -311,6 +310,7 @@ const initLocalStream = async function () {
             });
             homeStore.client.publish(localStream.value).then(() => {
                 console.warn('本地 publish 成功')
+                videoPlay.value.play()
             });
         })
     } catch (error) {
@@ -399,7 +399,6 @@ const findGift = (id) => {
 var interval = setInterval(() => {
     secondCount.value++
 }, 1000)
-
 watch(secondCount, () => {
     // 是机器人
     if (pushRobot) {
@@ -430,13 +429,13 @@ watch(secondCount, () => {
         }
     }
 })
-const scrollHandle = () => {
 
-}
+
+const videoPlay = ref()
 onMounted(() => {
-    window.addEventListener('resize', scrollHandle)
+    // window.addEventListener('resize', scrollHandle)
     userHeartBeat()
-    join()
+    joinCall()
 })
 
 onBeforeUnmount(() => {
