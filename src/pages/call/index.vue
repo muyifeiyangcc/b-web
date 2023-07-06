@@ -4,7 +4,7 @@
             :style="{ height: viewHeight + 'px' }">
             <!-- <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" autoplay="autoplay"
                 muted="muted" v-if="fromMatch || pushRobot"></video> -->
-            <video :src="robotVideoList" autoplay playsinline muted class="w100vh object-cover"></video>
+            <video :src="robotVideoList" autoplay playsinline muted controls class="w100vh object-cover"></video>
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
             <div ref="localVideoContent"
@@ -199,10 +199,7 @@ let channelName = route.query.channelName//通话频道名称，用于加入通�
 var heartBeatTimeout
 var freeTimeout
 const chat = ref()
-if (fromMatch || pushRobot) {
-    channelName = Date.now()
-    getRobotVideoList()
-}
+
 // callTime: 通话时长(如果是免费的, 这个时间一到就挂电话)
 if (userStore.userDetail.free === 1) {
     freeTimeout = setTimeout(() => { router.go(-1) }, homeStore.attachEvent.callTime * 1000)
@@ -213,7 +210,10 @@ async function getRobotVideoList() {
     const result = await getRobotVideo({ userId: userStore.userDetail.userId })
     robotVideoList.value = result[1].videoUrl
 }
-
+if (fromMatch || pushRobot) {
+    channelName = Date.now()
+    getRobotVideoList()
+}
 // 监听远端用户发布视频流的事件
 homeStore.client.on('stream-added', event => {
     const remoteStream = event.stream;
