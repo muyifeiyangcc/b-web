@@ -64,26 +64,26 @@ const init = () => {
   if (!homeStore.isInit) {
     homeStore.router = router
     //保存设备信息
-    setSave(saveOption).then(() => {
-      //获取首页tab列表
-      homeStore.getIndexFatherTabList()
-      //获取首页用户列表
-      homeStore.updateIndexListData()
-      //获取国家列表
-      userStore.getCountryListData()
-      // //获取我的信息
-      getMineInfo().then((res) => {
-        userStore.mineInfo = res
-        localStorage.setItem('yxAccid', res.yxAccid)
-        localStorage.setItem('imToken', res.imToken)
-        //初始化im
-        homeStore.imConnect()
-      })
-      //获取礼物列表
-      giftStore.getGiftListData()
-      //获取朋友圈列表
-      momentsStore.getFriendsCircleList()
+    // setSave(saveOption).then(() => {
+    //获取首页tab列表
+    homeStore.getIndexFatherTabList()
+    //获取首页用户列表
+    homeStore.updateIndexListData()
+    //获取国家列表
+    userStore.getCountryListData()
+    // //获取我的信息
+    getMineInfo().then((res) => {
+      userStore.mineInfo = res
+      localStorage.setItem('yxAccid', res.yxAccid)
+      localStorage.setItem('imToken', res.imToken)
+      //初始化im
+      homeStore.imConnect()
     })
+    //获取礼物列表
+    giftStore.getGiftListData()
+    //获取朋友圈列表
+    momentsStore.getFriendsCircleList()
+    // })
     homeStore.isInit = true
   }
 }

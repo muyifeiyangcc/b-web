@@ -188,6 +188,7 @@ import { getMineInfo, setUserInfo } from '~/api/user'
 import { getOssKey } from '~/api/home'
 import { showSuccessToast } from 'vant';
 import OSS from "ali-oss";
+import setting from '~/config'
 const router = useRouter()
 const homeStore = useHomeStore()
 const showName = ref(false)//修改昵称弹窗
@@ -255,11 +256,11 @@ const uploadImage = async (data) => {
     ossInfo.value = await getOssKey()//获取临时凭证
     // 实例化OSS
     const client = new OSS({
-        region: 'oss-cn-guangzhou',
+        region: setting.region,
         accessKeyId: ossInfo.value.AccessKeyId,
         accessKeySecret: ossInfo.value.AccessKeySecret,
         stsToken: ossInfo.value.SecurityToken,
-        bucket: "app-bucket-test",
+        bucket: setting.bucket,
         refreshSTSToken: async () => {
             // 向您搭建的STS服务获取临时访问凭证。
             const result = await getOssKey()
