@@ -311,6 +311,7 @@ const initLocalStream = async function () {
             homeStore.client.publish(localStream.value).then(() => {
                 console.warn('本地 publish 成功')
                 videoPlay.value.play()
+                console.log('播放视频执行了');
             });
         })
     } catch (error) {
