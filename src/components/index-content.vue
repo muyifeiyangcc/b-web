@@ -1,6 +1,6 @@
 <template>
     <!-- gutter="20" -->
-    <div class="pt110 pb150 ">
+    <div class="pt130 pb150 ">
         <van-row gutter="20">
             <van-col span="12" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
                 <div class="">
