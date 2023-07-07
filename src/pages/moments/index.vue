@@ -10,95 +10,98 @@
     <div class="overflow-scroll pb120 " :style="{ height: scrollHeight + 'px' }" ref="scrollDom">
       <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
         loosing-text="Release to refresh" success-text="Refresh successful" z-2>
-        <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in data" :key="index">
-          <!-- 第一行 -->
-          <div class="flex justify-between">
-            <div>
+        <van-list v-model:loading="momentsStore.loadingScroll" :finished="momentsStore.finished"
+          finished-text="There's no more" loading-text="loading..." @load="loadMore">
+          <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in data" :key="index">
+            <!-- 第一行 -->
+            <div class="flex justify-between">
+              <div>
+                <van-space>
+                  <div class="bg-gradient-to-b from-#CC15C7 to-#5109C1 rounded-40 p1">
+                    <img :src="item.icon" class="w40 h40 rounded-40" />
+                  </div>
+                  <div>
+                    <van-space direction="vertical" :size="0">
+                      <div>
+                        <van-space :size="4">
+                          <div class="text-16 font-bold text-#fff">
+                            {{ item.nickname }}
+                          </div>
+                          <div class="i-my-icons-famale text-14" />
+                        </van-space>
+                      </div>
+                      <div class="text-#ccc text-12">{{ getMomentsTime(item.createTime) }}</div>
+                    </van-space>
+                  </div>
+                </van-space>
+              </div>
+              <div>
+                <van-space :size="16">
+                  <button
+                    @click="router.push({ path: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })"><img
+                      src="../../assets/chat.png" class="w32 h32"></button>
+                  <button
+                    @click="router.push({ path: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid } })"><img
+                      src="../../assets/video.png" class="w32 h32"></button>
+                </van-space>
+              </div>
+            </div>
+            <!-- 第二行 -->
+            <div class="text-14 c-#fff mt10">
+              {{ item.textContent }}
+            </div>
+            <!-- 第三行 -->
+            <div class="mt9">
               <van-space>
-                <div class="bg-gradient-to-b from-#CC15C7 to-#5109C1 rounded-40 p1">
-                  <img :src="item.icon" class="w40 h40 rounded-40" />
-                </div>
-                <div>
-                  <van-space direction="vertical" :size="0">
-                    <div>
-                      <van-space :size="4">
-                        <div class="text-16 font-bold text-#fff">
-                          {{ item.nickname }}
-                        </div>
-                        <div class="i-my-icons-famale text-14" />
-                      </van-space>
-                    </div>
-                    <div class="text-#ccc text-12">{{ getMomentsTime(item.createTime) }}</div>
-                  </van-space>
-                </div>
+                <img src="../../assets/tans.png" class="w14 h14">
+                <div class="text-12 c-#8F6FB8">View translations</div>
               </van-space>
             </div>
-            <div>
-              <van-space :size="16">
-                <button
-                  @click="router.push({ path: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })"><img
-                    src="../../assets/chat.png" class="w32 h32"></button>
-                <button
-                  @click="router.push({ path: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid } })"><img
-                    src="../../assets/video.png" class="w32 h32"></button>
-              </van-space>
+            <!-- 第四行(图片) -->
+            <div class="mt13">
+              <van-row :gutter="20">
+                <van-col v-for="item, index in item.imgUrls" :key="index" :span="8">
+                  <div class="rounded-4 overflow-hidden text-0 h88">
+                    <van-image :src="item" :key="index" v-if="index < 3" fit="cover" @click="showImg(item)" />
+                  </div>
+                </van-col>
+              </van-row>
             </div>
-          </div>
-          <!-- 第二行 -->
-          <div class="text-14 c-#fff mt10">
-            {{ item.textContent }}
-          </div>
-          <!-- 第三行 -->
-          <div class="mt9">
-            <van-space>
-              <img src="../../assets/tans.png" class="w14 h14">
-              <div class="text-12 c-#8F6FB8">View translations</div>
-            </van-space>
-          </div>
-          <!-- 第四行(图片) -->
-          <div class="mt13">
-            <van-row :gutter="20">
-              <van-col v-for="item, index in item.imgUrls" :key="index" :span="8">
-                <div class="rounded-4 overflow-hidden text-0 h88">
-                  <van-image :src="item" :key="index" v-if="index < 3" fit="cover" @click="showImg(item)" />
-                </div>
-              </van-col>
-            </van-row>
-          </div>
-          <!-- 第五行 -->
-          <div class="flex justify-between pt16">
-            <div class="">
-              <van-space :size="52">
-                <div>
-                  <van-space>
-                    <van-icon v-if="item.likeFlag === 0" name="like-o" color="#fff" :size="20"
-                      @click="likeCircle(item.id, 1, index)" />
-                    <van-icon v-else name="like" color="#FB3A54" :size="20" @click="likeCircle(item.id, 0, index)" />
-                    <div class="c-#fff text-12">{{ item.likeNum }}</div>
-                  </van-space>
-                </div>
-                <div>
-                  <van-space>
-                    <!-- <img src="../../assets/list_btn_comment.png" class="w20 h20"> -->
-                    <van-icon name="comment-o" color="#fff" :size="20" @click="clickComment(item.id)" />
-                    <div class="c-#fff text-12">{{ item.commentNum }}</div>
-                  </van-space>
-                </div>
-              </van-space>
+            <!-- 第五行 -->
+            <div class="flex justify-between pt16">
+              <div class="">
+                <van-space :size="52">
+                  <div>
+                    <van-space>
+                      <van-icon v-if="item.likeFlag === 0" name="like-o" color="#fff" :size="20"
+                        @click="likeCircle(item.id, 1, index)" />
+                      <van-icon v-else name="like" color="#FB3A54" :size="20" @click="likeCircle(item.id, 0, index)" />
+                      <div class="c-#fff text-12">{{ item.likeNum }}</div>
+                    </van-space>
+                  </div>
+                  <div>
+                    <van-space>
+                      <!-- <img src="../../assets/list_btn_comment.png" class="w20 h20"> -->
+                      <van-icon name="comment-o" color="#fff" :size="20" @click="clickComment(item.id)" />
+                      <div class="c-#fff text-12">{{ item.commentNum }}</div>
+                    </van-space>
+                  </div>
+                </van-space>
+              </div>
+              <van-icon name="ellipsis" color="#ccc" :size="20" @click="showBottom = !showBottom" />
             </div>
-            <van-icon name="ellipsis" color="#ccc" :size="20" @click="showBottom = !showBottom" />
-          </div>
-          <!-- 评论区 -->
-          <div class="mt25">
-            <div v-for="data, count in item.comment" :key="count" class="mb5">
-              <van-space :size="2">
-                <div class="c-#3956E2 text-14 font-semibold"> {{ data.nickname }} :</div>
-                <div class="c-#fff text-14"> {{ data.commentContent }} </div>
-              </van-space>
+            <!-- 评论区 -->
+            <div class="mt25">
+              <div v-for="data, count in item.comment" :key="count" class="mb5">
+                <van-space :size="2">
+                  <div class="c-#3956E2 text-14 font-semibold"> {{ data.nickname }} :</div>
+                  <div class="c-#fff text-14"> {{ data.commentContent }} </div>
+                </van-space>
+              </div>
             </div>
-          </div>
 
-        </div>
+          </div>
+        </van-list>
       </van-pull-refresh>
     </div>
     <!-- 朋友圈举报 -->
@@ -160,6 +163,7 @@ const momentsStore = useMomentsStore()
 const userStore = useUserStore()
 const data = computed(() => momentsStore.friendsCircleList)
 const router = useRouter()
+
 //下拉刷新
 const onRefresh = () => {
   momentsStore.friendsCircleList = []
@@ -184,17 +188,17 @@ const loadMore = () => {
 }
 
 //判断滚动距离触发更新
-const scrollDom = ref()
-const scrollHandle = () => {
-  const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
-  const clientHeight = document.body.clientHeight//计算视口高度
-  const scrollTop = scrollDom.value.scrollTop //计算滚动的距离
-  const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
-  //当快滑动到底部的时候
-  if (distance < 30) {
-    loadMore()
-  }
-}
+// const scrollDom = ref()
+// const scrollHandle = () => {
+//   const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
+//   const clientHeight = document.body.clientHeight//计算视口高度
+//   const scrollTop = scrollDom.value.scrollTop //计算滚动的距离
+//   const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
+//   //当快滑动到底部的时候
+//   if (distance < 30) {
+//     loadMore()
+//   }
+// }
 
 // 图片预览
 const showImg = (imgList) => {
@@ -249,14 +253,14 @@ onMounted(() => {
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background-color:#130021')
   //组件挂载时，添加scroll监听
-  scrollDom.value.addEventListener("scroll", scrollHandle);
+  // scrollDom.value.addEventListener("scroll", scrollHandle);
 })
 onBeforeUnmount(() => {
 
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')
   //组件卸载前解绑事件
-  window.removeEventListener("scroll", scrollHandle);
+  // window.removeEventListener("scroll", scrollHandle);
 })
 </script>
 

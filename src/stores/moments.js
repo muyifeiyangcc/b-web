@@ -3,6 +3,8 @@ import { getFriendsCircle, getMoments } from '~/api/moments'
 export const useMomentsStore = defineStore('useMomentsStore', {
     state: () => ({
         friendsCircleList: [],//朋友圈数据
+        loadingScroll: false,
+        finished: false
     }),
     actions: {
         //获取朋友圈内容
@@ -16,9 +18,15 @@ export const useMomentsStore = defineStore('useMomentsStore', {
                 })
             }
             if (obj.origin === 'scroll') {
-                result = await getFriendsCircle({
+                getFriendsCircle({
                     "currentPage": obj.currentPage,
                     "pageSize": 4
+                }).then((res) => {
+                    result = res
+                    this.loadingScroll = false
+                    if (res.length === 0) {
+                        this.finished = true
+                    }
                 })
             }
             // 获取评论数据，添加在朋友圈数据中

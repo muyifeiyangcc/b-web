@@ -15,6 +15,7 @@ export const useHomeStore = defineStore('useHomeStore', {
             userId: ''
         },
         isInit: false,//是否已经初始化
+        finished: false,
         nim: {},
         client: {},
         fatherTabActive: 0,
@@ -31,7 +32,7 @@ export const useHomeStore = defineStore('useHomeStore', {
         getIndexListOption: {
             "currentPage": 1,
             "onlineStatus": 0,
-            "pageSize": 10,
+            "pageSize": 8,
             "tagId": 13
         },
         //被邀请人信息
@@ -257,25 +258,36 @@ export const useHomeStore = defineStore('useHomeStore', {
         async updateIndexListData(origin, title) {
             //判断是点击标签更新
             if (origin === 'tag') {
+                console.log('触发点击更新');
                 this.indexTabsChildren.map((item) => {
                     if (item.tagName === title) {
                         this.getIndexListOption.tagId = item.id
                     }
                 })
                 this.getIndexListOption.currentPage = 1
-                this.indexList = await getIndexList(this.getIndexListOption)
+                getIndexList(this.getIndexListOption).then((res) => this.indexList = res)
+                this.finished = false
             }
             //判断是下拉刷新
             else if (origin === 'pull') {
+                console.log('触发下拉刷新');
                 this.getIndexListOption.currentPage = 1
                 this.indexList = []
-                this.indexList = await getIndexList(this.getIndexListOption)
+                getIndexList(this.getIndexListOption).then((res) => this.indexList = res)
+                this.finished = false
             }
             //判断是滚动更新
             else {
                 //获取首页用户列表
-                const result = await getIndexList(this.getIndexListOption)
-                this.indexList = [...this.indexList, ...result]
+                getIndexList(this.getIndexListOption).then((res) => {
+                    console.log('触发滚动更新');
+                    if (res.length > 0) {
+                        this.indexList = [...this.indexList, ...res]
+                    }
+                    else {
+                        this.finished = true
+                    }
+                })
             }
         },
         //获取会话记录

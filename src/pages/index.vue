@@ -34,30 +34,31 @@ const onRefresh = () => {
     loading.value = false;
   }, 500);
 };
+
 // 无限滚动
-let allowLoad = true
-const loadMore = () => {
-  if (allowLoad) {
-    allowLoad = false
-    homeStore.getIndexListOption.currentPage++
-    setTimeout(() => {
-      homeStore.updateIndexListData('scroll')
-      allowLoad = true
-    }, 1000);
-  }
-}
+// let allowLoad = true
+// const loadMore = () => {
+//   if (allowLoad) {
+//     allowLoad = false
+//     homeStore.getIndexListOption.currentPage++
+//     setTimeout(() => {
+//       homeStore.updateIndexListData('scroll')
+//       allowLoad = true
+//     }, 1000);
+//   }
+// }
 //判断滚动距离触发更新
-const scrollDom = ref()
-const scrollHandle = () => {
-  const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
-  const clientHeight = document.body.clientHeight//计算视口高度
-  const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop//计算滚动的距离
-  const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
-  //当快滑动到底部的时候
-  if (distance < 50) {
-    loadMore()
-  }
-}
+// const scrollDom = ref()
+// const scrollHandle = () => {
+//   const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
+//   const clientHeight = document.body.clientHeight//计算视口高度
+//   const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop//计算滚动的距离
+//   const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
+//   //当快滑动到底部的时候
+//   if (distance < 50) {
+//     loadMore()
+//   }
+// }
 
 //初始化
 const init = () => {
@@ -90,8 +91,7 @@ const init = () => {
 }
 onMounted(() => {
   init()
-  //组件挂载时，添加scroll监听
-  window.addEventListener("scroll", scrollHandle);
+
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
@@ -99,8 +99,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')
-  //组件卸载前解绑事件
-  window.removeEventListener("scroll", scrollHandle);
 })
 
 </script>
@@ -112,9 +110,7 @@ onBeforeUnmount(() => {
         <keep-alive>
           <index-tag />
         </keep-alive>
-        <div class="px15 ">
-          <index-content />
-        </div>
+        <index-content />
       </div>
     </van-pull-refresh>
     <div class="fixed bottom-100 left-50% ml--135">

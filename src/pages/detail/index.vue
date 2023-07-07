@@ -265,6 +265,7 @@
                 </div>
             </div>
         </div>
+        <van-toast></van-toast>
     </div>
 </template>
 

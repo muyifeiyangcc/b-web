@@ -31,8 +31,8 @@
     </div>
     <!-- 聊天列表 -->
     <div class="pb100 overflow-scroll" :style="{ height: scrollHeight + 'px' }" v-if="active === 'message'">
-      <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
-        loosing-text="Release to refresh" success-text="Refresh successful">
+      <van-pull-refresh v-model="loadingScroll" @refresh="onRefresh" pulling-text="Pull To Refresh"
+        loading-text="loading..." loosing-text="Release to refresh" success-text="Refresh successful">
         <div class="c-#fff pt20 " v-for="item, index in sessionList " :key="index"
           @click="router.push({ path: '/talk', query: { to: item.to, nick: talkUserDataList[index].nick, avatar: talkUserDataList[index].avatar } })">
           <van-row>
@@ -132,7 +132,8 @@ const navHeight = ref(0)
 nextTick(() => navHeight.value = myRef.value.offsetHeight)
 const loading = ref(false);//下拉刷新加载状态
 const homeStore = useHomeStore()//pinia组件
-
+const loadingScroll = ref(false);
+const finished = ref(false);
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {

@@ -1,7 +1,7 @@
 <template>
-    <div class="pt40">
+    <div class="pt360">
         <!-- 顶部导航栏 -->
-        <div ref="myRef" class="">
+        <div ref="navbarRef">
             <van-nav-bar left-arrow @click-left="router.go(-1)" :border="false" :fixed="true">
                 <template #title>
                     <van-tabs v-model:active="active" background="transparent" title-active-color="#fff"
@@ -18,7 +18,7 @@
             </van-nav-bar>
         </div>
         <!-- 领奖台--前三名 -->
-        <div class="h360 absolute top-0 w-full text-center"
+        <div ref="myRef" class="h360 absolute top-0 w-full text-center"
             style="background: radial-gradient( hsl(287, 82%, 32%) 0%,  #060108 100%)">
             <!-- 领奖台 -->
             <div class="absolute bottom-0 left-50% ml--160">
@@ -188,7 +188,7 @@
             </div>
         </div>
         <!-- 第四名之后 -->
-        <div class="mx24 mt360  ">
+        <div class="mx24 overflow-scroll" :style="{ height: scrollHeight + 'px' }">
             <div v-if="type === 'Couple'" class="mt10 py16 b-b-1 b-#24003E flex justify-between items-center"
                 v-for="item, index in rankingList">
                 <van-space :size="0">
@@ -242,12 +242,13 @@
 
 <script  setup>
 import { getRankingList } from '~/api/home'
-// const myRef = ref()
+const scrollHeight = ref(0)
+const myRef = ref()
+const navbarRef = ref()
 const active = ref('')
 const type = ref('Charm')
 const router = useRouter()
 const rankingList = ref([])
-// const myValues = ref({})
 const rankingListTop = ref([])
 // tab栏切换回调
 const onClickTab = (event) => {
@@ -260,7 +261,6 @@ const onClickTab = (event) => {
         getRankingListData('USER_RICH')
     else
         getRankingListData('ANCHOR_USER_COUPLE')
-    // getRankingListData()
 }
 //获取排行榜数据
 const getRankingListData = async (type = "ANCHOR_CHARM") => {
@@ -272,11 +272,11 @@ const getRankingListData = async (type = "ANCHOR_CHARM") => {
     rankingList.value = result//排行榜数据
     rankingListTop.value = rankingList.value.splice(0, 3)
 }
-// onBeforeMount(() => {
-// })
+
 onMounted(() => {
     getRankingListData()
-
+    //动态计算滚动区高度
+    scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight - navbarRef.value.offsetHeight
     //组件挂载完成设置背景色
     document.querySelector('body').setAttribute('style', 'background-color:#130021')
 })
