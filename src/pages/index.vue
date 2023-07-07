@@ -69,7 +69,7 @@ const init = () => {
     //获取首页tab列表
     homeStore.getIndexFatherTabList()
     //获取首页用户列表
-    homeStore.updateIndexListData()
+    // homeStore.updateIndexListData()
     //获取国家列表
     userStore.getCountryListData()
     //获取朋友圈列表
@@ -89,6 +89,8 @@ const init = () => {
     homeStore.isInit = true
   }
 }
+
+
 onMounted(() => {
   init()
 
@@ -103,15 +105,11 @@ onBeforeUnmount(() => {
 
 </script>
 <template>
-  <div ref="scrollDom">
+  <div ref="scrollDom" class="pt120 pb140">
     <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
       loosing-text="Release to refresh" success-text="Refresh successful">
-      <div>
-        <keep-alive>
-          <index-tag />
-        </keep-alive>
-        <index-content />
-      </div>
+      <index-tag />
+      <index-content />
     </van-pull-refresh>
     <div class="fixed bottom-100 left-50% ml--135">
       <van-button class=" rounded-23 w270 h50 b-0  text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"

@@ -30,14 +30,14 @@ export const useUserStore = defineStore('useUserStore', {
             this.videoList = this.userDetail.picList.filter((item) => item.mediaType === 2)
         },
         // 关注/取关
-        followOrNo(type = this.userDetail.followed === true ? 2 : 1, id = this.userDetail.userId) {
+        followOrNo(followType = this.userDetail.followed ? 2 : 1, id = this.userDetail.userId) {
             getFollowUser({
-                "followType": type,
-                "followUserId": id
+                followType: followType,
+                followUserId: id
             }).then(() => {
                 if (this.userDetail) {
                     this.userDetail.followed = !this.userDetail.followed
-                    if (type === 1) {
+                    if (followType === 1) {
                         showToast('Follow Success')
                     }
                     else {

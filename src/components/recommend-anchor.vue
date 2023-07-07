@@ -82,7 +82,6 @@ const sayHello = () => {
     show.value = false
 }
 onMounted(() => {
-    getRecommendAnchorData()
 }),
     onBeforeUnmount(() => {
         //组件卸载前去掉定时器

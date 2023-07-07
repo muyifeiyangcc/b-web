@@ -27,7 +27,6 @@
             </div>
             <van-button :round=true class="text-#fff text-16 w68 h32 bg-#fff/[.40] b-0">Open</van-button>
         </div> -->
-
         <!-- <van-tabs class="tabs_1 Tabs" color="rgba(190,18,197,1)" background="transparent" v-model:active="childrenTabActive"
             title-active-color="rgba(190,18,197,1)" title-inactive-color="rgba(255,255,255,1)" line-width="0px"
             :ellipsis="false" @change="onClickChildrenTab">

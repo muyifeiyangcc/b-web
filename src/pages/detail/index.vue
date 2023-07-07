@@ -247,7 +247,7 @@
                                 @click="router.push({ path: 'talk', query: { to: yxAccid, nick: userStore.userDetail.nickname, avatar: userStore.userDetail.icon } })">
                         </div>
                         <!-- 关注/取关 -->
-                        <div class="bg-#fff/10 rounded-23 py12 px18" @click="userStore.followOrNo">
+                        <div class="bg-#fff/10 rounded-23 py12 px18" @click="userStore.followOrNo()">
                             <van-icon name="like" color="#FB3A54" :size="18" v-if="userStore.userDetail.followed" />
                             <van-icon name="like-o" color="#fff" :size="18" v-else />
                         </div>
