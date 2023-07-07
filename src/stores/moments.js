@@ -29,15 +29,17 @@ export const useMomentsStore = defineStore('useMomentsStore', {
                     }
                 })
             }
-            // 获取评论数据，添加在朋友圈数据中
-            result.forEach(async (item) => {
-                const result = await getMoments({
-                    "currentPage": 1,
-                    "keyword": item.id,
-                    "pageSize": 20
-                })
-                item.comment = result.reverse()
-            });
+            if (result.length > 0) {
+                // 获取评论数据，添加在朋友圈数据中
+                result.forEach(async (item) => {
+                    const result = await getMoments({
+                        "currentPage": 1,
+                        "keyword": item.id,
+                        "pageSize": 20
+                    })
+                    item.comment = result.reverse()
+                });
+            }
             this.friendsCircleList = [...this.friendsCircleList, ...result]
             console.log(this.friendsCircleList);
         }

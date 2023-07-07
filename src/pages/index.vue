@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
 
 </script>
 <template>
-  <div ref="scrollDom" class="pt120 pb140">
+  <div ref="scrollDom" class="">
     <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
       loosing-text="Release to refresh" success-text="Refresh successful">
       <index-tag />

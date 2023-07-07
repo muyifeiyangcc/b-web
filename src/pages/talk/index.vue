@@ -86,12 +86,14 @@
                 </div>
             </template>
         </van-popup>
+        <van-toast></van-toast>
     </div>
 </template>
 
 
 <script  setup>
 import { blockUser } from '~/api/user'
+import { showSuccessToast } from 'vant';
 const myRef = ref();
 const reference = ref()
 const showBottom = ref(false)
@@ -126,7 +128,11 @@ const setBlockUser = async () => {
         type: 1,
         userId: userStore.userDetail.userId,
         yxAccid: to
-    }).then(() => showBottom.value = false)
+    }).then(() => {
+        showBottom.value = false
+        showSuccessToast('success')
+        router.push('message')
+    })
 
 }
 const scrollHandle = () => {

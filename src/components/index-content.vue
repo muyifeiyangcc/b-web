@@ -1,5 +1,5 @@
 <template>
-    <div class="px15">
+    <div class="px15 pt120 pb140">
         <van-list v-model:loading="homeStore.loadingScroll" :finished="homeStore.finished" finished-text="There's no more"
             loading-text="loading..." @load="loadMore" :offset="3">
             <div ref="row">

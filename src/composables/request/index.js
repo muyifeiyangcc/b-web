@@ -22,7 +22,7 @@ service.interceptors.request.use((config) => {
 
 // 添加响应拦截器
 service.interceptors.response.use(
-  async (res) => {
+  (res) => {
     // 对响应数据做处理
     // const res = response.data;
     // if (res.code !== 20000 && res.code !== 200) {

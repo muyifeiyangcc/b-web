@@ -107,21 +107,23 @@
     <!-- 朋友圈举报 -->
     <van-popup v-model:show="showBottom" position="bottom" class="bg-#130021 h25%">
       <template #default>
-        <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
-        <div @click="router.push('report')"
-          class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt16">
-          Report
-        </div>
-        <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt16"
-          @click="showBottom = false">
-          Cancel
+        <div class="text-center">
+          <div class="w46 h6 rounded-5 bg-#E9E9E9/10 mx-auto mt16"></div>
+          <div @click="router.push('report')"
+            class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 mt16">
+            Report
+          </div>
+          <div class="c-#fff text-16 font-bold mx15 text-center pt15 pb12 rounded-6 bg-#440699/10 mt16"
+            @click="showBottom = false">
+            Cancel
+          </div>
         </div>
       </template>
     </van-popup>
     <!-- 图片预览 -->
     <van-image-preview />
     <!-- 发布评论 -->
-    <van-popup v-model:show="showComment" position="bottom" :style="{ height: auto }" overlay-class="bg-transparent ">
+    <van-popup v-model:show="showComment" position="bottom" overlay-class="bg-transparent ">
       <template #default>
         <div class="py20 bg-#130021">
           <van-space :size="10">
@@ -247,7 +249,6 @@ const postComment = async () => {
 }
 
 onMounted(() => {
-
   //动态计算滚动区高度
   scrollHeight.value = document.documentElement.clientHeight - myRef.value.offsetHeight
   //组件挂载完成设置背景色
