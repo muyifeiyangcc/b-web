@@ -133,6 +133,7 @@ const onLoad = () => {
 }
 onMounted(() => {
     scrollHeight.value = document.documentElement.clientHeight - broList.value.getBoundingClientRect().top
+    console.log(broList.value.getBoundingClientRect());
     // 获取好友列表
     // getFriendsList()
     //组件挂载完成设置背景色
