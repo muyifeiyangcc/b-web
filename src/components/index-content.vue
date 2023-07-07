@@ -1,7 +1,7 @@
 <template>
     <div class="px15">
-        <van-list v-model:loading="loadingScroll" :finished="homeStore.finished" finished-text="There's no more"
-            loading-text="loading..." @load="loadMore">
+        <van-list v-model:loading="homeStore.loadingScroll" :finished="homeStore.finished" finished-text="There's no more"
+            loading-text="loading..." @load="loadMore" :offset="3">
             <div ref="row">
                 <van-row gutter="20" :wrap="true">
                     <van-col span="12" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
@@ -91,7 +91,6 @@ const callHer = (userId, yxId) => {
     userStore.getUserDetailData(userId, yxId)
     router.push({ name: 'waitcall', query: { userId, yxId } })
 }
-const loadingScroll = ref(false);
 let timer
 const loadMore = () => {
     if (timer)
@@ -99,7 +98,6 @@ const loadMore = () => {
     timer = setTimeout(() => {
         homeStore.getIndexListOption.currentPage++
         homeStore.updateIndexListData('scroll')
-        loadingScroll.value = false
     }, 1000)
 }
 

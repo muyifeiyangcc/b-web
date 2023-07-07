@@ -35,7 +35,7 @@
         <!-- 名单列表 -->
         <div ref="broList" class="overflow-scroll" :style="{ height: scrollHeight + 'px' }">
             <van-list v-model:loading="loading" :finished="finished" finished-text="There's no more"
-                loading-text="loading..." @load="onLoad" :immediate-check="false" :offset="5">
+                loading-text="loading..." @load="onLoad" :offset="5">
                 <div class="c-#fff mt5 pt20 mx20" v-for=" item, index in friendsList" :key="index">
                     <van-row>
                         <van-col span="4">
@@ -109,12 +109,12 @@ const getFriendsList = async () => {
     })
     friendsList.value = result
 }
-var allow = ref(true)
+let timer
 const onLoad = () => {
-    if (allow.value) {
-        allow.value = false
+    if (timer)
+        clearTimeout(timer)
+    timer = setTimeout(() => {
         currentPage.value++
-
         getFriends({
             currentPage: currentPage.value,
             pageSize: pageSize.value,
@@ -128,15 +128,13 @@ const onLoad = () => {
                 loading.value = false
                 finished.value = true
             }
-            allow.value = true
         })
-
-    }
+    }, 1000)
 }
 onMounted(() => {
     scrollHeight.value = document.documentElement.clientHeight - broList.value.getBoundingClientRect().top
     // 获取好友列表
-    getFriendsList()
+    // getFriendsList()
     //组件挂载完成设置背景色
     document.querySelector('body').setAttribute('style', 'background-color:#130021')
 })

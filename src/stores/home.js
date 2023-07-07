@@ -23,6 +23,7 @@ export const useHomeStore = defineStore('useHomeStore', {
         indexTabsFather: {},//一级分类
         indexTabsChildren: [],//二级分类
         indexList: [],//首页用户列表
+        loadingScroll: false,
         getDiamondsVisible: false,//控制首页钻石不足弹窗显示
         rechargeVisible: false,//首页限时特惠充值弹窗
         requestGift: false,//直播间索要礼物弹窗
@@ -283,8 +284,10 @@ export const useHomeStore = defineStore('useHomeStore', {
                     console.log('触发滚动更新');
                     if (res.length > 0) {
                         this.indexList = [...this.indexList, ...res]
+                        this.loadingScroll = false
                     }
                     else {
+                        this.loadingScroll = false
                         this.finished = true
                     }
                 })
