@@ -65,7 +65,6 @@ export function getEmoji(countryId) {
  * @returns
  */
 export function debounce(fn, delay) {
-  console.log(123);
   delay = delay || 1000
   let timer = null
   return function () {
@@ -74,6 +73,7 @@ export function debounce(fn, delay) {
     if (timer)
       clearTimeout(timer)
     timer = setTimeout(() => {
+      console.log(123);
       fn.apply(context, arg)
     }, delay)
   }

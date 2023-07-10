@@ -97,15 +97,17 @@ const removeHandler = (id, nick, yxAccid) => {
 }
 //确定移出黑名单的回调
 const removeBlackList = () => {
-    console.log('点击了按钮');
-    removeBlack({
-        "type": 1,
-        "userId": uid.value,
-        "yxAccid": yid.value
-    }).then(() => {
-        showEmpty.value = false
-        showSuccessToast('success')
-        getBlackListData()
+    debounce(function () {
+        console.log('点击了按钮');
+        removeBlack({
+            "type": 1,
+            "userId": uid.value,
+            "yxAccid": yid.value
+        }).then(() => {
+            showEmpty.value = false
+            showSuccessToast('success')
+            getBlackListData()
+        })
     })
 }
 

@@ -44,7 +44,7 @@
                 </van-space>
             </div>
         </div>
-        <van-toast></van-toast>
+        <van-toast />
     </div>
 </template>
 

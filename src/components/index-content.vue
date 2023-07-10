@@ -6,7 +6,7 @@
                 <van-row gutter="20" :wrap="true">
                     <van-col span="12" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
                         <div>
-                            <div class="h200  rounded-12 relative overflow-hidden"
+                            <div class="h200  rounded-12 relative overflow-hidden bg-#ccc/80"
                                 @click="router.push({ path: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
                                 <!-- 背景图 -->
                                 <van-image :src="item.icon" fit="cover" />
@@ -98,7 +98,7 @@ const loadMore = () => {
     timer = setTimeout(() => {
         homeStore.getIndexListOption.currentPage++
         homeStore.updateIndexListData('scroll')
-    }, 1000)
+    }, 500)
 }
 
 onMounted(() => {

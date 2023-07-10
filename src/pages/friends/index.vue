@@ -109,6 +109,7 @@ const getFriendsList = async () => {
     })
     friendsList.value = result
 }
+//无限滚动更新
 let timer
 const onLoad = () => {
     if (timer)

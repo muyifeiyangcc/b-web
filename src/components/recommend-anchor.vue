@@ -1,10 +1,10 @@
 <template>
     <div>
         <div>
-
-            <van-popup v-model:show="show" class="bg-transparent">
+            <van-popup v-model:show="show" class="bg-transparent overflow-visible">
                 <div class="relative text-center">
                     <img src="../assets/hotgirl_bg.png" class="w349 h392">
+                    <img src="../assets/btn_close_pink.png" class="absolute top--31 right-0 w31 h31" @click="show = false">
                     <div class="absolute top-113 w-full px20">
                         <van-row :gutter="10">
                             <van-col v-for="item, index in recommendAnchorList" :key="index" :span="8">
@@ -60,7 +60,7 @@ const showRecommend = setInterval(() => {
         return
     }
     getRecommendAnchorData()
-}, 20 * 1000);
+}, 30 * 1000);
 
 
 //发送文本消息

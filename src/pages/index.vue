@@ -35,31 +35,6 @@ const onRefresh = () => {
   }, 500);
 };
 
-// 无限滚动
-// let allowLoad = true
-// const loadMore = () => {
-//   if (allowLoad) {
-//     allowLoad = false
-//     homeStore.getIndexListOption.currentPage++
-//     setTimeout(() => {
-//       homeStore.updateIndexListData('scroll')
-//       allowLoad = true
-//     }, 1000);
-//   }
-// }
-//判断滚动距离触发更新
-// const scrollDom = ref()
-// const scrollHandle = () => {
-//   const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
-//   const clientHeight = document.body.clientHeight//计算视口高度
-//   const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop//计算滚动的距离
-//   const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
-//   //当快滑动到底部的时候
-//   if (distance < 50) {
-//     loadMore()
-//   }
-// }
-
 //初始化
 const init = () => {
   if (!homeStore.isInit) {
