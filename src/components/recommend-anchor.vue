@@ -81,12 +81,14 @@ const sayHello = () => {
     });
     show.value = false
 }
+
 onMounted(() => {
-}),
-    onBeforeUnmount(() => {
-        //组件卸载前去掉定时器
-        clearInterval(showRecommend)
-    })
+})
+
+onBeforeUnmount(() => {
+    //组件卸载前去掉定时器
+    clearInterval(showRecommend)
+})
 </script>
 
 <style scoped></style>

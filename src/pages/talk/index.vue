@@ -122,6 +122,7 @@ const sendTextMessage = async () => {
     homeStore.talkList.unshift(msg)
     talk.value.scrollTop = 0
 }
+
 // 拉黑
 const setBlockUser = async () => {
     await blockUser({

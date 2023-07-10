@@ -31,7 +31,7 @@ export const useHomeStore = defineStore('useHomeStore', {
         talkList: [],//直播间和主播聊天列表
         attachEvent: {},//系统消息事件对象
         getIndexListOption: {
-            "currentPage": 1,
+            "currentPage": 0,
             "onlineStatus": 0,
             "pageSize": 8,
             "tagId": 13

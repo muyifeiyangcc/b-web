@@ -66,6 +66,7 @@
             <template #footer>
             </template>
         </van-dialog>
+        <van-toast />
     </div>
 </template>
 
@@ -73,6 +74,8 @@
 <script  setup>
 import { toDisplayString } from 'vue';
 import { getBlackList, removeBlack } from '../../api/user'
+import { showSuccessToast } from 'vant';
+import { debounce, throttle } from '~/utils'
 const blackList = ref([])
 const showEmpty = ref(false)
 const router = useRouter()
@@ -93,15 +96,19 @@ const removeHandler = (id, nick, yxAccid) => {
     nickName.value = nick
 }
 //确定移出黑名单的回调
-const removeBlackList = async () => {
-    showEmpty.value = false
-    await removeBlack({
+const removeBlackList = () => {
+    console.log('点击了按钮');
+    removeBlack({
         "type": 1,
         "userId": uid.value,
         "yxAccid": yid.value
+    }).then(() => {
+        showEmpty.value = false
+        showSuccessToast('success')
+        getBlackListData()
     })
-    getBlackListData()
 }
+
 onMounted(() => {
     //获取黑名单
     getBlackListData()
