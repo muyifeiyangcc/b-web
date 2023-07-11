@@ -14,4 +14,4 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped></style>~/api/moment/moments

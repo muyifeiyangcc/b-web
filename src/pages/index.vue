@@ -1,29 +1,16 @@
-<script setup >
-import { setSave } from '~/api/home'
+<script lang="ts" setup >
 import { getMineInfo } from '~/api/user'
-// import { showSuccessToast, showFailToast } from 'vant';
 const router = useRouter()
 const route = useRoute()
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
 const momentsStore = useMomentsStore()
-const saveOption =
-{
-  "appId": "77985415",
-  "appVersion": "1.0.0",
-  "channel": "OFFICIAL",
-  "deviceNo": "",
-  "deviceType": "",
-  "osType": "10.0.0",
-  "osVersion": "10.0.0",
-  "pushToken": "",
-  "useSimCard": 1
-}
+
 //需传入token等参数
 if (route.query.token && route.query.appId) {
-  localStorage.setItem('token', route.query.token)
-  localStorage.setItem('appId', route.query.appId)
+  localStorage.setItem('token', route.query.token as string)
+  localStorage.setItem('appId', route.query.appId as string)
 }
 
 const loading = ref(false);
@@ -70,12 +57,12 @@ onMounted(() => {
   init()
 
   //组件挂载完成设置背景色
-  document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
+  document.querySelector('body')?.setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
 
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色
-  document.querySelector('body').removeAttribute('style')
+  document.querySelector('body')?.removeAttribute('style')
 })
 
 </script>

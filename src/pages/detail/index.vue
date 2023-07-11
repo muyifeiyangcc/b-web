@@ -247,7 +247,7 @@
                                 @click="router.push({ path: 'talk', query: { to: yxAccid, nick: userStore.userDetail.nickname, avatar: userStore.userDetail.icon } })">
                         </div>
                         <!-- 关注/取关 -->
-                        <div class="bg-#fff/10 rounded-23 py12 px18" @click="userStore.followOrNo()">
+                        <div class="bg-#fff/10 rounded-23 py12 px18" @click="followOrNo">
                             <van-icon name="like" color="#FB3A54" :size="18" v-if="userStore.userDetail.followed" />
                             <van-icon name="like-o" color="#fff" :size="18" v-else />
                         </div>
@@ -269,11 +269,12 @@
     </div>
 </template>
 
-
 <script  setup>
 import { getFriendsCircle } from '~/api/moments'
 import { getMomentsTime } from '~/utils/index'
 import { showImagePreview } from 'vant';
+import { debounce } from '~/utils'
+
 const userStore = useUserStore()
 const route = useRoute()
 const userId = route.query.id;
@@ -282,7 +283,6 @@ const momentsStore = useMomentsStore()
 const router = useRouter()
 const momentData = ref([])//用户朋友圈内容
 const showView = ref(true)
-
 //获取用户朋友圈内容
 const getMomentData = async (id = "") => {
     const result = await getFriendsCircle({
@@ -299,11 +299,9 @@ const showImg = (imgList) => {
     showImagePreview([imgList]);
 }
 // 关注/取关
-// const followOrNo = () => {
-//     const type = userStore.userDetail.followed === true ? 2 : 1
-//     userStore.followUser(type, userStore.userDetail.userId)
-//     userStore.userDetail.followed = !userStore.userDetail.followed
-// }
+const followOrNo = debounce(() => { userStore.followOrNo() }, 300)
+
+//视频播放
 const showVideo = ref(false)
 let videoUrl = ref('')
 const startVideo = (url) => {

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getFriendsCircle, getMoments } from '~/api/moments'
+import { getFriendsCircle, getMoments } from '~/api/moment'
 export const useMomentsStore = defineStore('useMomentsStore', {
     state: () => ({
         friendsCircleList: [],//朋友圈数据

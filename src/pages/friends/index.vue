@@ -62,10 +62,10 @@
                                 </div>
                                 <!-- 关注/取关按钮 -->
                                 <div>
-                                    <button @click="userStore.followOrNo(2, item.userId); getFriendsList()"
-                                        v-if="tabValue === 1 || 3"
+                                    <button @click="userStore.followOrNo(2, item.userId); item.followed = false"
+                                        v-if="item.followed"
                                         class="px12 py8 rounded-20 c-#C513C6 font-semibold text-14 bg-gradient-to-r from-#D0B2FF/10 to-#BEB4FF/10">Unfollow</button>
-                                    <button @click="userStore.followOrNo(1, item.userId); getFriendsList()" v-else
+                                    <button @click="userStore.followOrNo(1, item.userId); item.followed = true" v-else
                                         class="px12 py8 rounded-20 c-#C513C6 font-semibold text-14 bg-gradient-to-r from-#D0B2FF/10 to-#BEB4FF/10">Follow</button>
                                 </div>
                             </div>
@@ -88,8 +88,8 @@ const broList = ref()
 const tabValue = ref(1)
 const friendsList = ref([])
 const scrollHeight = ref(0)
-const currentPage = ref(1)
-const pageSize = ref(12)
+const currentPage = ref(0)
+const pageSize = ref(9)
 const loading = ref(false);
 const finished = ref(false);
 
@@ -97,18 +97,11 @@ const finished = ref(false);
 const tabClick = (value) => {
     finished.value = false
     tabValue.value = value
-    currentPage.value = 1
-    getFriendsList()
+    currentPage.value = 0
+    friendsList.value = []
+    onLoad()
 }
-// 获取好友列表
-const getFriendsList = async () => {
-    const result = await getFriends({
-        currentPage: currentPage.value,
-        pageSize: pageSize.value,
-        type: tabValue.value
-    })
-    friendsList.value = result
-}
+
 //无限滚动更新
 let timer
 const onLoad = () => {
@@ -130,7 +123,7 @@ const onLoad = () => {
                 finished.value = true
             }
         })
-    }, 1000)
+    }, 500)
 }
 onMounted(() => {
     scrollHeight.value = document.documentElement.clientHeight - broList.value.getBoundingClientRect().top

@@ -35,6 +35,7 @@ export const useUserStore = defineStore('useUserStore', {
                 followType: followType,
                 followUserId: id
             }).then(() => {
+                console.log('关注/取关执行了');
                 if (this.userDetail) {
                     this.userDetail.followed = !this.userDetail.followed
                     if (followType === 1) {

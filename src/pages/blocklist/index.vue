@@ -85,7 +85,7 @@ const yid = ref('')//当前选中的云信id
 
 //获取黑名单列表
 const getBlackListData = async () => {
-    blackList.value = await getBlackList({})
+    blackList.value = await getBlackList()
     console.log(blackList.value);
 }
 //点击移除黑名单的回调
@@ -96,20 +96,17 @@ const removeHandler = (id, nick, yxAccid) => {
     nickName.value = nick
 }
 //确定移出黑名单的回调
-const removeBlackList = () => {
-    debounce(function () {
-        console.log('点击了按钮');
-        removeBlack({
-            "type": 1,
-            "userId": uid.value,
-            "yxAccid": yid.value
-        }).then(() => {
-            showEmpty.value = false
-            showSuccessToast('success')
-            getBlackListData()
-        })
+const removeBlackList = debounce(() => {
+    removeBlack({
+        "type": 1,
+        "userId": uid.value,
+        "yxAccid": yid.value
+    }).then(() => {
+        showEmpty.value = false
+        showSuccessToast('success')
+        getBlackListData()
     })
-}
+}, 1000)
 
 onMounted(() => {
     //获取黑名单

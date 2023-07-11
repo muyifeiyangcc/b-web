@@ -42,19 +42,20 @@
 
 <script  setup>
 import { getRecommendAnchor } from '~/api/home'
+import { debounce } from '~/utils'
 const router = useRouter()
 const homeStore = useHomeStore()
 let recommendAnchorList = ref([])
 let show = ref(false)
 
 //获取首页推荐
-const getRecommendAnchorData = () => {
+const getRecommendAnchorData = debounce(() => {
     getRecommendAnchor().then((res) => {
         recommendAnchorList.value = res.slice(0, 3)
         show.value = true
     })
-}
-
+}, 300)
+//每隔30秒弹出一次
 const showRecommend = setInterval(() => {
     if (show.value) {
         return
@@ -74,7 +75,7 @@ const sendTextMessage = async (to) => {
         }
     })
 }
-
+//向推荐主播打招呼
 const sayHello = () => {
     recommendAnchorList.value.forEach(item => {
         sendTextMessage(item.yxAccid)
@@ -82,8 +83,7 @@ const sayHello = () => {
     show.value = false
 }
 
-onMounted(() => {
-})
+// onMounted(() => {})
 
 onBeforeUnmount(() => {
     //组件卸载前去掉定时器
@@ -91,4 +91,4 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped></style>~/api/home/home
