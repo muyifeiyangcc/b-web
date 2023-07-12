@@ -1,29 +1,16 @@
-<script setup >
-import { setSave } from '~/api/home'
+<script lang="ts" setup >
 import { getMineInfo } from '~/api/user'
-// import { showSuccessToast, showFailToast } from 'vant';
 const router = useRouter()
 const route = useRoute()
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
 const momentsStore = useMomentsStore()
-const saveOption =
-{
-  "appId": "77985415",
-  "appVersion": "1.0.0",
-  "channel": "OFFICIAL",
-  "deviceNo": "",
-  "deviceType": "",
-  "osType": "10.0.0",
-  "osVersion": "10.0.0",
-  "pushToken": "",
-  "useSimCard": 1
-}
+
 //需传入token等参数
 if (route.query.token && route.query.appId) {
-  localStorage.setItem('token', route.query.token)
-  localStorage.setItem('appId', route.query.appId)
+  localStorage.setItem('token', route.query.token as string)
+  localStorage.setItem('appId', route.query.appId as string)
 }
 
 const loading = ref(false);
@@ -34,30 +21,6 @@ const onRefresh = () => {
     loading.value = false;
   }, 500);
 };
-// 无限滚动
-let allowLoad = true
-const loadMore = () => {
-  if (allowLoad) {
-    allowLoad = false
-    homeStore.getIndexListOption.currentPage++
-    setTimeout(() => {
-      homeStore.updateIndexListData('scroll')
-      allowLoad = true
-    }, 1000);
-  }
-}
-//判断滚动距离触发更新
-const scrollDom = ref()
-const scrollHandle = () => {
-  const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
-  const clientHeight = document.body.clientHeight//计算视口高度
-  const scrollTop = scrollDom.value.scrollTop || document.documentElement.scrollTop//计算滚动的距离
-  const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
-  //当快滑动到底部的时候
-  if (distance < 50) {
-    loadMore()
-  }
-}
 
 //初始化
 const init = () => {
@@ -68,9 +31,11 @@ const init = () => {
     //获取首页tab列表
     homeStore.getIndexFatherTabList()
     //获取首页用户列表
-    homeStore.updateIndexListData()
+    // homeStore.updateIndexListData()
     //获取国家列表
     userStore.getCountryListData()
+    //获取朋友圈列表
+    momentsStore.getFriendsCircleList({ origin: 'pull' })
     // //获取我的信息
     getMineInfo().then((res) => {
       userStore.mineInfo = res
@@ -81,40 +46,32 @@ const init = () => {
     })
     //获取礼物列表
     giftStore.getGiftListData()
-    //获取朋友圈列表
-    momentsStore.getFriendsCircleList()
+
     // })
     homeStore.isInit = true
   }
 }
+
+
 onMounted(() => {
   init()
-  //组件挂载时，添加scroll监听
-  window.addEventListener("scroll", scrollHandle);
+
   //组件挂载完成设置背景色
-  document.querySelector('body').setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
+  document.querySelector('body')?.setAttribute('style', 'background:radial-gradient(#2F0250 0,#160126 100%)')
 })
 
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色
-  document.querySelector('body').removeAttribute('style')
-  //组件卸载前解绑事件
-  window.removeEventListener("scroll", scrollHandle);
+  document.querySelector('body')?.removeAttribute('style')
 })
 
 </script>
 <template>
-  <div ref="scrollDom">
+  <div ref="scrollDom" class="">
     <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
       loosing-text="Release to refresh" success-text="Refresh successful">
-      <div>
-        <keep-alive>
-          <index-tag />
-        </keep-alive>
-        <div class="px15 ">
-          <index-content />
-        </div>
-      </div>
+      <index-tag />
+      <index-content />
     </van-pull-refresh>
     <div class="fixed bottom-100 left-50% ml--135">
       <van-button class=" rounded-23 w270 h50 b-0  text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"

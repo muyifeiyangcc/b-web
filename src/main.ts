@@ -20,3 +20,6 @@ export const createApp = ViteSSG(
     // ctx.app.config.globalProperties.emitter = mitt()
   },
 )
+
+
+

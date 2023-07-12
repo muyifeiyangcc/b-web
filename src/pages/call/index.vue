@@ -23,7 +23,7 @@
                                 </van-space>
                             </div>
                             <div class="px7 py7 text-0 rounded-50% text-center bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8"
-                                @click="userStore.followOrNo">
+                                @click="userStore.followOrNo()">
                                 <van-icon name="success" color="#fff" class="font-bold text-12"
                                     v-if="userStore.userDetail.followed" />
                                 <van-icon name="plus" color="#fff" class="font-bold text-12" v-else />

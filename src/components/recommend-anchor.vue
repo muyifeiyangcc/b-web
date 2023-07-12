@@ -1,14 +1,14 @@
 <template>
     <div>
         <div>
-
-            <van-popup v-model:show="show" class="bg-transparent">
+            <van-popup v-model:show="show" class="bg-transparent overflow-visible">
                 <div class="relative text-center">
                     <img src="../assets/hotgirl_bg.png" class="w349 h392">
+                    <img src="../assets/btn_close_pink.png" class="absolute top--31 right-0 w31 h31" @click="show = false">
                     <div class="absolute top-113 w-full px20">
                         <van-row :gutter="10">
                             <van-col v-for="item, index in recommendAnchorList" :key="index" :span="8">
-                                <div class="bg-blue w-full h133 rounded-10 relative overflow-hidden flex flex-col-reverse">
+                                <div class=" w-full h133 rounded-10 relative overflow-hidden flex flex-col-reverse">
                                     <img :src="item.icon" class="w-full h-full absolute ">
                                     <div class="flex justify-between items-center px7 relative z-2 bottom-10">
                                         <img src="../assets/message_b.png" class="w26 h26"
@@ -42,25 +42,26 @@
 
 <script  setup>
 import { getRecommendAnchor } from '~/api/home'
+import { debounce } from '~/utils'
 const router = useRouter()
 const homeStore = useHomeStore()
 let recommendAnchorList = ref([])
 let show = ref(false)
 
 //获取首页推荐
-const getRecommendAnchorData = () => {
+const getRecommendAnchorData = debounce(() => {
     getRecommendAnchor().then((res) => {
         recommendAnchorList.value = res.slice(0, 3)
         show.value = true
     })
-}
-
+}, 300)
+//每隔30秒弹出一次
 const showRecommend = setInterval(() => {
     if (show.value) {
         return
     }
     getRecommendAnchorData()
-}, 20 * 1000);
+}, 30 * 1000);
 
 
 //发送文本消息
@@ -74,20 +75,20 @@ const sendTextMessage = async (to) => {
         }
     })
 }
-
+//向推荐主播打招呼
 const sayHello = () => {
     recommendAnchorList.value.forEach(item => {
         sendTextMessage(item.yxAccid)
     });
     show.value = false
 }
-onMounted(() => {
-    getRecommendAnchorData()
-}),
-    onBeforeUnmount(() => {
-        //组件卸载前去掉定时器
-        clearInterval(showRecommend)
-    })
+
+// onMounted(() => {})
+
+onBeforeUnmount(() => {
+    //组件卸载前去掉定时器
+    clearInterval(showRecommend)
+})
 </script>
 
-<style scoped></style>
+<style scoped></style>~/api/home/home

@@ -66,6 +66,7 @@
             <template #footer>
             </template>
         </van-dialog>
+        <van-toast />
     </div>
 </template>
 
@@ -73,6 +74,8 @@
 <script  setup>
 import { toDisplayString } from 'vue';
 import { getBlackList, removeBlack } from '../../api/user'
+import { showSuccessToast } from 'vant';
+import { debounce, throttle } from '~/utils'
 const blackList = ref([])
 const showEmpty = ref(false)
 const router = useRouter()
@@ -82,7 +85,7 @@ const yid = ref('')//当前选中的云信id
 
 //获取黑名单列表
 const getBlackListData = async () => {
-    blackList.value = await getBlackList({})
+    blackList.value = await getBlackList()
     console.log(blackList.value);
 }
 //点击移除黑名单的回调
@@ -93,15 +96,18 @@ const removeHandler = (id, nick, yxAccid) => {
     nickName.value = nick
 }
 //确定移出黑名单的回调
-const removeBlackList = async () => {
-    showEmpty.value = false
-    await removeBlack({
+const removeBlackList = debounce(() => {
+    removeBlack({
         "type": 1,
         "userId": uid.value,
         "yxAccid": yid.value
+    }).then(() => {
+        showEmpty.value = false
+        showSuccessToast('success')
+        getBlackListData()
     })
-    getBlackListData()
-}
+}, 1000)
+
 onMounted(() => {
     //获取黑名单
     getBlackListData()

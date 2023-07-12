@@ -86,12 +86,14 @@
                 </div>
             </template>
         </van-popup>
+        <van-toast></van-toast>
     </div>
 </template>
 
 
 <script  setup>
 import { blockUser } from '~/api/user'
+import { showSuccessToast } from 'vant';
 const myRef = ref();
 const reference = ref()
 const showBottom = ref(false)
@@ -120,13 +122,18 @@ const sendTextMessage = async () => {
     homeStore.talkList.unshift(msg)
     talk.value.scrollTop = 0
 }
+
 // 拉黑
 const setBlockUser = async () => {
     await blockUser({
         type: 1,
         userId: userStore.userDetail.userId,
         yxAccid: to
-    }).then(() => showBottom.value = false)
+    }).then(() => {
+        showBottom.value = false
+        showSuccessToast('success')
+        router.push('message')
+    })
 
 }
 const scrollHandle = () => {
