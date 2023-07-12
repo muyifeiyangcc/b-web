@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getFriendsCircle, getMoments } from '~/api/moment'
+import { getFriendsCircle, getMoments } from '~/api/moments'
 export const useMomentsStore = defineStore('useMomentsStore', {
     state: () => ({
         friendsCircleList: [],//朋友圈数据
@@ -14,13 +14,13 @@ export const useMomentsStore = defineStore('useMomentsStore', {
                 this.friendsCircleList = []
                 result = await getFriendsCircle({
                     "currentPage": 1,
-                    "pageSize": 4
+                    "pageSize": 3
                 })
             }
             if (obj.origin === 'scroll') {
                 getFriendsCircle({
                     "currentPage": obj.currentPage,
-                    "pageSize": 4
+                    "pageSize": 3
                 }).then((res) => {
                     result = res
                     this.loadingScroll = false

@@ -35,7 +35,7 @@ const init = () => {
     //获取国家列表
     userStore.getCountryListData()
     //获取朋友圈列表
-    momentsStore.getFriendsCircleList({ origin: 'pull' })
+    momentsStore.getFriendsCircleList({ origin: 'pull', currentPage: 1, id: "", })
     // //获取我的信息
     getMineInfo().then((res) => {
       userStore.mineInfo = res
