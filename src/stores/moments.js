@@ -9,12 +9,14 @@ export const useMomentsStore = defineStore('useMomentsStore', {
     actions: {
         //获取朋友圈内容
         async getFriendsCircleList(obj = { currentPage: 1, id: "", origin: '' }) {
-            let result = ''
+
             if (obj.origin === 'pull') {
                 this.friendsCircleList = []
-                result = await getFriendsCircle({
+                getFriendsCircle({
                     "currentPage": 1,
                     "pageSize": 3
+                }).then((res) => {
+                    this.joinComment(res)
                 })
             }
             if (obj.origin === 'scroll') {
@@ -22,26 +24,32 @@ export const useMomentsStore = defineStore('useMomentsStore', {
                     "currentPage": obj.currentPage,
                     "pageSize": 3
                 }).then((res) => {
-                    result = res
                     this.loadingScroll = false
                     if (res.length === 0) {
                         this.finished = true
                     }
+                    else {
+                        this.joinComment(res)
+                    }
                 })
             }
+
+
+            console.log(this.friendsCircleList);
+        },
+        async joinComment(result) {
             if (result.length > 0) {
                 // 获取评论数据，添加在朋友圈数据中
                 result.forEach(async (item) => {
-                    const result = await getMoments({
+                    const data = await getMoments({
                         "currentPage": 1,
                         "keyword": item.id,
                         "pageSize": 20
                     })
-                    item.comment = result.reverse()
+                    item.comment = data.reverse()
                 });
+                this.friendsCircleList = [...this.friendsCircleList, ...result]
             }
-            this.friendsCircleList = [...this.friendsCircleList, ...result]
-            console.log(this.friendsCircleList);
         }
     }
 })
