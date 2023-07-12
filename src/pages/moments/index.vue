@@ -177,6 +177,7 @@ const onRefresh = () => {
 
 let timer
 // 无限滚动
+
 let currentPage = 0
 const loadMore = () => {
   if (timer)
