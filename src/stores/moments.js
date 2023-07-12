@@ -35,21 +35,18 @@ export const useMomentsStore = defineStore('useMomentsStore', {
             }
 
 
-            console.log(this.friendsCircleList);
         },
         async joinComment(result) {
-            if (result.length > 0) {
-                // 获取评论数据，添加在朋友圈数据中
-                result.forEach(async (item) => {
-                    const data = await getMoments({
-                        "currentPage": 1,
-                        "keyword": item.id,
-                        "pageSize": 20
-                    })
-                    item.comment = data.reverse()
-                });
-                this.friendsCircleList = [...this.friendsCircleList, ...result]
-            }
+            // 获取评论数据，添加在朋友圈数据中
+            result.forEach(async (item) => {
+                const data = await getMoments({
+                    "currentPage": 1,
+                    "keyword": item.id,
+                    "pageSize": 20
+                }).then((res) => item.comment = res.reverse())
+            });
+            this.friendsCircleList = [...this.friendsCircleList, ...result]
+            console.log(this.friendsCircleList);
         }
     }
 })
