@@ -11,7 +11,7 @@
       <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
         loosing-text="Release to refresh" success-text="Refresh successful" z-2>
         <van-list v-model:loading="momentsStore.loadingScroll" :finished="momentsStore.finished"
-          finished-text="There's no more" loading-text="loading..." @load="loadMore">
+          finished-text="There's no more" loading-text="loading..." @load="loadMore" :offset="10">
           <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in data" :key="index">
             <!-- 第一行 -->
             <div class="flex justify-between">
@@ -174,18 +174,18 @@ const onRefresh = () => {
     loading.value = false;
   }, 1000);
 };
+
+let timer
 // 无限滚动
-let allowLoad = true
 let currentPage = 1
 const loadMore = () => {
-  if (allowLoad) {
-    allowLoad = false
+  if (timer)
+    clearTimeout(timer)
+  timer = setTimeout(() => {
     currentPage++
-    setTimeout(() => {
-      momentsStore.getFriendsCircleList({ currentPage, origin: 'scroll' })
-      allowLoad = true
-    }, 1000);
-  }
+    momentsStore.getFriendsCircleList({ currentPage, origin: 'scroll' })
+    allowLoad = true
+  }, 500);
 }
 
 //判断滚动距离触发更新

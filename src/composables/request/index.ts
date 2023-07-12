@@ -45,19 +45,19 @@ service.interceptors.response.use(
     const status = error.response?.status
     switch (status) {
       case 401:
-        message = 'token 失效，请重新登录'
+        message = 'Token invalid, please log in again'
         break;
       case 403:
-        message = '拒绝访问'
+        message = 'No Access'
         break;
       case 404:
-        message = '请求地址错误'
+        message = 'Request Address Error'
         break;
       case 500:
-        message = '服务器故障'
+        message = 'Server Failure'
         break;
       default:
-        message = '网络连接故障'
+        message = 'Network Connection Failure'
     }
     showFailToast(message)
     return Promise.reject(error)
