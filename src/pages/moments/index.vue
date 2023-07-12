@@ -147,12 +147,11 @@
 </template>
 
 
-<script  setup>
+<script   setup>
 import { showImagePreview } from 'vant';
-import { getFriendsCircle, like } from "~/api/moments";
+import { like } from "~/api/moments";
 import { useMomentsStore } from '~/stores/moments'
 import { getMomentsTime } from '~/utils'
-import dayjs from 'dayjs'
 const homeStore = useHomeStore()
 const myRef = ref();//tab栏实例
 const field = ref()//输入框实例

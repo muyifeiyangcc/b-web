@@ -7,7 +7,7 @@
                     <van-col span="12" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
                         <div>
                             <div class="h200  rounded-12 relative overflow-hidden bg-#ccc/80"
-                                @click="router.push({ path: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
+                                @click="router.push({ name: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
                                 <!-- 背景图 -->
                                 <van-image :src="item.icon" fit="cover" />
                                 <!-- 在线状态 -->

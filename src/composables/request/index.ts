@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import type { Result } from './type'
+import { showFailToast } from 'vant';
 // 配置新建一个 axios 实例
 const service: AxiosInstance = axios.create({
   // 请求前缀
@@ -33,6 +34,7 @@ service.interceptors.response.use(
       return result
     }
     else {
+      showFailToast(message)
       return Promise.reject(new Error(message))
     }
   },
@@ -57,6 +59,7 @@ service.interceptors.response.use(
       default:
         message = '网络连接故障'
     }
+    showFailToast(message)
     return Promise.reject(error)
   }
 );
