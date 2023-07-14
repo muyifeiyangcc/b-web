@@ -40,9 +40,8 @@
                   <button
                     @click="router.push({ path: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })"><img
                       src="../../assets/chat.png" class="w32 h32"></button>
-                  <button
-                    @click="router.push({ path: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid } })"><img
-                      src="../../assets/video.png" class="w32 h32"></button>
+                  <button @click="callHer(item.userId, item.yxAccid)"><img src="../../assets/video.png"
+                      class="w32 h32"></button>
                 </van-space>
               </div>
             </div>
@@ -143,6 +142,7 @@
         </div>
       </template>
     </van-popup>
+    <get-diamonds-chat />
   </div>
 </template>
 
@@ -152,6 +152,7 @@ import { showImagePreview } from 'vant';
 import { like } from "~/api/moments";
 import { useMomentsStore } from '~/stores/moments'
 import { getMomentsTime } from '~/utils'
+import { getUserDetail } from '~/api/user'
 const homeStore = useHomeStore()
 const myRef = ref();//tab栏实例
 const field = ref()//输入框实例
@@ -185,22 +186,20 @@ const loadMore = () => {
   timer = setTimeout(() => {
     currentPage++
     momentsStore.getFriendsCircleList({ currentPage, origin: 'scroll' })
-    allowLoad = true
   }, 500);
 }
 
-//判断滚动距离触发更新
-// const scrollDom = ref()
-// const scrollHandle = () => {
-//   const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
-//   const clientHeight = document.body.clientHeight//计算视口高度
-//   const scrollTop = scrollDom.value.scrollTop //计算滚动的距离
-//   const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
-//   //当快滑动到底部的时候
-//   if (distance < 30) {
-//     loadMore()
-//   }
-// }
+//呼叫主播
+const callHer = (userId, yxAccid) => {
+  getUserDetail({ userId, yxAccid }).then((res) => {
+    if (userStore.mineInfo.diamondNum >= res.videoPrice) {
+      router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })
+    }
+    else {
+      homeStore.getDiamondsVisible = true
+    }
+  })
+}
 
 // 图片预览
 const showImg = (imgList) => {

@@ -106,9 +106,12 @@
             <template #footer>
             </template>
         </van-dialog>
+        <!-- 背景图 -->
         <img src="../../assets/back.png" class="absolute  w-full h-full  top-0 z--1" />
+        <!-- 背景音 -->
         <audio src='https://1v1firendscircle.s3.ap-southeast-1.amazonaws.com/ios/sender.mp3' autoplay playsinline loop
             v-if="matching"></audio>
+        <get-diamonds-chat />
     </div>
 </template>
 
@@ -135,10 +138,14 @@ const startMatch = async () => {
 }
 //邀请通话
 const invite = async () => {
-    router.push({ name: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true, pushRobot: true, free: target.value.free } })
+    if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
+        router.push({ name: 'waitcall', query: { userId: target.value.userId, yxId: target.value.yxAccid, fromMatch: true, pushRobot: true, free: target.value.free } })
+    }
+    else {
+        homeStore.getDiamondsVisible = true
+    }
 }
 onMounted(() => {
-
     startMatch()
     //组件挂载完成设置背景色
     // document.querySelector('body').setAttribute('style', '')

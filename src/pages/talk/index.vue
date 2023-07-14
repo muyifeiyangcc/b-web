@@ -63,8 +63,7 @@
                 <van-space :size="32">
                     <button class="w32 h32"><img src="../../assets/voice.png"></button>
                     <button class="w32 h32"><img src="../../assets/album.png"></button>
-                    <button class="w32 h32"><img src="../../assets/video.png"
-                            @click="router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })"></button>
+                    <button class="w32 h32"><img src="../../assets/video.png" @click="callHer"></button>
                 </van-space>
             </div>
         </div>
@@ -87,6 +86,7 @@
             </template>
         </van-popup>
         <van-toast></van-toast>
+        <get-diamonds-chat />
     </div>
 </template>
 
@@ -102,8 +102,9 @@ const homeStore = useHomeStore()
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
-const to = route.query.to
 const talkList = computed(() => homeStore.talkList)
+const to = route.query.to
+
 //发送文本消息配置项
 const sendTextMsgOption = ref({
     scene: "p2p",
@@ -114,7 +115,14 @@ const sendTextMsgOption = ref({
     }
 })
 const talk = ref()
-
+//呼叫主播
+const callHer = () => {
+    if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
+        router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })
+    } else {
+        homeStore.getDiamondsVisible = true
+    }
+}
 //发送文本消息
 const sendTextMessage = async () => {
     const msg = await homeStore.nim.msg.sendTextMsg(sendTextMsgOption.value)
@@ -134,7 +142,6 @@ const setBlockUser = async () => {
         showSuccessToast('success')
         router.push('message')
     })
-
 }
 const scrollHandle = () => {
     scrollHeight.value = window.innerHeight - myRef.value.offsetHeight - reference.value.offsetHeight

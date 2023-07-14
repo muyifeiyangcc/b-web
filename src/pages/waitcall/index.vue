@@ -54,11 +54,7 @@ const fromMatch = route.query.fromMatch//对象是否来自匹配
 const free = route.query.free
 const countryEmoji = ref('')
 const userDetail = computed(() => userStore.userDetail)
-// const cname = getRandomString(32)
 const option = {
-    // "type": 'directCall', //需要判断
-    // "userId": userStore.mineInfo.userId,
-    // "userType": userStore.mineInfo.userType
     'imAccid': userStore.mineInfo.yxAccid,
     'type': 'directCall', //需要判断
     'version': '1.4.2', //需要确认

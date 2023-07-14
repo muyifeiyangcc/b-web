@@ -134,6 +134,7 @@ const loading = ref(false);//下拉刷新加载状态
 const homeStore = useHomeStore()//pinia组件
 const loadingScroll = ref(false);
 const finished = ref(false);
+
 //下拉刷新
 const onRefresh = () => {
   setTimeout(() => {
@@ -141,6 +142,7 @@ const onRefresh = () => {
     loading.value = false;
   }, 1000);
 };
+
 //确认清空会话列表
 const sureEmpty = () => {
   homeStore.deleteAllSessions()
@@ -148,6 +150,7 @@ const sureEmpty = () => {
   showEmpty.value = false
   showBottom.value = false
 }
+
 // 全部已读
 const allRead = () => {
   homeStore.resetAllUnread()
@@ -163,6 +166,7 @@ onMounted(() => {
   //组件挂载完成设置背景色
   document.querySelector('body').setAttribute('style', 'background-color:#130021')
 })
+
 onBeforeUnmount(() => {
   //组件卸载前去掉背景色
   document.querySelector('body').removeAttribute('style')

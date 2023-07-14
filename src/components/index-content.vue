@@ -1,15 +1,15 @@
 <template>
-    <div class="px15 pt120 pb140">
+    <div class="px10 pt120 pb140">
         <van-list v-model:loading="homeStore.loadingScroll" :finished="homeStore.finished" finished-text="There's no more"
             loading-text="loading..." @load="loadMore" :offset="3">
             <div ref="row">
-                <van-row gutter="20" :wrap="true">
+                <van-row gutter="10" :wrap="true">
                     <van-col span="12" v-for=" (item, index) in homeStore.indexList" :key="index" class="mb20">
                         <div>
-                            <div class="h200  rounded-12 relative overflow-hidden bg-#ccc/80"
-                                @click="router.push({ name: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
+                            <div class="h275  rounded-12 relative overflow-hidden bg-#ccc/80">
                                 <!-- 背景图 -->
-                                <van-image :src="item.icon" fit="cover" />
+                                <van-image :src="item.icon" fit="cover"
+                                    @click="router.push({ name: 'detail', query: { id: item.userId, yxId: item.yxAccid } })" />
                                 <!-- 在线状态 -->
                                 <div
                                     class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/[.06]  absolute top-11 left-10">
@@ -33,30 +33,33 @@
                                     :class="anchorLevelNameColorList[item.anchorLevelName]">
                                     {{ item.anchorLevelName }}
                                 </div>
-                            </div>
-                            <div class="mt10 flex justify-between items-center">
-                                <van-space :size="0">
-                                    <van-image round width="32" height="32" class="b-2" :src="item.icon" />
-                                    <div class="ml4">
-                                        <van-space direction="vertical" :size="3">
-                                            <div>
-                                                <van-space :size="3">
-                                                    <div class="text-14 text-#fff font-semibold">{{ item.nickname }}</div>
-                                                    <div class="text-14">{{ getEmoji(item.countryId) }}</div>
-                                                </van-space>
-                                            </div>
-                                            <div>
-                                                <van-space :size="4">
-                                                    <div class="text-#fff text-12 opacity-70">{{ item.age }}</div>
-                                                    <div class="i-my-icons-male text-11 " v-if="item.gender === 1" />
-                                                    <div class="i-my-icons-famale text-11 " v-if="item.gender === 2" />
-                                                </van-space>
-                                            </div>
-                                        </van-space>
+                                <!-- 信息展示 -->
+                                <div class="absolute bottom-0 w-full px5  pb6 bg-#000/40 backdrop-blur-20">
+                                    <div class="mt10  flex justify-between items-center">
+                                        <div class="ml4">
+                                            <van-space direction="vertical" :size="3">
+                                                <div>
+                                                    <van-space :size="3">
+                                                        <div class="text-14 text-#fff font-semibold">{{ item.nickname }}
+                                                        </div>
+                                                        <div class="text-14">{{ getEmoji(item.countryId) }}</div>
+                                                    </van-space>
+                                                </div>
+                                                <div>
+                                                    <van-space :size="4">
+                                                        <div class="text-#fff text-12 opacity-70">{{ item.age }}</div>
+                                                        <div class="i-my-icons-male text-11 " v-if="item.gender === 1" />
+                                                        <div class="i-my-icons-famale text-11 " v-if="item.gender === 2" />
+                                                    </van-space>
+                                                </div>
+                                            </van-space>
+                                        </div>
+                                        <div class="i-my-icons-video text-24"
+                                            @click.stop="callHer(item.userId, item.yxAccid)" />
                                     </div>
-                                </van-space>
-                                <div class="i-my-icons-video text-24" @click="callHer(item.userId, item.yxAccid)" />
+                                </div>
                             </div>
+
                         </div>
                     </van-col>
                 </van-row>
@@ -68,8 +71,8 @@
 
 <script  setup>
 import { useHomeStore } from '~/stores';
-import { getEmoji } from '~/utils'
-import { debounce, throttle } from '~/utils'
+import { debounce, throttle, getEmoji } from '~/utils'
+import { getUserDetail } from '~/api/user'
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const router = useRouter()
@@ -87,10 +90,16 @@ const topColorList = [
     'bg-gradient-to-r from-#989898 to-#3B3B3B'
 ]
 
-const callHer = (userId, yxId) => {
-    userStore.getUserDetailData(userId, yxId)
-    router.push({ name: 'waitcall', query: { userId, yxId } })
+const callHer = (userId, yxAccid) => {
+    getUserDetail({ userId, yxAccid }).then((res) => {
+        if (userStore.mineInfo.diamondNum >= res.videoPrice) {
+            router.push({ name: 'waitcall', query: { userId, yxId: yxAccid } })
+        } else {
+            homeStore.getDiamondsVisible = true
+        }
+    })
 }
+
 let timer
 const loadMore = () => {
     if (timer)
