@@ -31,6 +31,7 @@
         </van-tabbar-item>
       </van-tabbar>
     </div>
+    <van-toast></van-toast>
   </div>
 </template>
 <script setup lang="ts">

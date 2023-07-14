@@ -34,8 +34,8 @@
                                     {{ item.anchorLevelName }}
                                 </div>
                                 <!-- 信息展示 -->
-                                <div class="absolute bottom-0 w-full px5  pb6 bg-#000/40 backdrop-blur-20">
-                                    <div class="mt10  flex justify-between items-center">
+                                <div class="absolute bottom-0 w-full  bg-#000/10 backdrop-blur-3">
+                                    <div class="m5  flex justify-between items-center">
                                         <div class="ml4">
                                             <van-space direction="vertical" :size="3">
                                                 <div>
