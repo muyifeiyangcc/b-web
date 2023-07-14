@@ -58,13 +58,13 @@
             </div>
             <!-- 第四行(图片) -->
             <div class="mt13">
-              <van-row :gutter="20">
-                <van-col v-for="item, index in item.imgUrls" :key="index" :span="8">
-                  <div class="rounded-4 overflow-hidden text-0 h88">
-                    <van-image :src="item" :key="index" v-if="index < 3" fit="cover" @click="showImg(item)" />
-                  </div>
-                </van-col>
-              </van-row>
+              <!-- <van-image :src="item" :key="index" v-if="index < 3" fit="cover" @click="showImg(item)" /> -->
+              <van-swipe ref="swipe" lazy-render>
+                <van-swipe-item v-for="item, index in item.imgUrls">
+                  <van-image :src="item" :key="index" fit="cover" position="top" @click="showImg(item)"
+                    class="w-full h350" />
+                </van-swipe-item>
+              </van-swipe>
             </div>
             <!-- 第五行 -->
             <div class="flex justify-between pt16">
@@ -191,9 +191,10 @@ const loadMore = () => {
 
 //呼叫主播
 const callHer = (userId, yxAccid) => {
+  console.log(userId, yxAccid);
   getUserDetail({ userId, yxAccid }).then((res) => {
     if (userStore.mineInfo.diamondNum >= res.videoPrice) {
-      router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })
+      router.push({ path: 'waitcall', query: { userId, yxId: yxAccid } })
     }
     else {
       homeStore.getDiamondsVisible = true

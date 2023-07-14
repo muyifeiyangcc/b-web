@@ -3,11 +3,11 @@
         <div class="relative  max-w-450  relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
 
-            <!-- <video ref="videoPlay" class="w-full h-full object-cover" autoplay playsinline webkit-playsinline
+            <video ref="videoPlay" class="w-full h-full object-cover" autoplay playsinline webkit-playsinline
                 src="https://jdvodlzmcwbkr.vod.126.net/jdvodlzmcwbkr/65-1344695788849105-1647831230565-0.mp4"
-                v-if="fromMatch || pushRobot"></video> -->
-            <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" autoplay muted playsinline
-                webkit-playsinline v-if="fromMatch || pushRobot"></video>
+                v-if="fromMatch || pushRobot"></video>
+            <!-- <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" autoplay muted playsinline
+                webkit-playsinline v-if="fromMatch || pushRobot"></video> -->
 
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
@@ -42,16 +42,18 @@
                 </van-space>
             </div>
             <!-- 右侧特惠充值 -->
-            <div class="absolute right-6 top-220 z-99" v-if="showDialog">
+            <div class="absolute right-6 top-220 z-99" v-if="showDialog" @click="recharge">
                 <img src="../../assets//recharge.png" class="w105 h105"><!--背景图 -->
                 <img src="../../assets/close.png" class="w16 h16 absolute top-0 right-12"
                     @click="showDialog = false"><!--关闭按钮 -->
                 <div class="absolute left-50% ml--30 top-65">
                     <van-space direction="vertical" align="center" :size="2">
-                        <div class="text-12 c-#fff font-medium">x2450</div>
+                        <div class="text-12 c-#fff font-medium">
+                            x{{ rechargeList[1]?.diamondNum }}
+                        </div>
                         <div
                             class="text-14 c-#fff font-semibold bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 w61 py6 text-center rounded-14">
-                            $4.99
+                            ${{ rechargeList[1]?.price }}
                         </div>
                     </van-space>
                 </div>
@@ -172,6 +174,7 @@ import { rejectAskGift } from '~/api/gift'
 import { getRobotVideo } from '~/api/match'
 import { heartbeat } from '~/api/wallet'
 import { showFailToast } from 'vant';
+import { getRechargeList } from '~/api/wallet'
 const appkey = '124f689baed25c488e1330bc42e528af'; // 请输入自己的appkey
 const secondCount = ref(0)//进入直播页面开始计时
 const homeStore = useHomeStore()
@@ -438,13 +441,26 @@ watch(secondCount, () => {
         }
     }
 })
-
+const rechargeList = ref([])
+// 获取充值列表
+const getRechargeListData = () => {
+    getRechargeList().then((res) => {
+        rechargeList.value = res
+        console.log(rechargeList.value)
+    })
+}
+//充值
+const recharge = () => {
+    const batchNo = rechargeList.value[1].batchNo
+    window.flutter_inappwebview.callHandler('recharge', batchNo);
+}
 
 const videoPlay = ref()
 onMounted(() => {
     // window.addEventListener('resize', scrollHandle)
     userHeartBeat()
     joinCall()
+    getRechargeListData()
 })
 
 onBeforeUnmount(() => {

@@ -15,15 +15,15 @@
             </div>
             <!-- 相册列表 -->
             <div class="">
-                <van-image :src="userStore.userDetail.icon" class="absolute h320 w-full top-0" fit="cover"
+                <van-image :src="userStore.userDetail.icon" class="absolute h370 w-full top-0" fit="cover" position="top"
                     v-if="userStore.picList.length === 0" />
                 <van-swipe ref="swipe" lazy-render @change="onChange" :show-indicators="false">
                     <van-swipe-item v-for="item, index in userStore.picList">
-                        <van-image :src="item.mediaUrl" class=" h320 w-full " fit="cover" />
+                        <van-image :src="item.mediaUrl" class=" h370 w-full " fit="cover" position="top" />
                     </van-swipe-item>
                 </van-swipe>
                 <!-- 在线状态 -->
-                <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/20  absolute top-190 left-10">
+                <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/20  absolute top-240 left-10">
                     <van-space :size="2">
                         <div class="w6 h6 rounded-50% bg-#2BC100" v-if="userStore.userDetail.status === 1" />
                         <div class="w6 h6 rounded-50% bg-#FE5A05" v-if="userStore.userDetail.status === 10000" />
@@ -34,7 +34,7 @@
                     </van-space>
                 </div>
                 <!-- 相册列表 -->
-                <div class="absolute top-230 overflow-scroll w-full  px10">
+                <div class="absolute top-280 overflow-scroll w-full  px10">
                     <van-space :size="4">
                         <div v-for="item, index in userStore.picList" :key="index" class="text-0 rounded-5 overflow-hidden"
                             :class="index === swipeIndex ? 'b-1 b-#ccc' : ''">
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <!-- 详细信息 -->
-            <div class="bg-#130021  top-300 rounded-t-24 absolute w-full pb130">
+            <div class="bg-#130021  top-350 rounded-t-24 absolute w-full pb130">
                 <!-- 个人介绍 -->
                 <div class="ml24 mt32">
                     <van-space direction="vertical">

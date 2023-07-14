@@ -1,6 +1,6 @@
 <template>
   <div class="mx20">
-    <div ref="myRef" :class="homeStore.topHeight">
+    <div ref="myRef" class="pt30">
       <!-- 聊天页tab栏 -->
       <div class="flex justify-between items-center mb20">
         <van-tabs v-model:active="active" background="transparent" title-active-color="#fff"
