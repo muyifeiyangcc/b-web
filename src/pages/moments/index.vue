@@ -61,8 +61,9 @@
               <!-- <van-image :src="item" :key="index" v-if="index < 3" fit="cover" @click="showImg(item)" /> -->
               <van-swipe ref="swipe" lazy-render>
                 <van-swipe-item v-for="item, index in item.imgUrls">
-                  <van-image :src="item" :key="index" fit="cover" position="top" @click="showImg(item)"
-                    class="w-full h350" />
+                  <div class="rounded-10 overflow-hidden w-full h350">
+                    <van-image :src="item" :key="index" fit="cover" position="top" @click="showImg(item)" />
+                  </div>
                 </van-swipe-item>
               </van-swipe>
             </div>
