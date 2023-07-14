@@ -1,5 +1,5 @@
 <template>
-    <div class="pb15 fixed z-3 top-0 bg-#200137 w-full" :class="homeStore.topHeight">
+    <div class="pb15 fixed z-3 top-0 bg-#200137 w-full pt25" :class="homeStore.topHeight">
         <div class="flex justify-between items-center">
             <van-tabs class="tabs_1 Tabs" background="transparent" title-active-color="#BE12C5" line-width="0px"
                 :ellipsis="false" v-model:active="homeStore.fatherTabActive" @change="onClickFatherTab">
