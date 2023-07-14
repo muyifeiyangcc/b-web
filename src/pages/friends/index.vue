@@ -40,7 +40,8 @@
                     <van-row>
                         <van-col span="4">
                             <!-- 头像 -->
-                            <div class="">
+                            <div class=""
+                                @click="router.push({ name: 'detail', query: { id: item.userId, yxId: item.yxAccid } })">
                                 <van-badge dot color="#2BC100">
                                     <van-image round width="12rem" height="12rem" :src="item.icon" />
                                 </van-badge>
