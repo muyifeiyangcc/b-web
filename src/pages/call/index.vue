@@ -3,11 +3,11 @@
         <div class="relative  max-w-450  relative  overflow-hidden" ref="remoteVideoContent"
             :style="{ height: viewHeight + 'px' }">
 
-            <video ref="videoPlay" class="w-full h-full object-cover" autoplay playsinline webkit-playsinline
+            <!-- <video ref="videoPlay" class="w-full h-full object-cover" autoplay playsinline webkit-playsinline
                 src="https://jdvodlzmcwbkr.vod.126.net/jdvodlzmcwbkr/65-1344695788849105-1647831230565-0.mp4"
-                v-if="fromMatch || pushRobot"></video>
-            <!-- <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" autoplay muted playsinline
-                webkit-playsinline v-if="fromMatch || pushRobot"></video> -->
+                v-if="fromMatch || pushRobot"></video> -->
+            <video ref="videoPlay" class="w-full h-full object-cover" :src="robotVideoList" autoplay muted playsinline
+                webkit-playsinline v-if="fromMatch || pushRobot"></video>
 
             <!-- 本地视频窗口 -->
             <img :src="userStore.userDetail.icon" class="absolute w-full h-full z--1 blur-10">
