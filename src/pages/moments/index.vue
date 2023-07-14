@@ -11,7 +11,7 @@
       <van-pull-refresh v-model="loading" @refresh="onRefresh" pulling-text="Pull To Refresh" loading-text="loading..."
         loosing-text="Release to refresh" success-text="Refresh successful" z-2>
         <van-list v-model:loading="momentsStore.loadingScroll" :finished="momentsStore.finished"
-          finished-text="There's no more" loading-text="loading..." @load="loadMore">
+          finished-text="There's no more" loading-text="loading..." @load="loadMore" :offset="10">
           <div class=" bg-#AFA8FF/10 rounded-8 px20 py24 mb15 " v-for="item, index in data" :key="index">
             <!-- 第一行 -->
             <div class="flex justify-between">
@@ -40,9 +40,8 @@
                   <button
                     @click="router.push({ path: 'talk', query: { to: item.yxAccid, nick: item.nickname, avatar: item.icon } })"><img
                       src="../../assets/chat.png" class="w32 h32"></button>
-                  <button
-                    @click="router.push({ path: 'waitcall', query: { userId: item.userId, yxId: item.yxAccid } })"><img
-                      src="../../assets/video.png" class="w32 h32"></button>
+                  <button @click="callHer(item.userId, item.yxAccid)"><img src="../../assets/video.png"
+                      class="w32 h32"></button>
                 </van-space>
               </div>
             </div>
@@ -143,6 +142,7 @@
         </div>
       </template>
     </van-popup>
+    <get-diamonds-chat />
   </div>
 </template>
 
@@ -152,6 +152,7 @@ import { showImagePreview } from 'vant';
 import { like } from "~/api/moments";
 import { useMomentsStore } from '~/stores/moments'
 import { getMomentsTime } from '~/utils'
+import { getUserDetail } from '~/api/user'
 const homeStore = useHomeStore()
 const myRef = ref();//tab栏实例
 const field = ref()//输入框实例
@@ -174,32 +175,31 @@ const onRefresh = () => {
     loading.value = false;
   }, 1000);
 };
+
+let timer
 // 无限滚动
-let allowLoad = true
-let currentPage = 1
+
+let currentPage = 0
 const loadMore = () => {
-  if (allowLoad) {
-    allowLoad = false
+  if (timer)
+    clearTimeout(timer)
+  timer = setTimeout(() => {
     currentPage++
-    setTimeout(() => {
-      momentsStore.getFriendsCircleList({ currentPage, origin: 'scroll' })
-      allowLoad = true
-    }, 1000);
-  }
+    momentsStore.getFriendsCircleList({ currentPage, origin: 'scroll' })
+  }, 500);
 }
 
-//判断滚动距离触发更新
-// const scrollDom = ref()
-// const scrollHandle = () => {
-//   const scrollHeight = scrollDom.value.scrollHeight//计算滚动高度
-//   const clientHeight = document.body.clientHeight//计算视口高度
-//   const scrollTop = scrollDom.value.scrollTop //计算滚动的距离
-//   const distance = scrollHeight - scrollTop - clientHeight//计算到滚动到页面底部剩余距离
-//   //当快滑动到底部的时候
-//   if (distance < 30) {
-//     loadMore()
-//   }
-// }
+//呼叫主播
+const callHer = (userId, yxAccid) => {
+  getUserDetail({ userId, yxAccid }).then((res) => {
+    if (userStore.mineInfo.diamondNum >= res.videoPrice) {
+      router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })
+    }
+    else {
+      homeStore.getDiamondsVisible = true
+    }
+  })
+}
 
 // 图片预览
 const showImg = (imgList) => {

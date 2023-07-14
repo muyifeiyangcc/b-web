@@ -8,7 +8,7 @@ import setting from '~/config'
 export const useHomeStore = defineStore('useHomeStore', {
     state: () => ({
         router: {},
-        topHeight: 'pt20',//全局调整tabbar高度
+        topHeight: 'pt25',//全局调整tabbar高度
         systemOpt: {
             token: '',
             appId: '',
@@ -32,7 +32,7 @@ export const useHomeStore = defineStore('useHomeStore', {
         attachEvent: {},//系统消息事件对象
         getIndexListOption: {
             "currentPage": 0,
-            "onlineStatus": 0,
+            "onlineStatus": 2,
             "pageSize": 8,
             "tagId": 13
         },

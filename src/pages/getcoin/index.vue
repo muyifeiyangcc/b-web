@@ -20,7 +20,7 @@
             </van-nav-bar>
         </div>
         <div class="pt60 px20 flex flex-wrap justify-between text-0">
-            <div class="  pt12 pb28 relative text-center b-2 b-#B25BFF rounded-5 w102 h102 mt47">
+            <!-- <div class="  pt12 pb28 relative text-center b-2 b-#B25BFF rounded-5 w102 h102 mt47">
                 <van-space direction="vertical" align="center" :size="6">
                     <div class="i-my-icons-diamond w40 h40" />
                     <div class="c-#fff text-14 font-semibold">1250</div>
@@ -30,7 +30,7 @@
                     </van-button>
                 </van-space>
                 <img src="../../assets/free_coin.png" class="w54 h54 absolute top--2 right--1">
-            </div>
+            </div> -->
             <div class="  pt12 pb28 relative text-center b-2 b-#B25BFF rounded-5 w102 h102 mt47"
                 v-for="item, index in rechargeList">
                 <van-space direction="vertical" align="center" :size="6">

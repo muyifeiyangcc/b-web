@@ -15,9 +15,15 @@
             </div>
             <!-- 相册列表 -->
             <div class="">
-                <img :src="userStore.userDetail.icon" class="absolute  top-0">
+                <van-image :src="userStore.userDetail.icon" class="absolute h320 w-full top-0" fit="cover"
+                    v-if="userStore.picList.length === 0" />
+                <van-swipe ref="swipe" lazy-render @change="onChange" :show-indicators="false">
+                    <van-swipe-item v-for="item, index in userStore.picList">
+                        <van-image :src="item.mediaUrl" class=" h320 w-full " fit="cover" />
+                    </van-swipe-item>
+                </van-swipe>
                 <!-- 在线状态 -->
-                <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/20  absolute top-140 left-10">
+                <div class="text-12 text-#fff font-semibold px7 rounded-10 bg-#000/20  absolute top-190 left-10">
                     <van-space :size="2">
                         <div class="w6 h6 rounded-50% bg-#2BC100" v-if="userStore.userDetail.status === 1" />
                         <div class="w6 h6 rounded-50% bg-#FE5A05" v-if="userStore.userDetail.status === 10000" />
@@ -28,16 +34,17 @@
                     </van-space>
                 </div>
                 <!-- 相册列表 -->
-                <div class="absolute top-180 overflow-scroll w-full  px10">
+                <div class="absolute top-230 overflow-scroll w-full  px10">
                     <van-space :size="4">
-                        <div v-for="item, index in userStore.picList" :key="index">
-                            <van-image width="56" height="56" :src="item.mediaUrl" @click="showImg(item.mediaUrl)" />
+                        <div v-for="item, index in userStore.picList" :key="index" class="text-0 rounded-5 overflow-hidden"
+                            :class="index === swipeIndex ? 'b-1 b-#ccc' : ''">
+                            <van-image width="56" height="56" :src="item.mediaUrl" @click="swipe.swipeTo(index)" />
                         </div>
                     </van-space>
                 </div>
             </div>
             <!-- 详细信息 -->
-            <div class="bg-#130021  top-250 rounded-t-24 absolute w-full pb130">
+            <div class="bg-#130021  top-300 rounded-t-24 absolute w-full pb130">
                 <!-- 个人介绍 -->
                 <div class="ml24 mt32">
                     <van-space direction="vertical">
@@ -151,8 +158,8 @@
                             <div class="flex justify-between items-center">
                                 <div>
                                     <van-space>
-                                        <div class="bg-gradient-to-b from-#CC15C7 to-#5109C1 rounded-40 p1">
-                                            <img :src="item.icon" class="w40 h40 rounded-40" />
+                                        <div class="bg-gradient-to-b from-#CC15C7 to-#5109C1 rounded-40 w40 h40 p1 text-0">
+                                            <img :src="item.icon" class="w-full h-full rounded-40" />
                                         </div>
                                         <div>
                                             <van-space direction="vertical" :size="0">
@@ -243,8 +250,7 @@
                     <van-space :size="18">
                         <!-- 与主播聊天 -->
                         <div class="bg-#fff/10 rounded-23 py12 px18">
-                            <img src="../../assets/icons_message.png" class="w20 h20"
-                                @click="router.push({ path: 'talk', query: { to: yxAccid, nick: userStore.userDetail.nickname, avatar: userStore.userDetail.icon } })">
+                            <img src="../../assets/icons_message.png" class="w20 h20" @click="">
                         </div>
                         <!-- 关注/取关 -->
                         <div class="bg-#fff/10 rounded-23 py12 px18" @click="followOrNo">
@@ -254,10 +260,10 @@
                     </van-space>
                     <!-- 视频通话 -->
                     <div class="bg-gradient-to-r from-#4D09C1  via-#7F04BA to-#D016C8 py13 px20 rounded-23 text-center"
-                        @click="router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })">
+                        @click="callHer()">
                         <van-space :size="4">
                             <div><img src="../../assets/video_call.png" class="w20"></div>
-                            <div class="text-14 font-bold c-#fff">100</div>
+                            <div class="text-14 font-bold c-#fff">{{ userStore.userDetail.videoPrice }}</div>
                             <div class="i-my-icons-diamond text-14" />
                             <div class="text-14  c-#fff">/Times</div>
                         </van-space>
@@ -266,6 +272,7 @@
             </div>
         </div>
         <van-toast></van-toast>
+        <get-diamonds-chat />
     </div>
 </template>
 
@@ -274,7 +281,7 @@ import { getFriendsCircle } from '~/api/moments'
 import { getMomentsTime } from '~/utils/index'
 import { showImagePreview } from 'vant';
 import { debounce } from '~/utils'
-
+const homeStore = useHomeStore()
 const userStore = useUserStore()
 const route = useRoute()
 const userId = route.query.id;
@@ -283,6 +290,8 @@ const momentsStore = useMomentsStore()
 const router = useRouter()
 const momentData = ref([])//用户朋友圈内容
 const showView = ref(true)
+const swipe = ref()
+const swipeIndex = ref(0)
 //获取用户朋友圈内容
 const getMomentData = async (id = "") => {
     const result = await getFriendsCircle({
@@ -298,6 +307,9 @@ const getMomentData = async (id = "") => {
 const showImg = (imgList) => {
     showImagePreview([imgList]);
 }
+const onChange = (index) => {
+    swipeIndex.value = index
+}
 // 关注/取关
 const followOrNo = debounce(() => { userStore.followOrNo() }, 300)
 
@@ -308,6 +320,15 @@ const startVideo = (url) => {
     videoUrl.value = url
     showVideo.value = true
 }
+
+const callHer = () => {
+    if (userStore.mineInfo.diamondNum >= userStore.userDetail.videoPrice) {
+        router.push({ path: 'waitcall', query: { userId: userStore.userDetail.userId, yxId: userStore.userDetail.yxAccid } })
+    } else {
+        homeStore.getDiamondsVisible = true
+    }
+}
+
 onMounted(() => {
     //获取用户详情数据
     userStore.getUserDetailData(userId, yxAccid)

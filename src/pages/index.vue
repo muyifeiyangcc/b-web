@@ -5,7 +5,7 @@ const route = useRoute()
 const homeStore = useHomeStore()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
-const momentsStore = useMomentsStore()
+// const momentsStore = useMomentsStore()
 
 //需传入token等参数
 if (route.query.token && route.query.appId) {
@@ -35,7 +35,7 @@ const init = () => {
     //获取国家列表
     userStore.getCountryListData()
     //获取朋友圈列表
-    momentsStore.getFriendsCircleList({ origin: 'pull', currentPage: 1, id: "", })
+    // momentsStore.getFriendsCircleList({ origin: 'pull', currentPage: 1, id: "", })
     // //获取我的信息
     getMineInfo().then((res) => {
       userStore.mineInfo = res
