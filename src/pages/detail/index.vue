@@ -236,7 +236,7 @@
                         <div class="c-#fff text-14 font-semibold ml5">Show her what you mean</div>
                     </van-space>
                     <van-space :size="0" align="center">
-                        <div
+                        <div @click="giftStore.showGiftView = !giftStore.showGiftView"
                             class="c-#C915C7 text-14 font-semibold bg-gradient-to-r from-#FDE2FF/78  to-#FFFFFF/80 rounded-23 ml12 py7 px10">
                             Send GIft
                         </div>
@@ -250,7 +250,8 @@
                     <van-space :size="18">
                         <!-- 与主播聊天 -->
                         <div class="bg-#fff/10 rounded-23 py12 px18">
-                            <img src="../../assets/icons_message.png" class="w20 h20" @click="">
+                            <img src="../../assets/icons_message.png" class="w20 h20"
+                                @click="router.push({ name: 'talk', query: { to: userStore.userDetail.yxAccid, nick: userStore.userDetail.nickname, avatar: userStore.userDetail.icon } })">
                         </div>
                         <!-- 关注/取关 -->
                         <div class="bg-#fff/10 rounded-23 py12 px18" @click="followOrNo">
@@ -273,6 +274,7 @@
         </div>
         <van-toast></van-toast>
         <get-diamonds-chat />
+        <give-present />
     </div>
 </template>
 
@@ -283,6 +285,7 @@ import { showImagePreview } from 'vant';
 import { debounce } from '~/utils'
 const homeStore = useHomeStore()
 const userStore = useUserStore()
+const giftStore = useGiftStore()
 const route = useRoute()
 const userId = route.query.id;
 const yxAccid = route.query.yxId;

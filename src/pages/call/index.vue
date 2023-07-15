@@ -100,7 +100,7 @@
                 </van-row>
             </div>
             <!-- 送礼 -->
-            <give-present :show="presentShow" />
+            <give-present />
             <!-- 索要礼物弹窗 -->
             <van-popup v-model:show="homeStore.requestGift" round overlay-class="bg-#000/40 backdrop-blur-20"
                 :close-on-click-overlay="false">

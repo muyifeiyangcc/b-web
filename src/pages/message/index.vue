@@ -1,6 +1,6 @@
 <template>
   <div class="mx20">
-    <div ref="myRef" class="pt30">
+    <div ref="myRef" class="pt50">
       <!-- 聊天页tab栏 -->
       <div class="flex justify-between items-center mb20">
         <van-tabs v-model:active="active" background="transparent" title-active-color="#fff"
@@ -11,7 +11,7 @@
         <button @click="showBottom = !showBottom"><img src="../../assets/broom.png" class="w23 h23"></button>
       </div>
       <!-- 聊天页弹窗 -->
-      <div v-if="isShow" class="py12 rounded-8  relative"
+      <!-- <div v-if="isShow" class="py12 rounded-8  relative"
         style="background: linear-gradient(232deg, #4D09C1 0%, #7F04BA 47%, #D016C8 100%);" text-center>
         <van-space :size="0" direction="vertical">
           <div class=" c-#fff font-semibold text-16">
@@ -27,7 +27,7 @@
             <van-icon name="cross" color="#fff" class="text-14" />
           </div>
         </van-space>
-      </div>
+      </div> -->
     </div>
     <!-- 聊天列表 -->
     <div class="pb100 overflow-scroll" :style="{ height: scrollHeight + 'px' }" v-if="active === 'message'">

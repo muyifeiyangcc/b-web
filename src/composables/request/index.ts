@@ -17,8 +17,10 @@ const service: AxiosInstance = axios.create({
 // 添加请求拦截器
 service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   // 添加token参数
-  config.headers.loginToken = localStorage.getItem('token') || '5296949AA767440399D6BF6D70E43E06'
-  config.headers.appid = localStorage.getItem('appId') || '77985415'
+  // config.headers.loginToken = localStorage.getItem('token') || '5296949AA767440399D6BF6D70E43E06'
+  // config.headers.appid = localStorage.getItem('appId') || '77985415'
+  config.headers.loginToken = localStorage.getItem('token')
+  config.headers.appid = localStorage.getItem('appId')
   return config;
 }, (error: AxiosError) => {
   return Promise.reject(error)

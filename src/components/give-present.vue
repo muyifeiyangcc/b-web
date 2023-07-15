@@ -53,9 +53,16 @@ const router = useRouter()
 const userStore = useUserStore()
 const giftStore = useGiftStore()
 const giftId = ref(null)
+const origin = ref('')
 const sendGift = () => {
-    giftStore.postGift(giftId.value, 1, 'VIDEO', userStore.userDetail.yxAccid)
-
+    const routerName = router.currentRoute.value.name
+    if (routerName === 'talk')
+        origin.value = 'IM'
+    else if (routerName === 'call')
+        origin.value = 'VIDEO'
+    else
+        origin.value = 'PROFILE'
+    giftStore.postGift(giftId.value, 1, origin.value, userStore.userDetail.yxAccid)
 }
 </script>
 

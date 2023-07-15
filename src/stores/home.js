@@ -75,6 +75,7 @@ export const useHomeStore = defineStore('useHomeStore', {
             to: 'c398a3961d954af7841f95b43ed6d85b',//通信对象的cid
             limit: 20,//返回条数
         }
+
     }),
     //  persist: {
     //     paths: ['indexTabs'],
@@ -88,8 +89,10 @@ export const useHomeStore = defineStore('useHomeStore', {
             // 初始化nim
             const nim = new NIMSDK({
                 appkey: setting.appkey,
-                account: localStorage.getItem('yxAccid') || '2a267c8bf750454fa2b402d9dd138301', // 云信账号
-                token: localStorage.getItem('imToken') || '8221cfa0ec745ba5a6be6d5941b58185', // 云信密码
+                // account: localStorage.getItem('yxAccid') || '2a267c8bf750454fa2b402d9dd138301', // 云信账号
+                // token: localStorage.getItem('imToken') || '8221cfa0ec745ba5a6be6d5941b58185', // 云信密码
+                account: localStorage.getItem('yxAccid'), // 云信账号
+                token: localStorage.getItem('imToken'), // 云信密码
                 // debugLevel: 'debug'
             })
             const client = NERTC.createClient({ appkey: setting.appkey, debug: true })
@@ -163,16 +166,8 @@ export const useHomeStore = defineStore('useHomeStore', {
                     if (attachType === 6) {
                         showSuccessToast(`recharge successful!`)
                         userStore.getMineInfoData()
+
                     }
-                    // if (attachType === 19) {
-                    //     showSuccessToast('需要上传日志')
-                    // }
-                    // if (attachType === 22) {
-                    //     showSuccessToast('关注的主播上线提醒')
-                    // }
-                    // if (attachType === 25) {
-                    //     showSuccessToast('开启鉴黄弹窗')
-                    // }
                 }
                 console.log("收到系统消息", event)
             })
@@ -257,40 +252,98 @@ export const useHomeStore = defineStore('useHomeStore', {
         },
         // 更新首页列表
         async updateIndexListData(origin, title) {
+            const userStore = useUserStore()
             //判断是点击标签更新
             if (origin === 'tag') {
                 console.log('触发点击更新');
+                //获取到对应的标签ID
                 this.indexTabsChildren.map((item) => {
                     if (item.tagName === title) {
                         this.getIndexListOption.tagId = item.id
                     }
                 })
                 this.getIndexListOption.currentPage = 1
-                getIndexList(this.getIndexListOption).then((res) => this.indexList = res)
                 this.finished = false
+                //判断是否是首充的逻辑
+                if (userStore.mineInfo.isFirstCharge) {
+                    this.getIndexListOption.onlineStatus = 1
+                    getIndexList(this.getIndexListOption).then((res) => {
+                        if (res.length > 6)
+                            this.indexList = res
+                        else {
+                            this.indexList = res
+                            this.getIndexListOption.onlineStatus = 2
+                            getIndexList(this.getIndexListOption).then((res) => {
+                                this.indexList = [...this.indexList, ...res]
+                            })
+                        }
+                    })
+                }
+                else
+                    getIndexList(this.getIndexListOption).then((res) => this.indexList = res)
             }
             //判断是下拉刷新
             else if (origin === 'pull') {
                 console.log('触发下拉刷新');
                 this.getIndexListOption.currentPage = 1
-                this.indexList = []
-                getIndexList(this.getIndexListOption).then((res) => this.indexList = res)
                 this.finished = false
+                this.indexList = []
+                //判断是否是首充的逻辑
+                if (userStore.mineInfo.isFirstCharge) {
+                    this.getIndexListOption.onlineStatus = 1
+                    getIndexList(this.getIndexListOption).then((res) => {
+                        if (res.length > 6)
+                            this.indexList = res
+                        else {
+                            this.indexList = res
+                            this.getIndexListOption.onlineStatus = 2
+                            getIndexList(this.getIndexListOption).then((res) => {
+                                this.indexList = [...this.indexList, ...res]
+                            })
+                        }
+                    })
+                }
+                else
+                    getIndexList(this.getIndexListOption).then((res) => this.indexList = res)
             }
             //判断是滚动更新
             else {
-                //获取首页用户列表
-                getIndexList(this.getIndexListOption).then((res) => {
-                    console.log('触发滚动更新');
-                    if (res.length > 0) {
-                        this.indexList = [...this.indexList, ...res]
-                        this.loadingScroll = false
-                    }
-                    else {
-                        this.loadingScroll = false
-                        this.finished = true
-                    }
-                })
+                console.log('触发滚动更新');
+                if (userStore.mineInfo.isFirstCharge) {
+                    this.getIndexListOption.onlineStatus = 1
+                    getIndexList(this.getIndexListOption).then((res) => {
+                        if (res.length > 6)
+                            this.indexList = [...this.indexList, ...res]
+                        else {
+                            this.indexList = [...this.indexList, ...res]
+                            this.getIndexListOption.onlineStatus = 2
+                            getIndexList(this.getIndexListOption).then((res) => {
+                                if (res.length > 0) {
+                                    this.indexList = [...this.indexList, ...res]
+                                    this.loadingScroll = false
+                                }
+                                else {
+                                    this.loadingScroll = false
+                                    this.finished = true
+                                }
+                            })
+                        }
+                    })
+                }
+                else {
+                    //获取首页用户列表
+                    getIndexList(this.getIndexListOption).then((res) => {
+                        if (res.length > 0) {
+                            this.indexList = [...this.indexList, ...res]
+                            this.loadingScroll = false
+                        }
+                        else {
+                            this.loadingScroll = false
+                            this.finished = true
+                        }
+                    })
+                }
+
             }
         },
         //获取会话记录

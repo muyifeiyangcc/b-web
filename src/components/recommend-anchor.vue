@@ -69,7 +69,7 @@ const sendTextMessage = async (to) => {
     const msg = await homeStore.nim.msg.sendTextMsg({
         scene: "p2p",
         to,
-        body: 'Hi,Can we start a video chat',
+        body: 'Hello, maybe we can talk',
         onSendBefore: function (msg) {
             console.log('发送了一条消息', msg);
         }

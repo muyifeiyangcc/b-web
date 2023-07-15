@@ -1,7 +1,7 @@
 <template>
   <div class="">
 
-    <div class="mt30 mx25" :class="homeStore.topHeight">
+    <div class="pt50 mx25" :class="homeStore.topHeight">
       <div class="flex justify-between items-center" @click="router.push('/profile')">
         <div>
           <van-space :size="16">
@@ -56,7 +56,7 @@
           @click="router.push('getcoin')">Open</van-button>
       </div>
       <!-- 三个开关 -->
-      <div class="mx20 px20 py27 bg-#AFA8FF/10 rounded-8">
+      <!-- <div class="mx20 px20 py27 bg-#AFA8FF/10 rounded-8">
         <div class="c-#fff flex justify-between items-center">
           <div class="text-14 font-medium">Do not disturb - Call</div>
           <van-switch v-model="checked0" />
@@ -71,7 +71,7 @@
           <div class="text-14 font-medium">Do not disturb - Message</div>
           <van-switch v-model="checked2" />
         </div>
-      </div>
+      </div> -->
 
       <div class="mx20 mt20 px20 py13 bg-#AFA8FF/10 rounded-8 flex justify-between items-center"
         @click="router.push('/blocklist')">

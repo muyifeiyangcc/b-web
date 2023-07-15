@@ -15,7 +15,7 @@
             </van-nav-bar>
         </div>
         <!-- 聊天区 -->
-        <div class="flex flex-col flex-col-reverse mx15 pb20 overflow-scroll" :style="{ height: scrollHeight + 'px' }"
+        <div class="flex flex-col flex-col-reverse mx15 pt45 pb30 overflow-scroll " :style="{ height: scrollHeight + 'px' }"
             ref="talk">
             <div v-for=" item, index in talkList" class=" c-#fff text-16 font-medium mt44 " :key="index">
                 <!-- 时间，待开发 -->
@@ -44,23 +44,29 @@
         </div>
         <!-- 输入区 -->
         <div ref="reference" class="mx15 py20 bg-#130021">
-            <van-space :size="10">
-                <div class="w295">
-                    <van-cell-group inset>
-                        <van-field v-model="sendTextMsgOption.body" placeholder="Type a message..."
-                            @keydown.enter="sendTextMessage">
-                            <template #button>
-                                <img src="../../assets/emojbtn.png" class="w24 h24">
-                            </template>
-                        </van-field>
-                    </van-cell-group>
-                </div>
-                <div class="text-center">
-                    <button class="w36 h36" @click="sendTextMessage"><img src="../../assets/send.png" alt=""></button>
-                </div>
-            </van-space>
+            <van-row>
+                <van-col :span="21">
+                    <div>
+                        <van-cell-group inset>
+                            <van-field v-model="sendTextMsgOption.body" placeholder="Type a message..."
+                                @keydown.enter="sendTextMessage">
+                                <template #button>
+                                    <img src="../../assets/emojbtn.png" class="w24 h24">
+                                </template>
+                            </van-field>
+                        </van-cell-group>
+                    </div>
+                </van-col>
+                <van-col :span="3">
+                    <div class="text-center">
+                        <button @click="sendTextMessage">
+                            <img src="../../assets/send.png" class="w36 h36">
+                        </button>
+                    </div>
+                </van-col>
+            </van-row>
             <div class="pt18">
-                <van-space :size="32">
+                <van-space :size="38">
                     <button class="w32 h32"><img src="../../assets/voice.png"></button>
                     <button class="w32 h32"><img src="../../assets/album.png"></button>
                     <button class="w32 h32"><img src="../../assets/video.png" @click="callHer"></button>
@@ -85,7 +91,10 @@
                 </div>
             </template>
         </van-popup>
-        <van-toast></van-toast>
+        <img src="../../assets/gift.png" class="fixed bottom-200 right-15 w57 h56"
+            @click="giftStore.showGiftView = !giftStore.showGiftView">
+        <give-present />
+        <van-toast />
         <get-diamonds-chat />
     </div>
 </template>
@@ -100,6 +109,7 @@ const showBottom = ref(false)
 const scrollHeight = ref(0)
 const homeStore = useHomeStore()
 const userStore = useUserStore()
+const giftStore = useGiftStore()
 const router = useRouter()
 const route = useRoute()
 const talkList = computed(() => homeStore.talkList)

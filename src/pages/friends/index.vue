@@ -124,7 +124,7 @@ const onLoad = () => {
                 finished.value = true
             }
         })
-    }, 500)
+    }, 100)
 }
 onMounted(() => {
     scrollHeight.value = document.documentElement.clientHeight - broList.value.getBoundingClientRect().top

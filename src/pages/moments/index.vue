@@ -1,7 +1,7 @@
 <template>
   <div class="px15 ">
     <!-- 页首 -->
-    <div ref="myRef" class="flex justify-between pb25" :class="homeStore.topHeight">
+    <div ref="myRef" class="flex justify-between pb25 pt50">
       <div class="c-white text-21 font-bold">Moments</div>
       <!-- <img src="../../assets/publish.png" class=" w35 h35"> -->
     </div>
